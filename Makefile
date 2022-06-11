@@ -1,8 +1,6 @@
 PROJECT_NAME = ft_transcendence
 PROJECT_DIRECTORY = docker
 
-#npm init nuxt-app ft_transcendence
-
 all:
 	docker-compose -p $(PROJECT_NAME) --project-directory $(PROJECT_DIRECTORY) up -d
 

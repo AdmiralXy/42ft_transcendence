@@ -9,4 +9,14 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('/home')
+  home(): string {
+    return 'This is home!';
+  }
+
+  @Get('api/home')
+  api(): string {
+    return 'This is api home!';
+  }
 }
