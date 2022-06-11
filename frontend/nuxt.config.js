@@ -14,7 +14,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'ft_transcendence',
+    title: 'Transcendence App',
     htmlAttrs: {
       lang: 'en'
     },

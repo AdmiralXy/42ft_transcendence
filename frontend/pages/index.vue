@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div>
-      {{ data }}
+    <div class="accordion">
+      This is: {{ data }}
     </div>
-    <Tutorial/>
   </div>
 </template>
 
@@ -13,9 +12,10 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Index',
+  layout: 'app',
   data() {
     return {
-      data: 'Hello World!'
+      data: 'Hello World!' as string
     }
   },
   async mounted() {
@@ -27,3 +27,9 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+.accordion {
+  font-family: 'Noto Sans', sans-serif;
+}
+</style>
