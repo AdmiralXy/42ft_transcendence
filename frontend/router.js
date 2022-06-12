@@ -16,11 +16,11 @@ const routes = [
     name: 'profile',
     component: page('profile.vue')
   },
-  // {
-  //   path: '/direct',
-  //   name: 'direct',
-  //   component: page('direct.vue')
-  // },
+  {
+    path: '/direct',
+    name: 'direct',
+    component: page('direct.vue')
+  },
   // {
   //   path: '/groups',
   //   name: 'groups',

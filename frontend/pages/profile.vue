@@ -15,7 +15,6 @@
         <p class="form-profile__input-title">Password confirmation</p>
         <b-form-input v-model="form.password" type="password" class="form-profile__input"></b-form-input>
       </div>
-      <p class="form-profile__status">Profile successfully updated</p>
       <ButtonLoader type="button" class="form-profile__button" :loading="form.loading">Update</ButtonLoader>
     </form>
     <form class="form-profile rounded-lg">

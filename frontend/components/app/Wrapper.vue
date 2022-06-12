@@ -4,7 +4,7 @@
       <div class="side-wrapper">
         <div class="side-title">Apps</div>
         <div class="side-menu">
-          <a href="#">
+          <nuxt-link :to="{ name: 'home'}">
             <svg viewBox="0 0 512 512">
               <g xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                 <path d="M0 0h128v128H0zm0 0M192 0h128v128H192zm0 0M384 0h128v128H384zm0 0M0 192h128v128H0zm0 0" data-original="#bfc9d1"></path>
@@ -13,7 +13,7 @@
               <path xmlns="http://www.w3.org/2000/svg" d="M384 192h128v128H384zm0 0M0 384h128v128H0zm0 0M192 384h128v128H192zm0 0M384 384h128v128H384zm0 0" fill="currentColor" data-original="#bfc9d1"></path>
             </svg>
             Home
-          </a>
+          </nuxt-link>
           <a href="#">
             <svg viewBox="0 0 488.932 488.932" fill="currentColor">
               <path d="M243.158 61.361v-57.6c0-3.2 4-4.9 6.7-2.9l118.4 87c2 1.5 2 4.4 0 5.9l-118.4 87c-2.7 2-6.7.2-6.7-2.9v-57.5c-87.8 1.4-158.1 76-152.1 165.4 5.1 76.8 67.7 139.1 144.5 144 81.4 5.2 150.6-53 163-129.9 2.3-14.3 14.7-24.7 29.2-24.7 17.9 0 31.8 15.9 29 33.5-17.4 109.7-118.5 192-235.7 178.9-98-11-176.7-89.4-187.8-187.4-14.7-128.2 84.9-237.4 209.9-238.8z"></path>
@@ -40,10 +40,10 @@
       <div class="side-wrapper">
         <div class="side-title">Chat</div>
         <div class="side-menu">
-          <a href="#">
+          <nuxt-link :to="{ name: 'direct'}">
             <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 1v16.981h4v5.019l7-5.019h13v-16.981h-24zm13 12h-8v-1h8v1zm6-3h-14v-1h14v1zm0-3h-14v-1h14v1z"/></svg>
             Direct
-          </a>
+          </nuxt-link>
           <a href="#">
             <svg viewBox="0 0 512 512" fill="currentColor">
               <path d="M352 0H64C28.704 0 0 28.704 0 64v320a16.02 16.02 0 009.216 14.496A16.232 16.232 0 0016 400c3.68 0 7.328-1.248 10.24-3.712L117.792 320H352c35.296 0 64-28.704 64-64V64c0-35.296-28.704-64-64-64z"></path>
@@ -56,10 +56,10 @@
       <div class="side-wrapper">
         <div class="side-title">Settings</div>
         <div class="side-menu">
-          <a href="#">
+          <nuxt-link :to="{ name: 'profile'}">
             <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"/></svg>
             Profile
-          </a>
+          </nuxt-link>
         </div>
       </div>
     </div>
