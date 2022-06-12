@@ -71,8 +71,6 @@
   from { transform: rotate(360deg); }
 }
 
-/*LOADING SPACE*/
-
 .contain {
   animation-delay: 4s;
   z-index: 1000;
@@ -104,7 +102,6 @@
   margin: 0 5px;
 }
 
-/*Animation*/
 .icon:nth-child(2) img {-webkit-animation-delay: 0.2s;animation-delay: 0.2s}
 .icon:nth-child(3) img {-webkit-animation-delay: 0.3s;animation-delay: 0.3s}
 .icon:nth-child(4) img {-webkit-animation-delay: 0.4s;animation-delay: 0.4s}

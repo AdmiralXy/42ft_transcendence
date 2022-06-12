@@ -13,13 +13,15 @@
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
 .header {
   display: flex;
   align-items: center;
   flex-shrink: 0;
   height: 58px;
   width: 100%;
-  border-bottom: 1px solid rgba(113 119 144 / 25%);
+  border-bottom: 1px solid $--border-color;
   padding: 0 30px;
   white-space: nowrap;
 }
@@ -40,14 +42,14 @@
 }
 
 .header-menu a.is-active, .header-menu a:hover {
-  color: #f9fafb;
-  border-bottom: 2px solid #f9fafb;
+  color: $--theme-color;
+  border-bottom: 2px solid $--theme-color;
 }
 
 .header-menu a {
   padding: 20px 30px;
   text-decoration: none;
-  color: rgb(113 119 144 / 78%);
+  color: $--inactive-color;
   border-bottom: 2px solid transparent;
   transition: 0.3s;
 }
@@ -66,7 +68,7 @@
   border-radius: 50%;
   -o-object-fit: cover;
   object-fit: cover;
-  border: 2px solid #f9fafb;
+  border: 2px solid $--theme-color;
   margin-left: 22px;
 }
 

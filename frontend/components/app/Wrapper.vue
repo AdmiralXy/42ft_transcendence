@@ -42,7 +42,7 @@
         <div class="side-menu">
           <a href="#">
             <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 1v16.981h4v5.019l7-5.019h13v-16.981h-24zm13 12h-8v-1h8v1zm6-3h-14v-1h14v1zm0-3h-14v-1h14v1z"/></svg>
-            Messages
+            Direct
           </a>
           <a href="#">
             <svg viewBox="0 0 512 512" fill="currentColor">
@@ -78,6 +78,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
 .wrapper {
   display: flex;
   flex-grow: 1;
@@ -86,14 +88,14 @@
 
 .left-side {
   flex-basis: 240px;
-  border-right: 1px solid rgba(113 119 144 / 25%);
+  border-right: 1px solid $--border-color;
   padding: 26px;
   overflow: auto;
   flex-shrink: 0;
 }
 
 .side-title {
-  color: rgb(113 119 144 / 78%);
+  color: $--inactive-color;
   margin-bottom: 14px;
 }
 
@@ -105,7 +107,7 @@
 
 .side-menu a {
   text-decoration: none;
-  color: #f9fafb;
+  color: $--theme-color;
   display: flex;
   align-items: center;
   font-weight: 400;
@@ -133,14 +135,14 @@
 .main-header {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(113 119 144 / 25%);
+  border-bottom: 1px solid $--border-color;
   height: 58px;
   flex-shrink: 0;
 }
 
 .menu-link-main {
   text-decoration: none;
-  color: #f9fafb;
+  color: $--theme-color;
   padding: 0 30px;
 }
 
@@ -160,23 +162,23 @@
 .header-menu a {
   padding: 20px 30px;
   text-decoration: none;
-  color: rgb(113 119 144 / 78%);
+  color: $--inactive-color;
   border-bottom: 2px solid transparent;
   transition: 0.3s;
 }
 
 .header-menu a.is-active, .header-menu a:hover {
-  color: #f9fafb;
-  border-bottom: 2px solid #f9fafb;
+  color: $--theme-color;
+  border-bottom: 2px solid $--theme-color;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  color: #f9fafb;
+  color: $--theme-color;
   padding: 20px 40px;
   height: 100%;
   overflow: auto;
-  background-color: rgba(16 18 27 / 40%);
+  background-color: $--theme-bg-color;
 }
 </style>

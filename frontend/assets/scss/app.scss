@@ -1,0 +1,108 @@
+@import 'elements/buttons';
+@import 'variables';
+
+*, html, body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $--scrollbar-bg;
+  border-radius: 10px;
+}
+
+.content-section {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-section-title {
+  color: $--content-title-color;
+  margin-bottom: 14px;
+}
+
+.content-section ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  background-color: $--content-bg;
+  padding-left: 0;
+  margin: 0;
+  border-radius: 14px;
+  border: 1px solid $--theme-bg-color;
+  cursor: pointer;
+}
+
+.content-section ul li + li {
+  border-top: 1px solid $--border-color;
+}
+
+.app-body {
+  background: #0e6cc4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  width: 100%;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.overlay-app {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: all;
+  background-color: rgba(36, 39, 59, 0.8);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.github {
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  background-color: $--dropdown-bg;
+  box-shadow: -1px 3px 8px -1px rgb(0 0 0 / 20%);
+  padding: 8px;
+  border-radius: 50%;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.github svg {
+  width: 24px;
+  flex-shrink: 0;
+  fill: #5f65c9;
+  stroke: #5f65c9;
+  transition: 0.5s;
+  margin: 2px;
+}
+
+.app {
+  background-color: $--theme-bg-color;
+  max-width: 1350px;
+  max-height: 760px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 15px;
+  font-weight: 500;
+}
