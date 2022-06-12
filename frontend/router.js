@@ -27,10 +27,15 @@ const routes = [
     component: page('groups.vue')
   },
   // {
-  //   path: '/leaderboard',
-  //   name: 'leaderboard',
-  //   component: page('leaderboard.vue')
-  // }
+  //   path: '/group/{groupId}',
+  //   name: 'group',
+  //   component: page('group.vue')
+  // },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: page('leaderboard.vue')
+  }
 ]
 
 export function createRouter () {
