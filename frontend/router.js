@@ -12,6 +12,11 @@ const routes = [
     component: page('home.vue')
   },
   {
+    path: '/updates',
+    name: 'updates',
+    component: page('updates.vue')
+  },
+  {
     path: '/profile',
     name: 'profile',
     component: page('profile.vue')
