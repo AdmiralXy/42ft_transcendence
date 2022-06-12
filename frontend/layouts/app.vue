@@ -31,6 +31,10 @@ export default Vue.extend({
 </script>
 
 <style>
+*, html, body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   border-radius: 10px;
@@ -39,6 +43,35 @@ export default Vue.extend({
 ::-webkit-scrollbar-thumb {
   background: rgb(1 2 3 / 40%);
   border-radius: 10px;
+}
+
+.content-section {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-section-title {
+  color: #999ba5;
+  margin-bottom: 14px;
+}
+
+.content-section ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  background-color: rgb(146 151 179 / 13%);
+  padding-left: 0;
+  margin: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(16 18 27 / 40%);
+  cursor: pointer;
+}
+
+.content-section ul li + li {
+  border-top: 1px solid rgba(113 119 144 / 25%);
 }
 </style>
 

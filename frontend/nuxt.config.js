@@ -50,7 +50,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/router'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
