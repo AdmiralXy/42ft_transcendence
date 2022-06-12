@@ -1,0 +1,15 @@
+.app-input {
+  width: 100%;
+  border: none;
+  border-radius: 2px;
+  padding: 10px;
+  background-color: rgb(146 151 179 / 13%);
+  color: #fff;
+  font-size: 13.4px;
+  transition: 0.3s ease;
+}
+
+.app-input:focus-visible {
+  outline: none;
+  background-color: rgb(146 151 179 / 22%);
+}

@@ -21,11 +21,11 @@ const routes = [
     name: 'direct',
     component: page('direct.vue')
   },
-  // {
-  //   path: '/groups',
-  //   name: 'groups',
-  //   component: page('groups.vue')
-  // },
+  {
+    path: '/groups',
+    name: 'groups',
+    component: page('groups.vue')
+  },
   // {
   //   path: '/leaderboard',
   //   name: 'leaderboard',

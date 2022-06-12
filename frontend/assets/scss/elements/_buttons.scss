@@ -23,3 +23,24 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(359deg); }
 }
+
+.app-button {
+  width: 100%;
+  border: none;
+  border-radius: 2px;
+  padding: 10px;
+  background-color: rgb(116 130 209 / 51%);
+  color: #fff;
+  font-size: 14px;
+  transition: 0.4s ease;
+  margin-top: auto;
+}
+
+.app-button:hover {
+  background-color: rgb(53 71 171);
+  color: inherit;
+}
+
+.app-button:focus-visible {
+  outline: none;
+}
