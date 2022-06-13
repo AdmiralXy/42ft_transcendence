@@ -1,18 +1,49 @@
 version: '3.8'
 
 services:
+  database:
+    build: postgres
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./postgres/dumps/:/tmp/
+    ports:
+      - "5432:5432"
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - app-network
+    restart: always
   backend:
     build: backend
     volumes:
       - ../backend:/var/www/backend
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECT_URI=${REDIRECT_URI}
     networks:
       - app-network
+    depends_on:
+      - database
+    restart: always
   frontend:
     build: frontend
     volumes:
       - ../frontend:/var/www/frontend
+    environment:
+      - BASE_URL=${HOST}
     networks:
       - app-network
+    depends_on:
+      - backend
+    restart: always
   nginx:
     build: nginx
     ports:
@@ -20,6 +51,11 @@ services:
       - "81:81"
     networks:
       - app-network
+    restart: always
+
+volumes:
+  database:
+    driver: local
 
 networks:
   app-network:

@@ -3,7 +3,7 @@
     <img class="login-page__img" src="@/assets/img/gif/42monolythe.gif">
     <div class="login-container">
       <div>
-        <button class="btn-login">Sign in with <img src="@/assets/img/svg/42.svg"></button>
+        <button class="btn-login">Sign in with <img src="@/assets/img/svg/42.svg" alt=""></button>
       </div>
     </div>
   </div>
@@ -11,10 +11,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-//https://api.intra.42.fr/oauth/authorize?client_id=29db7f986f466ac9bf7d9f77df73520dbc723313c8fed989f126eeccf2c61ddc&redirect_uri=http%3A%2F%2Flocalhost%3A1919%2Fusers%2Fauth%2Fft%2Fcallback&response_type=code
 
-// curl -X POST http://localhost/api/auth/login -d '{"user": {"username": "john", "password": "changeme"}}' -H "Content-Type: application/json"
-// curl http://localhost/api/profile -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJpYXQiOjE2NTUwODU4MDAsImV4cCI6MTY1NTY5MDYwMH0.zLeE7KiG5BeAiMq1cyFJd4CpapCAnO-kc8X43gEH5lI"
 export default Vue.extend({
   data: () => ({
     search: ""

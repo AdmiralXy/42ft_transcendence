@@ -9,7 +9,7 @@ export default {
   },
 
   axios: {
-    baseURL: 'http://localhost/api'
+    baseURL: process.env.BASE_URL + '/api' || 'http://localhost/api'
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
