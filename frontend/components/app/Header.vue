@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="menu-circle"></div>
+    <div @click="logout" class="menu-circle"></div>
     <div class="header-menu">
       <a class="menu-link is-active" href="/">App</a>
       <a class="menu-link notify" href="https://github.com/AdmiralXy/42ft_transcendence" target="_blank">Github</a>
@@ -11,6 +11,19 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  methods: {
+    logout() {
+      this.$auth.logout()
+      this.$router.push('/login')
+    }
+  }
+})
+</script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
@@ -34,6 +47,11 @@
   box-shadow: 24px 0 0 0 #f8ce52, 48px 0 0 0 #5fcf65;
   margin-right: 195px;
   flex-shrink: 0;
+  transition: 0.3s ease;
+}
+
+.menu-circle:hover {
+  background-color: #ff1000;
 }
 
 .header-menu {

@@ -1,27 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { HttpService } from '@nestjs/axios';
+import { IntraAPI } from './api/intra.api';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private usersService: UserService,
     private jwtService: JwtService,
+    private httpService: HttpService,
+    private intraAPI: IntraAPI,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+  async login(code: string) {
+    let userFromIntra;
+    try {
+      const response = await this.intraAPI.exchangeCodeToToken(code);
+      userFromIntra = await this.intraAPI.getUserInformation(
+        response.access_token,
+      );
+    } catch (error) {
+      const errors = { code: 'Code is expired or invalid.' };
+      throw new HttpException(
+        { message: 'Input data is invalid.', errors },
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    return null;
-  }
-
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    let user = await this.usersService.findOneByLogin(userFromIntra.login);
+    if (!user) user = await this.usersService.create(userFromIntra.login);
+    const payload = { login: user.login, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
+      token_type: 'bearer',
+      expires_in: 5960,
     };
   }
 }
