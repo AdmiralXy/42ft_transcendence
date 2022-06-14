@@ -80,7 +80,7 @@ export default Vue.extend({
   font-size: 14px;
   transition: 0.4s ease;
   margin-top: auto;
-  box-shadow: 0 0 7px 2px rgba(0, 13, 255, 0.43);
+  box-shadow: 0 0 7px 2px rgba(221, 223, 238, 0.43);
 }
 
 .btn-login:hover {
