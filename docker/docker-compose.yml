@@ -21,6 +21,7 @@ services:
     volumes:
       - ../backend:/var/www/backend
     environment:
+      - TZ=${TIMEZONE}
       - JWT_SECRET=${JWT_SECRET}
       - DATABASE_HOST=database
       - DATABASE_NAME=${DATABASE_NAME}
@@ -39,6 +40,7 @@ services:
     volumes:
       - ../frontend:/var/www/frontend
     environment:
+      - TZ=${TIMEZONE}
       - BASE_URL=${HOST}
     networks:
       - app-network

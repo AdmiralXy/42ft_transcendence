@@ -71,11 +71,31 @@
         </div>
       </div>
       <div class="content-wrapper">
-        <Nuxt />
+        <Nuxt v-if="!isNotFound" />
+        <div v-else class="not-found d-flex align-items-center justify-content-center flex-grow-1">
+          <p>Page is not found!</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { Context } from '@nuxt/types'
+import Vue from 'vue'
+
+export default Vue.extend({
+  layout: 'app',
+  data() {
+    return {
+      isNotFound: false as boolean
+    }
+  },
+  async mounted() {
+
+  }
+})
+</script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
@@ -180,5 +200,10 @@
   height: 100%;
   overflow: auto;
   background-color: $--theme-bg-color;
+}
+
+.not-found {
+  font-weight: bold;
+  font-size: 25px;
 }
 </style>

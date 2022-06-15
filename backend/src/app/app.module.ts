@@ -6,11 +6,14 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { ProfileModule } from '../profile/profile.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
+    ProfileModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -23,6 +26,9 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
   ],
   controllers: [AppController],

@@ -13,14 +13,38 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findOneByLogin(login: string): Promise<UserDto> {
-    const user = await this.userRepository.findOneBy({ login });
+  async findById(id: number): Promise<UserDto> {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException(
+        { message: 'User not found.' },
+        HttpStatus.BAD_REQUEST,
+      );
+    return new UserDto(user);
+  }
 
-    return user ? new UserDto(user) : null;
+  async findByLogin(login: string): Promise<UserDto> {
+    const user = await this.userRepository.findOneBy({ login });
+    if (!user)
+      throw new HttpException(
+        { message: 'User not found.' },
+        HttpStatus.BAD_REQUEST,
+      );
+    return new UserDto(user);
+  }
+
+  async findByUsername(username: string): Promise<UserDto> {
+    const user = await this.userRepository.findOneBy({ username });
+    if (!user)
+      throw new HttpException(
+        { message: 'User not found.' },
+        HttpStatus.BAD_REQUEST,
+      );
+    return new UserDto(user);
   }
 
   async create(login: string): Promise<UserDto> {
-    const user = await this.findOneByLogin(login);
+    const user = await this.findByLogin(login).catch(() => null);
 
     if (user) {
       const errors = { username: 'Login must be unique.' };
@@ -36,6 +60,7 @@ export class UserService {
       'Guest #' +
       Math.random().toString(36).substring(2, 5) +
       Math.random().toString(36).substring(2, 5);
+    newUser.avatar = 'default.png';
 
     const errors = await validate(newUser);
     if (errors.length > 0) {
@@ -46,7 +71,22 @@ export class UserService {
     }
 
     const savedUser = await this.userRepository.save(newUser);
-    console.log(savedUser);
     return new UserDto(savedUser);
+  }
+
+  async update(id: number, data: any): Promise<UserDto> {
+    const user = await this.findById(id);
+    const updated = await this.userRepository
+      .save({
+        id: user.id,
+        ...data,
+      })
+      .catch(() => {
+        throw new HttpException(
+          { message: 'Username already exists.' },
+          HttpStatus.BAD_REQUEST,
+        );
+      });
+    return new UserDto(updated);
   }
 }

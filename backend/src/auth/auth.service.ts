@@ -7,7 +7,7 @@ import { IntraAPI } from './api/intra.api';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
+    private userService: UserService,
     private jwtService: JwtService,
     private httpService: HttpService,
     private intraAPI: IntraAPI,
@@ -16,10 +16,9 @@ export class AuthService {
   async login(code: string) {
     let userFromIntra;
     try {
-      const response = await this.intraAPI.exchangeCodeToToken(code);
-      userFromIntra = await this.intraAPI.getUserInformation(
-        response.access_token,
-      );
+      const access_token = (await this.intraAPI.exchangeCodeToToken(code))
+        .access_token;
+      userFromIntra = await this.intraAPI.getUserInformation(access_token);
     } catch (error) {
       const errors = { code: 'Code is expired or invalid.' };
       throw new HttpException(
@@ -27,8 +26,10 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    let user = await this.usersService.findOneByLogin(userFromIntra.login);
-    if (!user) user = await this.usersService.create(userFromIntra.login);
+    let user = await this.userService
+      .findByLogin(userFromIntra.login)
+      .catch(() => null);
+    if (!user) user = await this.userService.create(userFromIntra.login);
     const payload = { login: user.login, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),

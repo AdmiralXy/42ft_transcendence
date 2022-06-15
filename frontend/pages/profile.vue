@@ -2,12 +2,22 @@
   <div>
     <div class="content-wrapper-header">
       <div class="content-wrapper-context">
-        <h3 class="img-content">
-          <img src="@/assets/img/default.png" alt="">
-          kricky
-        </h3>
+        <div class="img-content">
+          <input id="imageUpload" type="file" @change="previewFiles" hidden>
+          <img @click="imageUpload" :src="'/api/profile' + user.avatar" alt="">
+          <div v-if="!owner">{{ user.username }}</div>
+          <div class="d-flex align-items-center" v-else>
+            <span v-if="!isEditMode">{{ user.username }}</span>
+            <div v-else>
+              <input class="input-edit" v-model="form.username" @keyup.enter="updateUsername">
+              <span class="ml-1 text-warning input-error">{{ form.error }}</span>
+            </div>
+            <img @click="isEditMode = !isEditMode" class="pen" src="@/assets/img/svg/pen.svg" alt="">
+          </div>
+        </div>
+        <p v-if="imageError" class="small text-warning pt-2">Unsupported image type!</p>
         <div class="content-text">
-          <p>Joined since 14.06.2022</p>
+          <p>Joined since {{ user.created_at }}</p>
           <p>5000 games</p>
           <p>W/L 0.56</p>
         </div>
@@ -63,19 +73,34 @@
 <script lang="ts">
 import Vue from 'vue'
 import ButtonLoader from "~/components/ButtonLoader.vue";
+import { mapGetters, mapActions } from "vuex";
 import { BvToast } from "bootstrap-vue";
 
 export default Vue.extend({
   layout: 'app',
   data() {
     return {
+      isEditMode: false,
+      imageError: false,
       form: {
-        username: 'kricky' as string,
-        loading: false as boolean
+        username: '',
+        error: null as string | null,
       }
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'profile/user'
+    }),
+    owner() {
+      return this.user.login === this.$route.params.login;
+    }
+  },
   methods: {
+    ...mapActions({
+      fetchUserProfile: 'profile/fetchUserProfile',
+      updateUserProfile: 'profile/updateUserProfile',
+    }),
     successUpdated() {
       this.$bvToast.toast(
         'Profile successfully updated',
@@ -84,7 +109,45 @@ export default Vue.extend({
           autoHideDelay: 2000
         }
       )
+    },
+    async updateUsername() {
+      try {
+        await this.updateUserProfile({id: this.user.id, data: { username: this.form.username }}).then(async () => {
+          this.isEditMode = !this.isEditMode
+          await this.fetchUserProfile({ login: this.$route.params.login })
+        })
+        this.form.error = ''
+      } catch (e: any) {
+        this.form.error = e.response.data.message
+      }
+      this.form.username = this.user.username
+    },
+    imageUpload() {
+      const input = document.getElementById("imageUpload")
+      if (input)
+        input.click()
+    },
+    async previewFiles() {
+      const file = event.target.files[0]
+      if (!file)
+        return
+      const form = new FormData()
+      form.append("file", file, file.name)
+      try {
+        await this.$axios.post("/profile/upload/" + this.user.id, form)
+        document.getElementById("imageUpload").value = ""
+        this.imageError = false
+        this.fetchUserProfile({ login: this.$route.params.login })
+      } catch (e) {
+        this.imageError = true
+      }
     }
+  },
+  async mounted() {
+    await this.fetchUserProfile({ login: this.$route.params.login })
+    if (Object.keys(this.user).length === 0)
+      return this.$nuxt.error({ statusCode: 404, message: 'User profile not found' })
+    this.form.username = this.user.username
   },
   components: {
     ButtonLoader
@@ -111,8 +174,37 @@ export default Vue.extend({
   border-radius: 14px;
 }
 
+.img-content img.pen {
+  width: 14px;
+  height: 14px;
+  margin-right: 14px;
+  border-radius: unset;
+  margin-left: 7px;
+  margin-bottom: 3px;
+}
+
 .content-text p {
   margin: 0;
   font-weight: 100;
+}
+
+.input-edit {
+  border-radius: 14px;
+  border: 1px solid #e6e6e64a;
+  padding: 6px 11px;
+  font-size: 14px;
+  font-weight: 100;
+  color: #e6e6e6;
+  background-color: #ffffff3b;
+  transition: all 0.3s ease;
+}
+
+.input-edit:focus-visible {
+  outline: none;
+}
+
+.input-error {
+  display: block;
+  font-size: 10px;
 }
 </style>

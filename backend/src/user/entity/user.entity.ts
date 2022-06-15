@@ -17,6 +17,9 @@ export class User {
   @Column('varchar', { unique: true, length: 15 })
   username: string;
 
+  @Column('varchar', { length: 255 })
+  avatar: string;
+
   @CreateDateColumn()
   created_at: Date;
 

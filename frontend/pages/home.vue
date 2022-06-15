@@ -72,23 +72,10 @@
 </template>
 
 <script lang="ts">
-import { Context } from '@nuxt/types'
 import Vue from 'vue'
 
 export default Vue.extend({
-  layout: 'app',
-  data() {
-    return {
-      data: 'Hello World!' as string
-    }
-  },
-  async mounted() {
-    try {
-      this.data = await this.$axios.$get('/');
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  layout: 'app'
 })
 </script>
 
