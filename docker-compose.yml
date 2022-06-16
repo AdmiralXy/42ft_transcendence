@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   database:
-    build: postgres
+    build: docker/postgres
     volumes:
       - database:/var/lib/postgresql/data
-      - ./postgres/dumps/:/tmp/
+      - ./docker/postgres/dumps/:/tmp/
     ports:
       - "5432:5432"
     environment:
@@ -17,9 +17,9 @@ services:
       - app-network
     restart: always
   backend:
-    build: backend
+    build: docker/backend
     volumes:
-      - ../backend:/var/www/backend
+      - ./backend:/var/www/backend
     environment:
       - TZ=${TIMEZONE}
       - JWT_SECRET=${JWT_SECRET}
@@ -36,9 +36,9 @@ services:
       - database
     restart: always
   frontend:
-    build: frontend
+    build: docker/frontend
     volumes:
-      - ../frontend:/var/www/frontend
+      - ./frontend:/var/www/frontend
     environment:
       - TZ=${TIMEZONE}
       - BASE_URL=${HOST}
@@ -48,7 +48,7 @@ services:
       - backend
     restart: always
   nginx:
-    build: nginx
+    build: docker/nginx
     ports:
       - "80:80"
       - "81:81"

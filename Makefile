@@ -2,10 +2,10 @@ PROJECT_NAME = ft_transcendence
 PROJECT_DIRECTORY = docker
 
 all:
-	docker-compose -p $(PROJECT_NAME) --project-directory $(PROJECT_DIRECTORY) up -d
+	docker-compose -p $(PROJECT_NAME) up -d
 
 stop:
-	docker-compose -p $(PROJECT_NAME) --project-directory $(PROJECT_DIRECTORY) stop
+	docker-compose -p $(PROJECT_NAME) stop
 
 restart: stop all
 
