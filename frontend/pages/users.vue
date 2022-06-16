@@ -4,7 +4,7 @@
       <div class="friends-list__search">
         <input type="text" class="friends-list__search-input" v-model="search" placeholder="Search">
       </div>
-      <div class="friend-list__item" v-for="user in filteredUsers">
+      <div @click="$router.push({ name: 'profile', params: { id: user.id } })" class="friend-list__item" v-for="user in filteredUsers">
         <div class="friend-list__item-avatar">
           <img :src="'/api/uploads/' + user.image" alt="">
         </div>
@@ -39,7 +39,7 @@ export default Vue.extend({
       users: 'users/users'
     }),
     filteredUsers() {
-      return this.users.filter(user => {
+      return this.users.filter((user: { username: string; }) => {
         return user.username.toLowerCase().includes(this.search.toLowerCase())
       })
     }

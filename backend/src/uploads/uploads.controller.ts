@@ -4,15 +4,16 @@ import {
   Get,
   Param,
   Post,
+  UnauthorizedException,
   UploadedFile,
   UseInterceptors,
+  Request,
 } from '@nestjs/common';
 import { SkipAuth } from '../app/decorators/skip-auth.decorator';
 import { UploadsService } from './uploads.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../app/config/multer.config';
 import * as fs from 'fs';
-import { existsSync, mkdirSync } from 'fs';
 
 @Controller('uploads')
 export class UploadsController {
@@ -25,7 +26,10 @@ export class UploadsController {
 
   @Post('upload/:id')
   @UseInterceptors(FileInterceptor('file', multerOptions))
-  async uploadImage(@Param('id') id, @UploadedFile() file) {
+  async uploadImage(@Request() req, @Param('id') id, @UploadedFile() file) {
+    if (req.user.id !== +id) {
+      throw new UnauthorizedException('You can only update your own profile.');
+    }
     fs.rename(
       './uploads/' + file.filename,
       './uploads/' + id + '.png',

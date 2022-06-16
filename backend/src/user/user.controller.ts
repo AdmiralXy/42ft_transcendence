@@ -6,6 +6,8 @@ import {
   Param,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,7 +29,14 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    if (req.user.id !== +id) {
+      throw new UnauthorizedException('You can only update your own profile.');
+    }
     return this.userService.update(+id, updateUserDto);
   }
 }

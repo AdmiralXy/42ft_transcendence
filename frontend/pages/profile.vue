@@ -6,7 +6,7 @@
           <input id="imageUpload" type="file" @change="previewFiles" hidden>
           <img @click="imageUpload" :src="'/api/uploads/' + user.image" alt="">
           <div v-if="!owner">{{ user.username }}</div>
-          <div class="d-flex align-items-center" v-else>
+          <div v-else class="d-flex align-items-center">
             <span v-if="!isEditMode">{{ user.username }}</span>
             <div v-else>
               <input class="input-edit" v-model="form.username" @keyup.enter="updateUsername">
@@ -91,8 +91,8 @@ export default Vue.extend({
     ...mapGetters({
       user: 'profile/user'
     }),
-    owner() {
-      return this.user.id == this.$route.params.id;
+    owner(): boolean {
+      return this.$auth.user ? this.$auth.user.id === this.$route.params.id : false;
     }
   },
   methods: {
