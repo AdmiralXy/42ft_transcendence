@@ -1,19 +1,18 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
-import { ProfileModule } from '../profile/profile.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { UploadsModule } from '../uploads/uploads.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
-    ProfileModule,
+    UploadsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -31,11 +30,16 @@ import { MulterModule } from '@nestjs/platform-express';
       dest: './uploads',
     }),
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+      }),
     },
   ],
 })

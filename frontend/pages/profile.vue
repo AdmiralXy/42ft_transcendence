@@ -4,7 +4,7 @@
       <div class="content-wrapper-context">
         <div class="img-content">
           <input id="imageUpload" type="file" @change="previewFiles" hidden>
-          <img @click="imageUpload" :src="'/api/profile' + user.avatar" alt="">
+          <img @click="imageUpload" :src="'/api/uploads/' + user.image" alt="">
           <div v-if="!owner">{{ user.username }}</div>
           <div class="d-flex align-items-center" v-else>
             <span v-if="!isEditMode">{{ user.username }}</span>
@@ -93,13 +93,14 @@ export default Vue.extend({
       user: 'profile/user'
     }),
     owner() {
-      return this.user.login === this.$route.params.login;
+      return this.user.id === this.$route.params.id;
     }
   },
   methods: {
     ...mapActions({
       fetchUserProfile: 'profile/fetchUserProfile',
       updateUserProfile: 'profile/updateUserProfile',
+      setIsLoading: 'preloader/setIsLoading'
     }),
     successUpdated() {
       this.$bvToast.toast(
@@ -114,7 +115,7 @@ export default Vue.extend({
       try {
         await this.updateUserProfile({id: this.user.id, data: { username: this.form.username }}).then(async () => {
           this.isEditMode = !this.isEditMode
-          await this.fetchUserProfile({ login: this.$route.params.login })
+          await this.fetchUserProfile({ id: this.$route.params.id })
         })
         this.form.error = ''
       } catch (e: any) {
@@ -134,17 +135,17 @@ export default Vue.extend({
       const form = new FormData()
       form.append("file", file, file.name)
       try {
-        await this.$axios.post("/profile/upload/" + this.user.id, form)
+        await this.$axios.post("/uploads/upload/" + this.user.id, form)
         document.getElementById("imageUpload").value = ""
         this.imageError = false
-        this.fetchUserProfile({ login: this.$route.params.login })
+        this.fetchUserProfile({ id: this.$route.params.id })
       } catch (e) {
         this.imageError = true
       }
     }
   },
   async mounted() {
-    await this.fetchUserProfile({ login: this.$route.params.login })
+    await this.fetchUserProfile({ id: this.$route.params.id })
     if (Object.keys(this.user).length === 0)
       return this.$nuxt.error({ statusCode: 404, message: 'User profile not found' })
     this.form.username = this.user.username

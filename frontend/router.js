@@ -22,7 +22,7 @@ const routes = [
     component: page('updates.vue')
   },
   {
-    path: '/profile/:login',
+    path: '/profile/:id',
     name: 'profile',
     component: page('profile.vue')
   },

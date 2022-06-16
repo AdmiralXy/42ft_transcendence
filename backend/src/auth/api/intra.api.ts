@@ -7,7 +7,7 @@ export class IntraAPI {
   constructor(private readonly httpService: HttpService) {}
 
   async exchangeCodeToToken(code: string): Promise<any> {
-    const response = await lastValueFrom(
+    return await lastValueFrom(
       this.httpService
         .post('https://api.intra.42.fr/oauth/token', {
           grant_type: 'authorization_code',
@@ -18,11 +18,10 @@ export class IntraAPI {
         })
         .pipe(map((resp) => resp.data)),
     );
-    return response;
   }
 
   async getUserInformation(access_token: string): Promise<any> {
-    const response = await lastValueFrom(
+    return await lastValueFrom(
       this.httpService
         .get('https://api.intra.42.fr/v2/me', {
           headers: {
@@ -31,6 +30,5 @@ export class IntraAPI {
         })
         .pipe(map((resp) => resp.data)),
     );
-    return response;
   }
 }

@@ -56,7 +56,7 @@
       <div class="side-wrapper">
         <div class="side-title">Settings</div>
         <div class="side-menu">
-          <nuxt-link :to="{ name: 'profile', params: { login: $auth.user.login }}">
+          <nuxt-link :to="{ name: 'profile', params: { id: $auth.user.id }}">
             <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"/></svg>
             Profile
           </nuxt-link>
@@ -72,7 +72,10 @@
       </div>
       <div class="content-wrapper">
         <Nuxt v-if="!isNotFound" />
-        <div v-else class="not-found d-flex align-items-center justify-content-center flex-grow-1">
+        <div class="loading" v-if="isLoading">
+          <PlanetLoader />
+        </div>
+        <div v-if="isNotFound" class="not-found d-flex align-items-center justify-content-center flex-grow-1">
           <p>Page is not found!</p>
         </div>
       </div>
@@ -81,8 +84,9 @@
 </template>
 
 <script lang="ts">
-import { Context } from '@nuxt/types'
 import Vue from 'vue'
+import PlanetLoader from '@/components/PlanetLoader.vue'
+import {mapActions, mapGetters} from "vuex";
 
 export default Vue.extend({
   layout: 'app',
@@ -91,8 +95,18 @@ export default Vue.extend({
       isNotFound: false as boolean
     }
   },
-  async mounted() {
-
+  computed: {
+    ...mapGetters({
+      isLoading: 'preloader/isLoading'
+    }),
+  },
+  methods: {
+    ...mapActions({
+      setIsLoading: 'preloader/setIsLoading'
+    }),
+  },
+  components: {
+    PlanetLoader
   }
 })
 </script>
@@ -205,5 +219,11 @@ export default Vue.extend({
 .not-found {
   font-weight: bold;
   font-size: 25px;
+}
+
+.loading {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
 }
 </style>

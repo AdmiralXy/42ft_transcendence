@@ -1,7 +1,7 @@
 export default {
   async fetchUserProfile({ commit }: any, payload: any): Promise<any> {
     try {
-      const response = await this.$axios.get("profile/" + payload.login);
+      const response = await this.$axios.get("user/" + payload.id);
       commit("SET_USER", response.data);
     } catch (e) {
       commit("SET_USER", {});

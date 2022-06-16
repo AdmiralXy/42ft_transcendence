@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -17,12 +18,14 @@ export class User {
   @Column('varchar', { unique: true, length: 15 })
   username: string;
 
-  @Column('varchar', { length: 255 })
-  avatar: string;
-
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose()
+  get image(): string {
+    return this.id + '.png';
+  }
 }

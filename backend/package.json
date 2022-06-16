@@ -28,6 +28,7 @@
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/swagger": "^5.2.1",
     "@nestjs/typeorm": "^8.1.2",
     "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
@@ -42,6 +43,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "sharp": "^0.30.6",
+    "swagger-ui-express": "^4.4.0",
     "typeorm": "^0.3.6"
   },
   "devDependencies": {
