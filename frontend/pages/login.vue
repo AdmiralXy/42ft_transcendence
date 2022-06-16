@@ -2,9 +2,13 @@
   <div class="login-page">
     <img class="login-page__img" src="@/assets/img/gif/42monolythe.gif">
     <div class="login-container">
-      <a href="https://api.intra.42.fr/oauth/authorize?client_id=1ffda2d97b6d47baa64a2b36a2646c3195cec1861aa719e2ec6d878a3b653d4b&redirect_uri=http%3A%2F%2Flocalhost%2Flogin&response_type=code">
+      <a v-if="!isLoading" href="https://api.intra.42.fr/oauth/authorize?client_id=1ffda2d97b6d47baa64a2b36a2646c3195cec1861aa719e2ec6d878a3b653d4b&redirect_uri=http%3A%2F%2Flocalhost%2Flogin&response_type=code">
         <button class="btn-login">Sign in with <img src="@/assets/img/svg/42.svg" alt=""></button>
       </a>
+      <div class="loading" v-else>
+        <p v-if="!isLogged">Trying to fetch data from Intra42...</p>
+        <p v-else>Hello, {{ $auth.user.login }}!</p>
+      </div>
     </div>
   </div>
 </template>
@@ -15,19 +19,26 @@ import { Auth } from "@nuxtjs/auth-next";
 
 export default Vue.extend({
   data: () => ({
-    code: '' as string | (string | null)[]
+    code: '' as string | (string | null)[],
+    isLoading: false,
+    isLogged: false,
   }),
   async created() {
     if (this.$route.query.code) {
       this.code = this.$route.query.code
       await this.$router.replace({ query: {} })
-      await this.$auth.loginWith('local', { data: { code: this.code } })
-        .catch((e: any) => {
-          this.$bvToast.toast(`Please check your internet connection`, {
-            title: 'Attempt to login',
-            autoHideDelay: 5000,
-          })
+      this.isLoading = true
+      await new Promise(r => setTimeout(r, 1500))
+      try {
+        await this.$auth.loginWith('local', { data: { code: this.code } })
+        this.isLogged = true
+      } catch (e) {
+        this.$bvToast.toast(`Please check your internet connection`, {
+          title: 'Attempt to login',
+          autoHideDelay: 5000,
         })
+        this.isLoading = false
+      }
     }
   }
 })
@@ -102,5 +113,45 @@ export default Vue.extend({
   .login-page__img {
     display: none;
   }
+}
+
+.loading p {
+  z-index: 10;
+  font-size: 28px;
+  color: #fff;
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+  -ms-animation: fadein 2s; /* Internet Explorer */
+  -o-animation: fadein 2s; /* Opera < 12.1 */
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 </style>

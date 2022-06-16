@@ -72,7 +72,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ButtonLoader from "~/components/ButtonLoader.vue";
 import { mapGetters, mapActions } from "vuex";
 import { BvToast } from "bootstrap-vue";
 
@@ -93,7 +92,7 @@ export default Vue.extend({
       user: 'profile/user'
     }),
     owner() {
-      return this.user.id === this.$route.params.id;
+      return this.user.id == this.$route.params.id;
     }
   },
   methods: {
@@ -113,7 +112,7 @@ export default Vue.extend({
     },
     async updateUsername() {
       try {
-        await this.updateUserProfile({id: this.user.id, data: { username: this.form.username }}).then(async () => {
+        await this.updateUserProfile({id: this.user.id, data: { id: this.user.id, username: this.form.username }}).then(async () => {
           this.isEditMode = !this.isEditMode
           await this.fetchUserProfile({ id: this.$route.params.id })
         })
@@ -149,10 +148,7 @@ export default Vue.extend({
     if (Object.keys(this.user).length === 0)
       return this.$nuxt.error({ statusCode: 404, message: 'User profile not found' })
     this.form.username = this.user.username
-  },
-  components: {
-    ButtonLoader
-  },
+  }
 })
 </script>
 

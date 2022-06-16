@@ -8,6 +8,6 @@ export default {
     }
   },
   async updateUserProfile({ commit }: any, { id, data }: any): Promise<any> {
-    return await this.$axios.patch("profile/" + id, data);
+    return await this.$axios.patch("user/" + id, data);
   },
 };
