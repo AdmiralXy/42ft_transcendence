@@ -70,13 +70,12 @@
           <a class="main-header-link is-active">Transcendence (alpha)</a>
         </div>
       </div>
-      <div class="content-wrapper">
-        <Nuxt v-if="!isNotFound" />
-        <div class="loading" v-if="isLoading">
-          <PlanetLoader />
-        </div>
-        <div v-if="isNotFound" class="not-found d-flex align-items-center justify-content-center flex-grow-1">
-          <p>Page is not found!</p>
+      <div class="flex-grow-1" :class="isLoading ? 'content-wrapper-preloader' : ''">
+        <div class="content-wrapper">
+          <Nuxt v-if="!isNotFound" />
+          <div v-if="isNotFound" class="not-found d-flex align-items-center justify-content-center flex-grow-1">
+            <p>Page is not found!</p>
+          </div>
         </div>
       </div>
     </div>
@@ -85,7 +84,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import PlanetLoader from '@/components/PlanetLoader.vue'
 import {mapActions, mapGetters} from "vuex";
 
 export default Vue.extend({
@@ -104,9 +102,6 @@ export default Vue.extend({
     ...mapActions({
       setIsLoading: 'preloader/setIsLoading'
     }),
-  },
-  components: {
-    PlanetLoader
   }
 })
 </script>
@@ -204,6 +199,16 @@ export default Vue.extend({
 .header-menu a.is-active, .header-menu a:hover {
   color: $--theme-color;
   border-bottom: 2px solid $--theme-color;
+}
+
+.content-wrapper-preloader:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(46, 58, 76, .612)), to(rgba(46, 58, 76, .612)));
+  background: linear-gradient(0deg, rgba(46, 58, 76, .612), rgba(46, 58, 76, .612));
+  z-index: 100;
 }
 
 .content-wrapper {
