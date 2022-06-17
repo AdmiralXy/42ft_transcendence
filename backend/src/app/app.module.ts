@@ -7,12 +7,14 @@ import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { MulterModule } from '@nestjs/platform-express';
 import { UploadsModule } from '../uploads/uploads.module';
+import { FriendsModule } from '../friends/friends.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     UploadsModule,
+    FriendsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

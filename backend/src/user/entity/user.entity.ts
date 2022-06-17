@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 
@@ -28,4 +30,12 @@ export class User {
   get image(): string {
     return this.id + '.png';
   }
+
+  @ManyToMany(() => User, { cascade: true })
+  @JoinTable()
+  friends: User[];
+
+  @ManyToMany(() => User, { cascade: true })
+  @JoinTable()
+  blacklist: User[];
 }

@@ -27,9 +27,9 @@ const routes = [
     component: page('profile.vue')
   },
   {
-    path: '/users',
-    name: 'users',
-    component: page('users.vue')
+    path: '/friends',
+    name: 'friends',
+    component: page('friends.vue')
   },
   {
     path: '/direct',

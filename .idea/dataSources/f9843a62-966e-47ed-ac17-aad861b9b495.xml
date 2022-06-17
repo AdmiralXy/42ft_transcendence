@@ -12,7 +12,7 @@
 13756||10|C|G
 13756||10|T|G</Grants>
       <ServerVersion>14.3</ServerVersion>
-      <StartupTime>1655335143</StartupTime>
+      <StartupTime>1655423716</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -1402,7 +1402,7 @@ true posixrules
 13391||10|C|G
 13391||-9223372036854775808|U|G
 13391||10|U|G</Grants>
-      <IntrospectionStateNumber>736</IntrospectionStateNumber>
+      <IntrospectionStateNumber>749</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <Relations>sequence|table|16390|16391|1
 </Relations>
@@ -4830,7 +4830,7 @@ true posixrules
     <schema id="262" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>736</IntrospectionStateNumber>
+      <IntrospectionStateNumber>749</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>527</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
@@ -4853,44 +4853,56 @@ true posixrules
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
-    <column id="266" parent="264" name="type">
+    <table id="266" parent="262" name="user_blacklist_user">
+      <ObjectId>16410</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>42ft_transcendence</OwnerName>
+    </table>
+    <table id="267" parent="262" name="user_friends_user">
+      <ObjectId>16403</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>42ft_transcendence</OwnerName>
+    </table>
+    <column id="268" parent="264" name="type">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="267" parent="264" name="database">
+    <column id="269" parent="264" name="database">
       <DataType>varchar|0s</DataType>
       <Position>2</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="268" parent="264" name="schema">
+    <column id="270" parent="264" name="schema">
       <DataType>varchar|0s</DataType>
       <Position>3</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="269" parent="264" name="table">
+    <column id="271" parent="264" name="table">
       <DataType>varchar|0s</DataType>
       <Position>4</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="270" parent="264" name="name">
+    <column id="272" parent="264" name="name">
       <DataType>varchar|0s</DataType>
       <Position>5</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="271" parent="264" name="value">
+    <column id="273" parent="264" name="value">
       <DataType>text|0s</DataType>
       <Position>6</Position>
       <StateNumber>735</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="272" parent="265" name="id">
+    <column id="274" parent="265" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;user_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -4898,21 +4910,21 @@ true posixrules
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="273" parent="265" name="login">
+    <column id="275" parent="265" name="login">
       <DataType>varchar(55)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="274" parent="265" name="username">
+    <column id="276" parent="265" name="username">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="275" parent="265" name="created_at">
+    <column id="277" parent="265" name="created_at">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -4920,7 +4932,7 @@ true posixrules
       <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="276" parent="265" name="updated_at">
+    <column id="278" parent="265" name="updated_at">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -4928,7 +4940,7 @@ true posixrules
       <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="277" parent="265" name="PK_cace4a159ff9f2512dd42373760">
+    <index id="279" parent="265" name="PK_cace4a159ff9f2512dd42373760">
       <ColNames>id</ColNames>
       <ObjectId>16397</ObjectId>
       <Primary>1</Primary>
@@ -4936,7 +4948,7 @@ true posixrules
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="278" parent="265" name="UQ_a62473490b3e4578fd683235c5e">
+    <index id="280" parent="265" name="UQ_a62473490b3e4578fd683235c5e">
       <ColNames>login</ColNames>
       <ObjectId>16399</ObjectId>
       <StateNumber>735</StateNumber>
@@ -4946,7 +4958,7 @@ true posixrules
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <index id="279" parent="265" name="UQ_78a916df40e02a9deb1c4b75edb">
+    <index id="281" parent="265" name="UQ_78a916df40e02a9deb1c4b75edb">
       <ColNames>username</ColNames>
       <ObjectId>16401</ObjectId>
       <StateNumber>735</StateNumber>
@@ -4956,24 +4968,162 @@ true posixrules
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="280" parent="265" name="PK_cace4a159ff9f2512dd42373760">
+    <key id="282" parent="265" name="PK_cace4a159ff9f2512dd42373760">
       <ColNames>id</ColNames>
       <ObjectId>16398</ObjectId>
       <Primary>1</Primary>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16397</UnderlyingIndexId>
     </key>
-    <key id="281" parent="265" name="UQ_a62473490b3e4578fd683235c5e">
+    <key id="283" parent="265" name="UQ_a62473490b3e4578fd683235c5e">
       <ColNames>login</ColNames>
       <ObjectId>16400</ObjectId>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16399</UnderlyingIndexId>
     </key>
-    <key id="282" parent="265" name="UQ_78a916df40e02a9deb1c4b75edb">
+    <key id="284" parent="265" name="UQ_78a916df40e02a9deb1c4b75edb">
       <ColNames>username</ColNames>
       <ObjectId>16402</ObjectId>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16401</UnderlyingIndexId>
+    </key>
+    <column id="285" parent="266" name="userId_1">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>735</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="286" parent="266" name="userId_2">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>735</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="287" parent="266" name="FK_d612212f59697575fee563b2068">
+      <ColNames>userId_1</ColNames>
+      <ObjectId>16427</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
+      <StateNumber>735</StateNumber>
+      <RefTableId>16391</RefTableId>
+      <RefTableName>user</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="288" parent="266" name="FK_92847b7de07148876c63ed1fb1a">
+      <ColNames>userId_2</ColNames>
+      <ObjectId>16432</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
+      <StateNumber>735</StateNumber>
+      <RefTableId>16391</RefTableId>
+      <RefTableName>user</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="289" parent="266" name="PK_cc910ad1bafdb3a8e4bf4c3dc04">
+      <ColNames>userId_1
+userId_2</ColNames>
+      <ObjectId>16413</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>735</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="290" parent="266" name="IDX_d612212f59697575fee563b206">
+      <ColNames>userId_1</ColNames>
+      <ObjectId>16415</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="291" parent="266" name="IDX_92847b7de07148876c63ed1fb1">
+      <ColNames>userId_2</ColNames>
+      <ObjectId>16416</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="292" parent="266" name="PK_cc910ad1bafdb3a8e4bf4c3dc04">
+      <ColNames>userId_1
+userId_2</ColNames>
+      <ObjectId>16414</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>735</StateNumber>
+      <UnderlyingIndexId>16413</UnderlyingIndexId>
+    </key>
+    <column id="293" parent="267" name="userId_1">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>735</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="294" parent="267" name="userId_2">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>735</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="295" parent="267" name="FK_04840fd160b733de706a3360134">
+      <ColNames>userId_1</ColNames>
+      <ObjectId>16417</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
+      <StateNumber>735</StateNumber>
+      <RefTableId>16391</RefTableId>
+      <RefTableName>user</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="296" parent="267" name="FK_e81f236c989f3fd54836b50a12d">
+      <ColNames>userId_2</ColNames>
+      <ObjectId>16422</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
+      <StateNumber>735</StateNumber>
+      <RefTableId>16391</RefTableId>
+      <RefTableName>user</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="297" parent="267" name="PK_f2b5631d91f6b7fda632135932f">
+      <ColNames>userId_1
+userId_2</ColNames>
+      <ObjectId>16406</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>735</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="298" parent="267" name="IDX_04840fd160b733de706a336013">
+      <ColNames>userId_1</ColNames>
+      <ObjectId>16408</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="299" parent="267" name="IDX_e81f236c989f3fd54836b50a12">
+      <ColNames>userId_2</ColNames>
+      <ObjectId>16409</ObjectId>
+      <StateNumber>735</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="300" parent="267" name="PK_f2b5631d91f6b7fda632135932f">
+      <ColNames>userId_1
+userId_2</ColNames>
+      <ObjectId>16407</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>735</StateNumber>
+      <UnderlyingIndexId>16406</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

@@ -10,7 +10,11 @@
             <span v-if="!isEditMode">{{ user.username }}</span>
             <div v-else>
               <input class="input-edit" v-model="form.username" @keyup.enter="updateUsername">
-              <span class="ml-1 text-warning input-error">{{ form.error }}</span>
+              <span class="ml-1 text-warning input-error">
+                <span v-for="error in form.error">
+                  {{ error }}
+                </span>
+              </span>
             </div>
             <img @click="isEditMode = !isEditMode" class="pen" src="@/assets/img/svg/pen.svg" alt="">
           </div>

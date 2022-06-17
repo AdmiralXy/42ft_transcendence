@@ -39,4 +39,17 @@ export class UserController {
     }
     return this.userService.update(+id, updateUserDto);
   }
+
+  // @Patch(':id/addFriend/:friendId')
+  // addFriend(
+  //   @Request() req,
+  //   @Param('id') id: number,
+  //   @Param('friendId') friendId: number,
+  // ) {
+  //   if (req.user.id !== +id) {
+  //     throw new UnauthorizedException('You can only update your own profile.');
+  //   }
+  //   return this.userService.addFriend(+id, +friendId);
+  // }
+  //
 }
