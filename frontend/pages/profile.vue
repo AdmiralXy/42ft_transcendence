@@ -2,13 +2,13 @@
   <div>
     <div class="content-wrapper-header">
       <div class="content-wrapper-context">
-        <input id="imageUpload" type="file" hidden>
+        <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
         <div class="user-profile">
-          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + '1.png'" alt="">
+          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + '1.png'" alt="" @click="isProfileOwner && imageUpload">
           <p v-if="!isProfileOwner">
             {{ user.username }}
           </p>
-          <input v-else v-model="form.username" @keyup.enter="updateUsername" type="text" class="user-profile__input">
+          <input v-else v-model="form.username" type="text" class="user-profile__input" @keyup.enter="updateUsername">
         </div>
         <p v-for="error in form.errors" :key="error" class="small text-warning pt-2">
           {{ error }}
@@ -20,30 +20,29 @@
         </div>
       </div>
     </div>
-    <div class="progress-container">
-      <div class="progress double">
-        <div class="progress-bar" role="progressbar" style="width: 63%" />
-        <div class="on-progress">
-          3000 MMR
-        </div>
-      </div>
-    </div>
-    <GamesList :id="1" />
+    <ProgressMMR :user-id="1" />
+    <GamesList :user-id="1" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import ProgressMMR from '~/components/ProgressMMR.vue'
+import GamesList from '~/components/GamesList.vue'
 
 export default Vue.extend({
+  components: {
+    ProgressMMR, GamesList
+  },
   layout: 'app',
   data () {
     return {
       form: {
         username: '' as string,
         errors: [] as string[]
-      }
+      },
+      imageError: false as boolean
     }
   },
   computed: {
@@ -89,6 +88,26 @@ export default Vue.extend({
       const hours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours()
       const minutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()
       return `${day}/${month}/${year} ${hours}:${minutes}`
+    },
+    imageUpload () {
+      const input = document.getElementById('imageUpload')
+      if (input) { input.click() }
+    },
+    imageUploadHandler (e: Event) {
+      const target = e.target as HTMLInputElement
+      let file
+      if (target && target.files) {
+        file = target.files[0]
+        if (!file) { return }
+        const form = new FormData()
+        form.append('file', file, file.name)
+        this.form.errors = []
+        this.$axios.post('/uploads/upload/' + this.user.id, form).then(() => {
+          this.fetchUser(this.user.id)
+        }).catch((error) => {
+          this.form.errors.push(error.response.data.message)
+        })
+      }
     }
   }
 })

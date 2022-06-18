@@ -1,8 +1,10 @@
 <template>
   <div class="progress-container">
     <div class="progress double">
-      <div class="progress-bar" role="progressbar" :style="'width:' + progressPercentage + '%'"></div>
-      <div class="on-progress">{{ progress }} MMR</div>
+      <div class="progress-bar" role="progressbar" :style="'width:' + progressPercentage + '%'" />
+      <div class="on-progress">
+        {{ progress }} MMR
+      </div>
     </div>
   </div>
 </template>
@@ -13,13 +15,18 @@ import Vue from 'vue'
 export default Vue.extend({
   layout: 'app',
   props: {
-    progress: {
+    userId: {
       type: Number,
       default: 0
     }
   },
+  data () {
+    return {
+      progress: 3000
+    }
+  },
   computed: {
-    progressPercentage(): number {
+    progressPercentage (): number {
       return this.progress / 10000 * 100
     }
   }
@@ -43,7 +50,7 @@ export default Vue.extend({
 
 .progress-bar {
   float: left;
-  width: 0%;
+  width: 0;
   height: 100%;
   font-size: 14px;
   line-height: 22px;
