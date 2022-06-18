@@ -9,6 +9,7 @@ export class FriendsService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
   ) {}
 
@@ -25,7 +26,7 @@ export class FriendsService {
       relations: ['friends'],
     });
     const friend = await this.userRepository.findOneBy({ id: friendId });
-    if (!friend) throw new NotFoundException('User not found.');
+    if (!friend) throw new NotFoundException('State not found.');
     user.friends.push(friend);
     return await this.userRepository.save({
       ...user,

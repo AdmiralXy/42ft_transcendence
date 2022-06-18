@@ -2,26 +2,19 @@
   <div>
     <div class="content-wrapper-header">
       <div class="content-wrapper-context">
-        <div class="img-content">
-          <input id="imageUpload" type="file" @change="previewFiles" hidden>
-          <img @click="imageUpload" :src="'/api/uploads/' + user.image" alt="">
-          <div v-if="!owner">{{ user.username }}</div>
-          <div v-else class="d-flex align-items-center">
-            <span v-if="!isEditMode">{{ user.username }}</span>
-            <div v-else>
-              <input class="input-edit" v-model="form.username" @keyup.enter="updateUsername">
-              <span class="ml-1 text-warning input-error">
-                <span v-for="error in form.error">
-                  {{ error }}
-                </span>
-              </span>
-            </div>
-            <img @click="isEditMode = !isEditMode" class="pen" src="@/assets/img/svg/pen.svg" alt="">
-          </div>
+        <input id="imageUpload" type="file" hidden>
+        <div class="user-profile">
+          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + '1.png'" alt="">
+          <p v-if="!isProfileOwner">
+            {{ user.username }}
+          </p>
+          <input v-else v-model="form.username" @keyup.enter="updateUsername" type="text" class="user-profile__input">
         </div>
-        <p v-if="imageError" class="small text-warning pt-2">Unsupported image type!</p>
-        <div class="content-text">
-          <p>Joined since {{ user.created_at }}</p>
+        <p v-for="error in form.errors" :key="error" class="small text-warning pt-2">
+          {{ error }}
+        </p>
+        <div class="user-info">
+          <p>Last update {{ formatDate(user.updated_at) }}</p>
           <p>5000 games</p>
           <p>W/L 0.56</p>
         </div>
@@ -29,136 +22,79 @@
     </div>
     <div class="progress-container">
       <div class="progress double">
-        <div class="progress-bar" role="progressbar" style="width: 63%"></div>
-        <div class="on-progress">3000 MMR</div>
+        <div class="progress-bar" role="progressbar" style="width: 63%" />
+        <div class="on-progress">
+          3000 MMR
+        </div>
       </div>
     </div>
-    <div class="content-section">
-      <div class="content-section-title">Latest games:</div>
-      <ul>
-        <li class="game-item">
-          <div class="game-info">
-            <span>katia</span>
-            <svg fill="#fff" width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione-monotone" preserveAspectRatio="xMidYMid meet"><path d="M52 2H12C6.477 2 2 6.477 2 12v40c0 5.523 4.477 10 10 10h40c5.523 0 10-4.477 10-10V12c0-5.523-4.477-10-10-10M23.23 44.365h-4.877L10 19.72h5.514l5.363 18.71l5.412-18.71h5.363L23.23 44.365m28.153-1.595C49.639 44.257 47.174 45 43.988 45c-3.252 0-5.809-.732-7.672-2.197c-1.863-1.467-2.795-3.481-2.795-6.045h4.928c.158 1.125.473 1.967.939 2.524c.855 1.016 2.322 1.521 4.398 1.521c1.242 0 2.252-.134 3.029-.401c1.471-.512 2.207-1.465 2.207-2.859c0-.813-.361-1.443-1.082-1.889c-.721-.436-1.865-.82-3.43-1.154l-2.674-.584c-2.629-.581-4.434-1.211-5.418-1.891c-1.664-1.136-2.496-2.915-2.496-5.334c0-2.207.813-4.04 2.441-5.501c1.629-1.46 4.021-2.19 7.178-2.19c2.635 0 4.883.688 6.742 2.065c1.861 1.376 2.836 3.375 2.928 5.994H48.25c-.092-1.482-.756-2.536-1.994-3.16c-.824-.412-1.85-.62-3.074-.62c-1.363 0-2.451.269-3.266.804c-.813.535-1.219 1.283-1.219 2.24c0 .881.4 1.539 1.203 1.975c.516.289 1.609.629 3.281 1.019l4.336 1.021c1.898.446 3.324 1.042 4.271 1.789C53.264 33.285 54 34.962 54 37.159c0 2.252-.871 4.121-2.617 5.611" fill="currentColor"></path></svg>
-            <span>imalline</span>
-          </div>
-          <span class="game-status">
-            <span class="status-circle green"></span>
-            Win (+25 MMR)
-          </span>
-        </li>
-        <li class="game-item">
-          <div class="game-info">
-            <span>ptycho</span>
-            <svg fill="#fff" width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione-monotone" preserveAspectRatio="xMidYMid meet"><path d="M52 2H12C6.477 2 2 6.477 2 12v40c0 5.523 4.477 10 10 10h40c5.523 0 10-4.477 10-10V12c0-5.523-4.477-10-10-10M23.23 44.365h-4.877L10 19.72h5.514l5.363 18.71l5.412-18.71h5.363L23.23 44.365m28.153-1.595C49.639 44.257 47.174 45 43.988 45c-3.252 0-5.809-.732-7.672-2.197c-1.863-1.467-2.795-3.481-2.795-6.045h4.928c.158 1.125.473 1.967.939 2.524c.855 1.016 2.322 1.521 4.398 1.521c1.242 0 2.252-.134 3.029-.401c1.471-.512 2.207-1.465 2.207-2.859c0-.813-.361-1.443-1.082-1.889c-.721-.436-1.865-.82-3.43-1.154l-2.674-.584c-2.629-.581-4.434-1.211-5.418-1.891c-1.664-1.136-2.496-2.915-2.496-5.334c0-2.207.813-4.04 2.441-5.501c1.629-1.46 4.021-2.19 7.178-2.19c2.635 0 4.883.688 6.742 2.065c1.861 1.376 2.836 3.375 2.928 5.994H48.25c-.092-1.482-.756-2.536-1.994-3.16c-.824-.412-1.85-.62-3.074-.62c-1.363 0-2.451.269-3.266.804c-.813.535-1.219 1.283-1.219 2.24c0 .881.4 1.539 1.203 1.975c.516.289 1.609.629 3.281 1.019l4.336 1.021c1.898.446 3.324 1.042 4.271 1.789C53.264 33.285 54 34.962 54 37.159c0 2.252-.871 4.121-2.617 5.611" fill="currentColor"></path></svg>
-            <span>kricky</span>
-          </div>
-          <span class="game-status">
-            <span class="status-circle red"></span>
-            Lose (-25 MMR)
-          </span>
-        </li>
-        <li class="game-item">
-          <div class="game-info">
-            <span>kricky</span>
-            <svg fill="#fff" width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione-monotone" preserveAspectRatio="xMidYMid meet"><path d="M52 2H12C6.477 2 2 6.477 2 12v40c0 5.523 4.477 10 10 10h40c5.523 0 10-4.477 10-10V12c0-5.523-4.477-10-10-10M23.23 44.365h-4.877L10 19.72h5.514l5.363 18.71l5.412-18.71h5.363L23.23 44.365m28.153-1.595C49.639 44.257 47.174 45 43.988 45c-3.252 0-5.809-.732-7.672-2.197c-1.863-1.467-2.795-3.481-2.795-6.045h4.928c.158 1.125.473 1.967.939 2.524c.855 1.016 2.322 1.521 4.398 1.521c1.242 0 2.252-.134 3.029-.401c1.471-.512 2.207-1.465 2.207-2.859c0-.813-.361-1.443-1.082-1.889c-.721-.436-1.865-.82-3.43-1.154l-2.674-.584c-2.629-.581-4.434-1.211-5.418-1.891c-1.664-1.136-2.496-2.915-2.496-5.334c0-2.207.813-4.04 2.441-5.501c1.629-1.46 4.021-2.19 7.178-2.19c2.635 0 4.883.688 6.742 2.065c1.861 1.376 2.836 3.375 2.928 5.994H48.25c-.092-1.482-.756-2.536-1.994-3.16c-.824-.412-1.85-.62-3.074-.62c-1.363 0-2.451.269-3.266.804c-.813.535-1.219 1.283-1.219 2.24c0 .881.4 1.539 1.203 1.975c.516.289 1.609.629 3.281 1.019l4.336 1.021c1.898.446 3.324 1.042 4.271 1.789C53.264 33.285 54 34.962 54 37.159c0 2.252-.871 4.121-2.617 5.611" fill="currentColor"></path></svg>
-            <span>gtrinida</span>
-          </div>
-          <span class="game-status">
-            <span class="status-circle red"></span>
-            Lose (-25 MMR)
-          </span>
-        </li>
-      </ul>
-    </div>
+    <GamesList :id="1" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters, mapActions } from "vuex";
-import { BvToast } from "bootstrap-vue";
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default Vue.extend({
   layout: 'app',
-  data() {
+  data () {
     return {
-      isEditMode: false,
-      imageError: false,
       form: {
-        username: '',
-        error: null as string | null,
+        username: '' as string,
+        errors: [] as string[]
       }
     }
   },
   computed: {
     ...mapGetters({
-      user: 'profile/user'
+      user: 'users/user'
     }),
-    owner(): boolean {
-      return this.$auth.user ? this.$auth.user.id === this.$route.params.id : false;
+    isProfileOwner (): boolean {
+      if (!this.$auth.user) {
+        return false
+      }
+      // eslint-disable-next-line eqeqeq
+      return this.$auth.user.id == this.$route.params.id
     }
+  },
+  async mounted (): Promise<void> {
+    await this.fetchUser(this.$route.params.id)
+    this.form.username = this.user.username
   },
   methods: {
     ...mapActions({
-      fetchUserProfile: 'profile/fetchUserProfile',
-      updateUserProfile: 'profile/updateUserProfile',
-      setIsLoading: 'preloader/setIsLoading'
+      fetchUser: 'users/fetchUser',
+      updateUser: 'users/updateUser'
     }),
-    successUpdated() {
-      this.$bvToast.toast(
-        'Profile successfully updated',
-        {
-          title: 'Success',
-          autoHideDelay: 2000
-        }
-      )
-    },
-    async updateUsername() {
-      try {
-        await this.updateUserProfile({id: this.user.id, data: { id: this.user.id, username: this.form.username }}).then(async () => {
-          this.isEditMode = !this.isEditMode
-          await this.fetchUserProfile({ id: this.$route.params.id })
+    updateUsername (): void {
+      if (this.$auth.user && this.form.username.length > 0) {
+        this.updateUser({
+          id: this.$auth.user.id,
+          data: {
+            username: this.form.username
+          }
+        }).then(() => {
+          this.form.errors = []
+        }).catch((error) => {
+          this.form.errors = error.response.data.message
         })
-        this.form.error = ''
-      } catch (e: any) {
-        this.form.error = e.response.data.message
       }
-      this.form.username = this.user.username
     },
-    imageUpload() {
-      const input = document.getElementById("imageUpload")
-      if (input)
-        input.click()
-    },
-    async previewFiles() {
-      const file = event.target.files[0]
-      if (!file)
-        return
-      const form = new FormData()
-      form.append("file", file, file.name)
-      try {
-        await this.$axios.post("/uploads/upload/" + this.user.id, form)
-        document.getElementById("imageUpload").value = ""
-        this.imageError = false
-        this.fetchUserProfile({ id: this.$route.params.id })
-      } catch (e) {
-        this.imageError = true
-      }
+    formatDate (date: string): string {
+      const d = new Date(date)
+      const day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate()
+      const month = d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)
+      const year = d.getFullYear()
+      const hours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours()
+      const minutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()
+      return `${day}/${month}/${year} ${hours}:${minutes}`
     }
-  },
-  async mounted() {
-    await this.fetchUserProfile({ id: this.$route.params.id })
-    if (Object.keys(this.user).length === 0)
-      return this.$nuxt.error({ statusCode: 404, message: 'User profile not found' })
-    this.form.username = this.user.username
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/variables';
-@import "~@/assets/scss/pages/home.scss";
 .content-wrapper-header {
   display: flex;
   align-items: center;
@@ -169,43 +105,52 @@ export default Vue.extend({
   padding: 20px 40px;
 }
 
-.img-content img {
-  width: 28px;
-  margin-right: 14px;
-  border-radius: 14px;
+.user-profile {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
-.img-content img.pen {
-  width: 14px;
-  height: 14px;
+.user-profile img {
+  width: 44px;
   margin-right: 14px;
-  border-radius: unset;
-  margin-left: 7px;
-  margin-bottom: 3px;
+  border-radius: 50%;
 }
 
-.content-text p {
+.user-profile p {
   margin: 0;
-  font-weight: 100;
+  font-size: 16px;
+  font-weight: 300;
 }
 
-.input-edit {
-  border-radius: 14px;
-  border: 1px solid #e6e6e64a;
-  padding: 6px 11px;
-  font-size: 14px;
-  font-weight: 100;
-  color: #e6e6e6;
-  background-color: #ffffff3b;
-  transition: all 0.3s ease;
+.user-info {
+  margin-top: 25px;
 }
 
-.input-edit:focus-visible {
+.user-info p {
+  font-weight: 300;
+  margin-bottom: 7px;
+}
+
+.user-profile__input {
+  width: 100%;
+  border: none;
+  border-radius: 2px;
+  padding: 9px;
+  background-color: rgba(146, 151, 179, 0.13);
+  font-size: 16px;
+  color: #fff;
+  transition: 0.3s ease;
+  font-weight: 300;
+}
+
+.user-profile__input:focus-visible {
   outline: none;
+  background-color: rgba(146, 151, 179, 0.35);
 }
 
-.input-error {
-  display: block;
-  font-size: 10px;
+.img-loadable:hover {
+  cursor: pointer;
 }
 </style>

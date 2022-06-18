@@ -20,7 +20,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const errors = await validate(createUserDto);
     if (errors.length > 0)
-      throw new BadRequestException('User already registered!');
+      throw new BadRequestException('State already registered!');
     return await this.userRepository.save({ ...createUserDto });
   }
 
@@ -41,11 +41,9 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const errors = await validate(updateUserDto);
-    if (errors.length > 0)
-      throw new BadRequestException('Given username is invalid.');
-    await this.findOne(updateUserDto.id);
+    await this.findOne(id);
     return await this.userRepository.save({
+      id,
       ...updateUserDto,
     });
   }

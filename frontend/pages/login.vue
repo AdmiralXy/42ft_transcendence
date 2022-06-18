@@ -16,14 +16,15 @@
 <script lang="ts">
 import Vue from "vue";
 import { Auth } from "@nuxtjs/auth-next";
+import { BvToast } from "bootstrap-vue";
 
 export default Vue.extend({
   data: () => ({
     code: '' as string | (string | null)[],
-    isLoading: false,
-    isLogged: false,
+    isLoading: false as boolean,
+    isLogged: false as boolean,
   }),
-  async created() {
+  async created(): Promise<void> {
     if (this.$route.query.code) {
       this.code = this.$route.query.code
       await this.$router.replace({ query: {} })

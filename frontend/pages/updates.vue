@@ -16,7 +16,7 @@ export default Vue.extend({
       status: false as boolean
     }
   },
-  created() {
+  created(): void {
     setTimeout(() => {
       this.status = true
     }, 3000)
