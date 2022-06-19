@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { FriendRequest } from './entity/friend-request.entity';
 import { UserService } from '../user/user.service';
@@ -14,8 +13,6 @@ import { CreateFriendDto } from './dto/create-friend.dto';
 @Injectable()
 export class FriendsService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
     private userService: UserService,
@@ -76,17 +73,10 @@ export class FriendsService {
 
   async findBySenderAndReceiver(senderId: number, receiverId: number) {
     return await this.friendRequestRepository.findOne({
-      relations: {
-        sender: true,
-        receiver: true,
-      },
+      relations: { sender: true, receiver: true },
       where: {
-        sender: {
-          id: senderId,
-        },
-        receiver: {
-          id: receiverId,
-        },
+        sender: { id: senderId },
+        receiver: { id: receiverId },
       },
     });
   }

@@ -33,8 +33,11 @@
           <button class="friend-list__item-status-button text-success" @click="addFriend(user.id)">
             Invite to friends
           </button>
-          <button class="friend-list__item-status-button text-danger" @click="blockUser(user.id)">
+          <button v-if="!blacklist.some(e => e.id === user.id)" class="friend-list__item-status-button text-danger" @click="blockUser(user.id)">
             Block
+          </button>
+          <button v-else class="friend-list__item-status-button text-danger" @click="unblockUser(user.id)">
+            Unblock
           </button>
         </div>
       </div>
@@ -55,7 +58,8 @@ export default Vue.extend({
   computed: {
     ...mapGetters({
       users: 'users/users',
-      friends: 'friends/friends'
+      friends: 'friends/friends',
+      blacklist: 'blacklist/blacklist'
     }),
     filteredFriends (): any {
       return this.friends.filter((user: { username: string; }) => {
@@ -70,29 +74,33 @@ export default Vue.extend({
   },
   async mounted (): Promise<void> {
     await this.fetchUsers()
-    if (this.$auth.user) { await this.fetchFriends(this.$auth.user.id) }
+    if (this.$auth.user) {
+      await this.fetchFriends(this.$auth.user.id)
+      await this.fetchBlacklist(this.$auth.user.id)
+    }
   },
   methods: {
     ...mapActions({
       fetchUsers: 'users/fetchUsers',
       fetchFriends: 'friends/fetchFriends',
       sendFriendRequest: 'friends/sendFriendRequest',
-      removeFriendRequest: 'friends/removeFriendRequest'
+      removeFriendRequest: 'friends/removeFriendRequest',
+      fetchBlacklist: 'blacklist/fetchBlacklist',
+      addToBlacklist: 'blacklist/addToBlacklist',
+      removeFromBlacklist: 'blacklist/removeFromBlacklist'
     }),
     addFriend (id: number): void {
       if (this.$auth.user) {
         this.sendFriendRequest({ id: this.$auth.user.id, friendId: id }).then(() => {
           if (this.$auth.user) { this.fetchFriends(this.$auth.user.id) }
           this.$bvToast.toast('Friend request sent successfully', {
-            title: 'Success',
-            variant: 'success',
-            solid: true
+            title: 'Friend request',
+            variant: 'success'
           })
         }).catch((error) => {
           this.$bvToast.toast(error.response.data.message, {
             title: 'Friend request',
-            variant: 'danger',
-            solid: true
+            variant: 'danger'
           })
         })
       }
@@ -101,6 +109,38 @@ export default Vue.extend({
       if (this.$auth.user) {
         this.removeFriendRequest({ id: this.$auth.user.id, friendId: id }).then(() => {
           if (this.$auth.user) { this.fetchFriends(this.$auth.user.id) }
+        })
+      }
+    },
+    blockUser (id: number): void {
+      if (this.$auth.user) {
+        this.addToBlacklist({ id: this.$auth.user.id, blockId: id }).then(() => {
+          if (this.$auth.user) { this.fetchBlacklist(this.$auth.user.id) }
+          this.$bvToast.toast('User blocked successfully', {
+            title: 'Block user',
+            variant: 'success'
+          })
+        }).catch((error) => {
+          this.$bvToast.toast(error.response.data.message, {
+            title: 'Block user',
+            variant: 'danger'
+          })
+        })
+      }
+    },
+    unblockUser (id: number): void {
+      if (this.$auth.user) {
+        this.removeFromBlacklist({ id: this.$auth.user.id, blockId: id }).then(() => {
+          if (this.$auth.user) { this.fetchBlacklist(this.$auth.user.id) }
+          this.$bvToast.toast('User unblocked successfully', {
+            title: 'Unblock user',
+            variant: 'success'
+          })
+        }).catch((error) => {
+          this.$bvToast.toast(error.response.data.message, {
+            title: 'Unblock user',
+            variant: 'danger'
+          })
         })
       }
     }

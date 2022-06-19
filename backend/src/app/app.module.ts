@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { MulterModule } from '@nestjs/platform-express';
 import { UploadsModule } from '../uploads/uploads.module';
 import { FriendsModule } from '../friends/friends.module';
+import { BlacklistModule } from '../blacklist/blacklist.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { FriendsModule } from '../friends/friends.module';
     UserModule,
     UploadsModule,
     FriendsModule,
+    BlacklistModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
