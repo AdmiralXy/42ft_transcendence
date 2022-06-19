@@ -4,7 +4,7 @@
       <div class="content-wrapper-context">
         <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
         <div class="user-profile">
-          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + '1.png'" alt="" @click="isProfileOwner && imageUpload">
+          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image" alt="" @click="isProfileOwner && imageUpload">
           <p v-if="!isProfileOwner">
             {{ user.username }}
           </p>
