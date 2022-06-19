@@ -1,16 +1,15 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinTable,
-  ManyToMany,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
+  Column,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import { User } from '../../user/entity/user.entity';
+import { Status } from '../enums/status.enum';
 
 @Entity()
 export class FriendRequest {
@@ -18,16 +17,21 @@ export class FriendRequest {
   id: number;
 
   @IsNotEmpty()
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn()
-  @Column('integer', { nullable: false })
-  senderId: number;
+  sender: User;
 
   @IsNotEmpty()
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn()
-  @Column('integer', { nullable: false })
-  receiverId: number;
+  receiver: User;
+
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.PENDING,
+  })
+  status: Status;
 
   @CreateDateColumn()
   created_at: Date;

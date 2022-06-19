@@ -20,7 +20,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const errors = await validate(createUserDto);
     if (errors.length > 0)
-      throw new BadRequestException('State already registered!');
+      throw new BadRequestException('User already registered.');
     return await this.userRepository.save({ ...createUserDto });
   }
 
@@ -42,9 +42,13 @@ export class UserService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     await this.findOne(id);
-    return await this.userRepository.save({
-      id,
-      ...updateUserDto,
-    });
+    try {
+      return await this.userRepository.save({
+        id,
+        ...updateUserDto,
+      });
+    } catch (e) {
+      throw new BadRequestException(['This username is already in use.']);
+    }
   }
 }

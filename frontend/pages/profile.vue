@@ -14,7 +14,6 @@
           {{ error }}
         </p>
         <div class="user-info">
-          <p>Last update {{ formatDate(user.updated_at) }}</p>
           <p>5000 games</p>
           <p>W/L 0.56</p>
         </div>

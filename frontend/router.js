@@ -26,11 +26,11 @@ const routes = [
     name: 'profile',
     component: page('profile.vue')
   },
-  // {
-  //   path: '/friends',
-  //   name: 'friends',
-  //   component: page('friends.vue')
-  // },
+  {
+    path: '/friends',
+    name: 'friends',
+    component: page('friends.vue')
+  },
   {
     path: '/direct',
     name: 'direct',

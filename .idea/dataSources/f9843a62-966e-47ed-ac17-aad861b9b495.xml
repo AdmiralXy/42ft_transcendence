@@ -12,7 +12,7 @@
 13756||10|C|G
 13756||10|T|G</Grants>
       <ServerVersion>14.3</ServerVersion>
-      <StartupTime>1655575014</StartupTime>
+      <StartupTime>1655605016</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -1402,10 +1402,10 @@ true posixrules
 13391||10|C|G
 13391||-9223372036854775808|U|G
 13391||10|U|G</Grants>
-      <IntrospectionStateNumber>737</IntrospectionStateNumber>
+      <IntrospectionStateNumber>736</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <Relations>sequence|table|16390|16391|1
-sequence|table|16403|16404|1
+sequence|table|16411|16412|1
 </Relations>
       <OwnerName>42ft_transcendence</OwnerName>
     </database>
@@ -1414,43 +1414,7 @@ sequence|table|16403|16404|1
       <ObjectId>13757</ObjectId>
       <OwnerName>42ft_transcendence</OwnerName>
     </database>
-    <role id="4" parent="1" name="pg_database_owner">
-      <ObjectId>6171</ObjectId>
-    </role>
-    <role id="5" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
-    </role>
-    <role id="6" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="7" parent="1" name="pg_monitor">
-      <ObjectId>3373</ObjectId>
-      <RoleGrants>3374
-3375
-3377</RoleGrants>
-    </role>
-    <role id="8" parent="1" name="pg_read_all_settings">
-      <ObjectId>3374</ObjectId>
-    </role>
-    <role id="9" parent="1" name="pg_read_all_stats">
-      <ObjectId>3375</ObjectId>
-    </role>
-    <role id="10" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="11" parent="1" name="pg_read_server_files">
-      <ObjectId>4569</ObjectId>
-    </role>
-    <role id="12" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="13" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pg_signal_backend">
-      <ObjectId>4200</ObjectId>
-    </role>
-    <role id="15" parent="1" name="42ft_transcendence">
+    <role id="4" parent="1" name="42ft_transcendence">
       <BypassRls>1</BypassRls>
       <CanLogin>1</CanLogin>
       <CreateDb>1</CreateDb>
@@ -1458,6 +1422,42 @@ sequence|table|16403|16404|1
       <ObjectId>10</ObjectId>
       <Replication>1</Replication>
       <SuperRole>1</SuperRole>
+    </role>
+    <role id="5" parent="1" name="pg_database_owner">
+      <ObjectId>6171</ObjectId>
+    </role>
+    <role id="6" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
+    </role>
+    <role id="7" parent="1" name="pg_monitor">
+      <ObjectId>3373</ObjectId>
+      <RoleGrants>3374
+3375
+3377</RoleGrants>
+    </role>
+    <role id="8" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="9" parent="1" name="pg_read_all_settings">
+      <ObjectId>3374</ObjectId>
+    </role>
+    <role id="10" parent="1" name="pg_read_all_stats">
+      <ObjectId>3375</ObjectId>
+    </role>
+    <role id="11" parent="1" name="pg_read_server_files">
+      <ObjectId>4569</ObjectId>
+    </role>
+    <role id="12" parent="1" name="pg_signal_backend">
+      <ObjectId>4200</ObjectId>
+    </role>
+    <role id="13" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
     </role>
     <tablespace id="16" parent="1" name="pg_default">
       <ObjectId>1663</ObjectId>
@@ -4831,54 +4831,52 @@ sequence|table|16403|16404|1
     <schema id="262" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>737</IntrospectionStateNumber>
+      <IntrospectionStateNumber>736</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>527</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
     </schema>
-    <sequence id="263" parent="262" name="friend_request_id_seq">
+    <object-type id="263" parent="262" name="friend_request_status_enum">
+      <Labels>accepted
+pending
+declined</Labels>
+      <ObjectId>16404</ObjectId>
+      <StateNumber>735</StateNumber>
+      <SubCategory>enum</SubCategory>
+      <SubKind>enum</SubKind>
+      <OwnerName>42ft_transcendence</OwnerName>
+    </object-type>
+    <sequence id="264" parent="262" name="friend_request_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>16403</ObjectId>
+      <ObjectId>16411</ObjectId>
       <StateNumber>735</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
     </sequence>
-    <sequence id="264" parent="262" name="user_id_seq">
+    <sequence id="265" parent="262" name="user_id_seq">
       <DataType>integer|0s</DataType>
       <ObjectId>16390</ObjectId>
       <StateNumber>735</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
     </sequence>
-    <table id="265" parent="262" name="friend_request">
-      <ObjectId>16404</ObjectId>
+    <table id="266" parent="262" name="friend_request">
+      <ObjectId>16412</ObjectId>
       <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
-    <table id="266" parent="262" name="typeorm_metadata">
+    <table id="267" parent="262" name="typeorm_metadata">
       <ObjectId>16385</ObjectId>
       <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
-    <table id="267" parent="262" name="user">
+    <table id="268" parent="262" name="user">
       <ObjectId>16391</ObjectId>
       <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
-    <table id="268" parent="262" name="user_blacklist_user">
-      <ObjectId>16423</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>42ft_transcendence</OwnerName>
-    </table>
-    <table id="269" parent="262" name="user_friends_user">
-      <ObjectId>16416</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>42ft_transcendence</OwnerName>
-    </table>
-    <column id="270" parent="265" name="id">
+    <column id="269" parent="266" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;friend_request_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -4886,21 +4884,23 @@ sequence|table|16403|16404|1
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="271" parent="265" name="senderId">
-      <DataType>integer|0s</DataType>
+    <column id="270" parent="266" name="status">
+      <DataType>friend_request_status_enum|0s</DataType>
+      <DefaultExpression>&apos;pending&apos;::friend_request_status_enum</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
+      <TypeId>16404</TypeId>
     </column>
-    <column id="272" parent="265" name="receiverId">
-      <DataType>integer|0s</DataType>
+    <column id="271" parent="266" name="created_at">
+      <DataType>timestamp|0s</DataType>
+      <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
+      <TypeId>1114</TypeId>
     </column>
-    <column id="273" parent="265" name="created_at">
+    <column id="272" parent="266" name="updated_at">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -4908,29 +4908,21 @@ sequence|table|16403|16404|1
       <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="274" parent="265" name="updated_at">
-      <DataType>timestamp|0s</DataType>
-      <DefaultExpression>now()</DefaultExpression>
-      <NotNull>1</NotNull>
+    <column id="273" parent="266" name="senderId">
+      <DataType>integer|0s</DataType>
       <Position>5</Position>
       <StateNumber>735</StateNumber>
-      <TypeId>1114</TypeId>
+      <TypeId>23</TypeId>
     </column>
-    <column id="275" parent="265" name="senderIdId">
+    <column id="274" parent="266" name="receiverId">
       <DataType>integer|0s</DataType>
       <Position>6</Position>
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="276" parent="265" name="receiverIdId">
-      <DataType>integer|0s</DataType>
-      <Position>7</Position>
-      <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="277" parent="265" name="FK_8f838cc11eaa56dc00018425064">
-      <ColNames>senderIdId</ColNames>
-      <ObjectId>16430</ObjectId>
+    <foreign-key id="275" parent="266" name="FK_9509b72f50f495668bae3c0171c">
+      <ColNames>senderId</ColNames>
+      <ObjectId>16421</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
@@ -4939,9 +4931,9 @@ sequence|table|16403|16404|1
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <foreign-key id="278" parent="265" name="FK_7ad8cb1205c1ad8d494630ba484">
-      <ColNames>receiverIdId</ColNames>
-      <ObjectId>16435</ObjectId>
+    <foreign-key id="276" parent="266" name="FK_470e723fdad9d6f4981ab2481eb">
+      <ColNames>receiverId</ColNames>
+      <ObjectId>16426</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
@@ -4950,85 +4942,59 @@ sequence|table|16403|16404|1
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <index id="279" parent="265" name="PK_4c9d23ff394888750cf66cac17c">
+    <index id="277" parent="266" name="PK_4c9d23ff394888750cf66cac17c">
       <ColNames>id</ColNames>
-      <ObjectId>16410</ObjectId>
+      <ObjectId>16419</ObjectId>
       <Primary>1</Primary>
       <StateNumber>735</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="280" parent="265" name="REL_8f838cc11eaa56dc0001842506">
-      <ColNames>senderIdId</ColNames>
-      <ObjectId>16412</ObjectId>
-      <StateNumber>735</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="281" parent="265" name="REL_7ad8cb1205c1ad8d494630ba48">
-      <ColNames>receiverIdId</ColNames>
-      <ObjectId>16414</ObjectId>
-      <StateNumber>735</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="282" parent="265" name="PK_4c9d23ff394888750cf66cac17c">
+    <key id="278" parent="266" name="PK_4c9d23ff394888750cf66cac17c">
       <ColNames>id</ColNames>
-      <ObjectId>16411</ObjectId>
+      <ObjectId>16420</ObjectId>
       <Primary>1</Primary>
       <StateNumber>735</StateNumber>
-      <UnderlyingIndexId>16410</UnderlyingIndexId>
+      <UnderlyingIndexId>16419</UnderlyingIndexId>
     </key>
-    <key id="283" parent="265" name="REL_8f838cc11eaa56dc0001842506">
-      <ColNames>senderIdId</ColNames>
-      <ObjectId>16413</ObjectId>
-      <StateNumber>735</StateNumber>
-      <UnderlyingIndexId>16412</UnderlyingIndexId>
-    </key>
-    <key id="284" parent="265" name="REL_7ad8cb1205c1ad8d494630ba48">
-      <ColNames>receiverIdId</ColNames>
-      <ObjectId>16415</ObjectId>
-      <StateNumber>735</StateNumber>
-      <UnderlyingIndexId>16414</UnderlyingIndexId>
-    </key>
-    <column id="285" parent="266" name="type">
+    <column id="279" parent="267" name="type">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="286" parent="266" name="database">
+    <column id="280" parent="267" name="database">
       <DataType>varchar|0s</DataType>
       <Position>2</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="287" parent="266" name="schema">
+    <column id="281" parent="267" name="schema">
       <DataType>varchar|0s</DataType>
       <Position>3</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="288" parent="266" name="table">
+    <column id="282" parent="267" name="table">
       <DataType>varchar|0s</DataType>
       <Position>4</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="289" parent="266" name="name">
+    <column id="283" parent="267" name="name">
       <DataType>varchar|0s</DataType>
       <Position>5</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="290" parent="266" name="value">
+    <column id="284" parent="267" name="value">
       <DataType>text|0s</DataType>
       <Position>6</Position>
       <StateNumber>735</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="291" parent="267" name="id">
+    <column id="285" parent="268" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;user_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5036,21 +5002,21 @@ sequence|table|16403|16404|1
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="292" parent="267" name="login">
+    <column id="286" parent="268" name="login">
       <DataType>varchar(55)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="293" parent="267" name="username">
+    <column id="287" parent="268" name="username">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="294" parent="267" name="created_at">
+    <column id="288" parent="268" name="created_at">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5058,7 +5024,7 @@ sequence|table|16403|16404|1
       <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="295" parent="267" name="updated_at">
+    <column id="289" parent="268" name="updated_at">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5066,7 +5032,7 @@ sequence|table|16403|16404|1
       <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="296" parent="267" name="PK_cace4a159ff9f2512dd42373760">
+    <index id="290" parent="268" name="PK_cace4a159ff9f2512dd42373760">
       <ColNames>id</ColNames>
       <ObjectId>16397</ObjectId>
       <Primary>1</Primary>
@@ -5074,7 +5040,7 @@ sequence|table|16403|16404|1
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="297" parent="267" name="UQ_a62473490b3e4578fd683235c5e">
+    <index id="291" parent="268" name="UQ_a62473490b3e4578fd683235c5e">
       <ColNames>login</ColNames>
       <ObjectId>16399</ObjectId>
       <StateNumber>735</StateNumber>
@@ -5084,7 +5050,7 @@ sequence|table|16403|16404|1
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <index id="298" parent="267" name="UQ_78a916df40e02a9deb1c4b75edb">
+    <index id="292" parent="268" name="UQ_78a916df40e02a9deb1c4b75edb">
       <ColNames>username</ColNames>
       <ObjectId>16401</ObjectId>
       <StateNumber>735</StateNumber>
@@ -5094,162 +5060,24 @@ sequence|table|16403|16404|1
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="299" parent="267" name="PK_cace4a159ff9f2512dd42373760">
+    <key id="293" parent="268" name="PK_cace4a159ff9f2512dd42373760">
       <ColNames>id</ColNames>
       <ObjectId>16398</ObjectId>
       <Primary>1</Primary>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16397</UnderlyingIndexId>
     </key>
-    <key id="300" parent="267" name="UQ_a62473490b3e4578fd683235c5e">
+    <key id="294" parent="268" name="UQ_a62473490b3e4578fd683235c5e">
       <ColNames>login</ColNames>
       <ObjectId>16400</ObjectId>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16399</UnderlyingIndexId>
     </key>
-    <key id="301" parent="267" name="UQ_78a916df40e02a9deb1c4b75edb">
+    <key id="295" parent="268" name="UQ_78a916df40e02a9deb1c4b75edb">
       <ColNames>username</ColNames>
       <ObjectId>16402</ObjectId>
       <StateNumber>735</StateNumber>
       <UnderlyingIndexId>16401</UnderlyingIndexId>
-    </key>
-    <column id="302" parent="268" name="userId_1">
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="303" parent="268" name="userId_2">
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="304" parent="268" name="FK_d612212f59697575fee563b2068">
-      <ColNames>userId_1</ColNames>
-      <ObjectId>16450</ObjectId>
-      <OnDelete>cascade</OnDelete>
-      <OnUpdate>cascade</OnUpdate>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>735</StateNumber>
-      <RefTableId>16391</RefTableId>
-      <RefTableName>user</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <foreign-key id="305" parent="268" name="FK_92847b7de07148876c63ed1fb1a">
-      <ColNames>userId_2</ColNames>
-      <ObjectId>16455</ObjectId>
-      <OnDelete>cascade</OnDelete>
-      <OnUpdate>cascade</OnUpdate>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>735</StateNumber>
-      <RefTableId>16391</RefTableId>
-      <RefTableName>user</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <index id="306" parent="268" name="PK_cc910ad1bafdb3a8e4bf4c3dc04">
-      <ColNames>userId_1
-userId_2</ColNames>
-      <ObjectId>16426</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>735</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="307" parent="268" name="IDX_d612212f59697575fee563b206">
-      <ColNames>userId_1</ColNames>
-      <ObjectId>16428</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="308" parent="268" name="IDX_92847b7de07148876c63ed1fb1">
-      <ColNames>userId_2</ColNames>
-      <ObjectId>16429</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="309" parent="268" name="PK_cc910ad1bafdb3a8e4bf4c3dc04">
-      <ColNames>userId_1
-userId_2</ColNames>
-      <ObjectId>16427</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>735</StateNumber>
-      <UnderlyingIndexId>16426</UnderlyingIndexId>
-    </key>
-    <column id="310" parent="269" name="userId_1">
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="311" parent="269" name="userId_2">
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>735</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="312" parent="269" name="FK_04840fd160b733de706a3360134">
-      <ColNames>userId_1</ColNames>
-      <ObjectId>16440</ObjectId>
-      <OnDelete>cascade</OnDelete>
-      <OnUpdate>cascade</OnUpdate>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>735</StateNumber>
-      <RefTableId>16391</RefTableId>
-      <RefTableName>user</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <foreign-key id="313" parent="269" name="FK_e81f236c989f3fd54836b50a12d">
-      <ColNames>userId_2</ColNames>
-      <ObjectId>16445</ObjectId>
-      <OnDelete>cascade</OnDelete>
-      <OnUpdate>cascade</OnUpdate>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>735</StateNumber>
-      <RefTableId>16391</RefTableId>
-      <RefTableName>user</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <index id="314" parent="269" name="PK_f2b5631d91f6b7fda632135932f">
-      <ColNames>userId_1
-userId_2</ColNames>
-      <ObjectId>16419</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>735</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="315" parent="269" name="IDX_04840fd160b733de706a336013">
-      <ColNames>userId_1</ColNames>
-      <ObjectId>16421</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="316" parent="269" name="IDX_e81f236c989f3fd54836b50a12">
-      <ColNames>userId_2</ColNames>
-      <ObjectId>16422</ObjectId>
-      <StateNumber>735</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="317" parent="269" name="PK_f2b5631d91f6b7fda632135932f">
-      <ColNames>userId_1
-userId_2</ColNames>
-      <ObjectId>16420</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>735</StateNumber>
-      <UnderlyingIndexId>16419</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>
