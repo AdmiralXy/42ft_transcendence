@@ -7,30 +7,16 @@
       <a class="menu-link" href="https://42.fr/" target="_blank">42.fr</a>
     </div>
     <div class="header-profile">
-      <img class="profile-img" :src="user.image" alt="">
+      <img class="profile-img" src="@/assets/img/nuxt.png" alt="">
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
-  computed: {
-    ...mapGetters({
-      user: 'users/user'
-    })
-  },
-  mounted () {
-    if (this.$auth.loggedIn && this.$auth.user) {
-      this.fetchUser(this.$auth.user.id)
-    }
-  },
   methods: {
-    ...mapActions({
-      fetchUser: 'users/fetchUser'
-    }),
     logout () {
       this.$auth.logout()
       this.$router.push('/login')
