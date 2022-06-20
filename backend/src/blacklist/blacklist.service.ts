@@ -22,6 +22,7 @@ export class BlacklistService {
     if (isFriends) {
       throw new BadRequestException('You cannot block a friend.');
     }
+    await this.relationsService.removePendingRequests(id, blockId);
     const blacklisted = await this.blacklistRepository.findOne({
       where: [{ blocker: { id }, blocked: { id: blockId } }],
     });
