@@ -1,23 +1,37 @@
 <template>
   <div class="header">
-    <div @click="logout" class="menu-circle"></div>
+    <div class="menu-circle" @click="logout" />
     <div class="header-menu">
       <a class="menu-link is-active" href="/">App</a>
       <a class="menu-link notify" href="https://github.com/AdmiralXy/42ft_transcendence" target="_blank">Github</a>
       <a class="menu-link" href="https://42.fr/" target="_blank">42.fr</a>
     </div>
     <div class="header-profile">
-      <img class="profile-img" src="https://images.unsplash.com/photo-1600353068440-6361ef3a86e8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="">
+      <img class="profile-img" :src="user.image" alt="">
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
+  computed: {
+    ...mapGetters({
+      user: 'users/user'
+    })
+  },
+  mounted () {
+    if (this.$auth.loggedIn && this.$auth.user) {
+      this.fetchUser(this.$auth.user.id)
+    }
+  },
   methods: {
-    logout() {
+    ...mapActions({
+      fetchUser: 'users/fetchUser'
+    }),
+    logout () {
       this.$auth.logout()
       this.$router.push('/login')
     }
