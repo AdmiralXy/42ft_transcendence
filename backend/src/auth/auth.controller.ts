@@ -9,7 +9,7 @@ export class AuthController {
   @Post('login')
   @SkipAuth()
   async login(@Request() req) {
-    return this.authService.login(req.body.code);
+    return this.authService.login(req.body.code, req.body.type);
   }
 
   @Get('user')

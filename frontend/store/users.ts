@@ -46,7 +46,6 @@ export const actions: ActionTree<RootState, RootState> = {
     try {
       commit('preloader/SET_IS_LOADING', true, { root: true })
       const response = await this.$axios.patch('users/' + id, data)
-      console.log('exception?')
       commit('SET_USER', response.data)
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })

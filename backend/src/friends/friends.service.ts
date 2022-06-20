@@ -28,6 +28,10 @@ export class FriendsService {
       );
     }
     const friendId = createFriendDto.id;
+    const friendRequest = await this.relationsService.isFriends(id, friendId);
+    if (friendRequest) {
+      throw new BadRequestException('You are already friends.');
+    }
     const sentRequest = await this.findBySenderAndReceiver(id, friendId);
     const pendingRequest = await this.findBySenderAndReceiver(friendId, id);
     if (sentRequest)

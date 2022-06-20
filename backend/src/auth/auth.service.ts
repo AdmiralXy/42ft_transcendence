@@ -1,15 +1,12 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { HttpService } from '@nestjs/axios';
 import { IntraAPI } from './api/intra.api';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { randomUUID } from 'crypto';
+import { GoogleAPI } from './api/google.api';
+import { InterfaceAPI } from './api/interface.api';
 
 @Injectable()
 export class AuthService {
@@ -18,26 +15,38 @@ export class AuthService {
     private jwtService: JwtService,
     private httpService: HttpService,
     private intraAPI: IntraAPI,
+    private googleAPI: GoogleAPI,
   ) {}
 
-  async login(code: string) {
-    let userFromIntra, user;
+  async login(code: string, type: string) {
+    if (type === 'intra') {
+      return this.loginApi(code, this.intraAPI);
+    } else if (type === 'google') {
+      return this.loginApi(code, this.googleAPI);
+    } else {
+      throw new BadRequestException('Invalid type!');
+    }
+  }
+
+  async loginApi(code: string, interfaceAPI: InterfaceAPI) {
+    let userFromApi, userFromDb;
     try {
-      const access_token = (await this.intraAPI.exchangeCodeToToken(code))
+      const access_token = (await interfaceAPI.exchangeCodeToToken(code))
         .access_token;
-      userFromIntra = await this.intraAPI.getUserInformation(access_token);
+      userFromApi = await interfaceAPI.getUserInformation(access_token);
     } catch (error) {
-      throw new BadRequestException('Intra42 code is expired or invalid!');
+      throw new BadRequestException('Application code is expired or invalid!');
     }
     const newUser = new CreateUserDto();
-    newUser.login = userFromIntra.login;
+    newUser.login = userFromApi.login ? userFromApi.login : userFromApi.id;
     newUser.username = 'Guest ' + randomUUID().substring(0, 15 - 6);
     try {
-      user = await this.userService.findByLogin(userFromIntra.login);
+      userFromDb = await this.userService.findByLogin(newUser.login);
     } catch (error) {
-      user = await this.userService.create(newUser);
+      userFromDb = await this.userService.create(newUser);
     }
-    const payload = { id: user.id, login: user.login };
+    const payload = { id: userFromDb.id, login: userFromDb.login };
+    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
       token_type: 'bearer',

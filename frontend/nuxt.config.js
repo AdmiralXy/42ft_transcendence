@@ -8,6 +8,16 @@ export default {
     host: '0.0.0.0'
   },
 
+  // Environment
+  publicRuntimeConfig: {
+    CLIENT_ID: process.env.CLIENT_ID,
+    REDIRECT_URI: process.env.REDIRECT_URI,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI
+  },
+
+  // Axios
   axios: {
     baseURL: process.env.BASE_URL + '/api' || 'http://localhost/api'
   },

@@ -4,15 +4,15 @@
       <div class="friends-list__search">
         <input v-model="searchFriends" type="text" class="friends-list__search-input" placeholder="Your friends">
       </div>
-      <div v-for="item in filteredFriends" :key="item.id" class="friend-list__item">
+      <div v-for="user in filteredFriends" :key="user.id" class="friend-list__item">
         <div class="friend-list__item-avatar">
-          <img :src="'/api/uploads/' + item.image" alt="">
+          <img :src="'/api/uploads/' + user.image" alt="">
         </div>
-        <div class="friend-list__item-name" @click="$router.push({ name: 'profile', params: { id: item.id } })">
-          <span>{{ item.username }}</span>
+        <div class="friend-list__item-name" @click="$router.push({ name: 'profile', params: { id: user.id } })">
+          <span>{{ user.username }}</span>
         </div>
         <div class="friend-list__item-status">
-          <button class="friend-list__item-status-button text-warning" @click="removeFriend(item.id)">
+          <button class="friend-list__item-status-button text-warning" @click="removeFriend(user.id)">
             Remove
           </button>
         </div>

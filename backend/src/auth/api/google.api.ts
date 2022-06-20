@@ -4,18 +4,18 @@ import { Injectable } from '@nestjs/common';
 import { InterfaceAPI } from './interface.api';
 
 @Injectable()
-export class IntraAPI implements InterfaceAPI {
+export class GoogleAPI implements InterfaceAPI {
   constructor(private readonly httpService: HttpService) {}
 
   async exchangeCodeToToken(code: string): Promise<any> {
     return await lastValueFrom(
       this.httpService
-        .post('https://api.intra.42.fr/oauth/token', {
+        .post('https://oauth2.googleapis.com/token', {
           grant_type: 'authorization_code',
-          client_id: process.env.CLIENT_ID,
-          client_secret: process.env.CLIENT_SECRET,
+          client_id: process.env.GOOGLE_CLIENT_ID,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET,
           code,
-          redirect_uri: process.env.REDIRECT_URI,
+          redirect_uri: process.env.GOOGLE_REDIRECT_URI,
         })
         .pipe(map((resp) => resp.data)),
     );
@@ -24,7 +24,7 @@ export class IntraAPI implements InterfaceAPI {
   async getUserInformation(access_token: string): Promise<any> {
     return await lastValueFrom(
       this.httpService
-        .get('https://api.intra.42.fr/v2/me', {
+        .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },

@@ -12,7 +12,7 @@
 13756||10|C|G
 13756||10|T|G</Grants>
       <ServerVersion>14.3</ServerVersion>
-      <StartupTime>1655687582</StartupTime>
+      <StartupTime>1655756375</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -1402,11 +1402,11 @@ true posixrules
 13391||10|C|G
 13391||-9223372036854775808|U|G
 13391||10|U|G</Grants>
-      <IntrospectionStateNumber>833</IntrospectionStateNumber>
+      <IntrospectionStateNumber>736</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <Relations>sequence|table|16390|16391|1
-sequence|table|24645|24646|1
-sequence|table|24655|24656|1
+sequence|table|16411|16412|1
+sequence|table|16421|16422|1
 </Relations>
       <OwnerName>42ft_transcendence</OwnerName>
     </database>
@@ -4832,7 +4832,7 @@ sequence|table|24655|24656|1
     <schema id="262" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>833</IntrospectionStateNumber>
+      <IntrospectionStateNumber>736</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>527</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
@@ -4849,14 +4849,14 @@ declined</Labels>
     </object-type>
     <sequence id="264" parent="262" name="blacklist_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>24655</ObjectId>
-      <StateNumber>832</StateNumber>
+      <ObjectId>16421</ObjectId>
+      <StateNumber>735</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
     </sequence>
     <sequence id="265" parent="262" name="friend_request_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>24645</ObjectId>
-      <StateNumber>832</StateNumber>
+      <ObjectId>16411</ObjectId>
+      <StateNumber>735</StateNumber>
       <OwnerName>42ft_transcendence</OwnerName>
     </sequence>
     <sequence id="266" parent="262" name="user_id_seq">
@@ -4866,20 +4866,20 @@ declined</Labels>
       <OwnerName>42ft_transcendence</OwnerName>
     </sequence>
     <table id="267" parent="262" name="blacklist">
-      <ObjectId>24656</ObjectId>
-      <StateNumber>832</StateNumber>
+      <ObjectId>16422</ObjectId>
+      <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
     <table id="268" parent="262" name="friend_request">
-      <ObjectId>24646</ObjectId>
-      <StateNumber>832</StateNumber>
+      <ObjectId>16412</ObjectId>
+      <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
     <table id="269" parent="262" name="typeorm_metadata">
-      <ObjectId>24640</ObjectId>
-      <StateNumber>832</StateNumber>
+      <ObjectId>16385</ObjectId>
+      <StateNumber>735</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>42ft_transcendence</OwnerName>
     </table>
@@ -4894,7 +4894,7 @@ declined</Labels>
       <DefaultExpression>nextval(&apos;blacklist_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="272" parent="267" name="created_at">
@@ -4902,7 +4902,7 @@ declined</Labels>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
     <column id="273" parent="267" name="updated_at">
@@ -4910,64 +4910,64 @@ declined</Labels>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
     <column id="274" parent="267" name="blockerId">
       <DataType>integer|0s</DataType>
       <Position>4</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="275" parent="267" name="blockedId">
       <DataType>integer|0s</DataType>
       <Position>5</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <foreign-key id="276" parent="267" name="FK_06d2a29ea6840660e1f515078c3">
       <ColNames>blockerId</ColNames>
-      <ObjectId>24674</ObjectId>
+      <ObjectId>16440</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <RefTableId>16391</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="277" parent="267" name="FK_f22cdc5b56468d0832f16570491">
       <ColNames>blockedId</ColNames>
-      <ObjectId>24679</ObjectId>
+      <ObjectId>16445</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <RefTableId>16391</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="278" parent="267" name="PK_04dc42a96bf0914cda31b579702">
       <ColNames>id</ColNames>
-      <ObjectId>24662</ObjectId>
+      <ObjectId>16428</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="279" parent="267" name="PK_04dc42a96bf0914cda31b579702">
       <ColNames>id</ColNames>
-      <ObjectId>24663</ObjectId>
+      <ObjectId>16429</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>832</StateNumber>
-      <UnderlyingIndexId>24662</UnderlyingIndexId>
+      <StateNumber>735</StateNumber>
+      <UnderlyingIndexId>16428</UnderlyingIndexId>
     </key>
     <column id="280" parent="268" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;friend_request_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="281" parent="268" name="status">
@@ -4975,7 +4975,7 @@ declined</Labels>
       <DefaultExpression>&apos;pending&apos;::friend_request_status_enum</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>16404</TypeId>
     </column>
     <column id="282" parent="268" name="created_at">
@@ -4983,7 +4983,7 @@ declined</Labels>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
     <column id="283" parent="268" name="updated_at">
@@ -4991,93 +4991,93 @@ declined</Labels>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1114</TypeId>
     </column>
     <column id="284" parent="268" name="senderId">
       <DataType>integer|0s</DataType>
       <Position>5</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="285" parent="268" name="receiverId">
       <DataType>integer|0s</DataType>
       <Position>6</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <foreign-key id="286" parent="268" name="FK_9509b72f50f495668bae3c0171c">
       <ColNames>senderId</ColNames>
-      <ObjectId>24664</ObjectId>
+      <ObjectId>16430</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <RefTableId>16391</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="287" parent="268" name="FK_470e723fdad9d6f4981ab2481eb">
       <ColNames>receiverId</ColNames>
-      <ObjectId>24669</ObjectId>
+      <ObjectId>16435</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>1</RefColPositions>
       <RefKeyName>PK_cace4a159ff9f2512dd42373760</RefKeyName>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <RefTableId>16391</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="288" parent="268" name="PK_4c9d23ff394888750cf66cac17c">
       <ColNames>id</ColNames>
-      <ObjectId>24653</ObjectId>
+      <ObjectId>16419</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="289" parent="268" name="PK_4c9d23ff394888750cf66cac17c">
       <ColNames>id</ColNames>
-      <ObjectId>24654</ObjectId>
+      <ObjectId>16420</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>832</StateNumber>
-      <UnderlyingIndexId>24653</UnderlyingIndexId>
+      <StateNumber>735</StateNumber>
+      <UnderlyingIndexId>16419</UnderlyingIndexId>
     </key>
     <column id="290" parent="269" name="type">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="291" parent="269" name="database">
       <DataType>varchar|0s</DataType>
       <Position>2</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="292" parent="269" name="schema">
       <DataType>varchar|0s</DataType>
       <Position>3</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="293" parent="269" name="table">
       <DataType>varchar|0s</DataType>
       <Position>4</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="294" parent="269" name="name">
       <DataType>varchar|0s</DataType>
       <Position>5</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="295" parent="269" name="value">
       <DataType>text|0s</DataType>
       <Position>6</Position>
-      <StateNumber>832</StateNumber>
+      <StateNumber>735</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="296" parent="270" name="id">

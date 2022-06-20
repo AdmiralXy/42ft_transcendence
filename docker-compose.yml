@@ -30,6 +30,9 @@ services:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
       - REDIRECT_URI=${REDIRECT_URI}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
     networks:
       - app-network
     depends_on:
@@ -42,6 +45,10 @@ services:
     environment:
       - TZ=${TIMEZONE}
       - BASE_URL=${HOST}
+      - CLIENT_ID=${CLIENT_ID}
+      - REDIRECT_URI=${REDIRECT_URI}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
     networks:
       - app-network
     depends_on:

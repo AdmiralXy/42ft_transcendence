@@ -4,7 +4,7 @@
       <div class="content-wrapper-context">
         <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
         <div class="user-profile">
-          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image" alt="" @click="isProfileOwner && imageUpload">
+          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image" alt="" @click="imageUpload">
           <p v-if="!isProfileOwner">
             {{ user.username }}
           </p>
@@ -90,7 +90,7 @@ export default Vue.extend({
     },
     imageUpload () {
       const input = document.getElementById('imageUpload')
-      if (input) { input.click() }
+      if (this.isProfileOwner && input) { input.click() }
     },
     imageUploadHandler (e: Event) {
       const target = e.target as HTMLInputElement

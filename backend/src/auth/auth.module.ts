@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { IntraAPI } from './api/intra.api';
+import { GoogleAPI } from './api/google.api';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { IntraAPI } from './api/intra.api';
       maxRedirects: 5,
     }),
   ],
-  providers: [AuthService, JwtStrategy, IntraAPI],
+  providers: [AuthService, JwtStrategy, IntraAPI, GoogleAPI],
   exports: [AuthService],
   controllers: [AuthController],
 })

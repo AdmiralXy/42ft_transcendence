@@ -2,41 +2,59 @@
   <div class="login-page">
     <img class="login-page__img" src="@/assets/img/gif/42monolythe.gif">
     <div class="login-container">
-      <a v-if="!isLoading" href="https://api.intra.42.fr/oauth/authorize?client_id=1ffda2d97b6d47baa64a2b36a2646c3195cec1861aa719e2ec6d878a3b653d4b&redirect_uri=http%3A%2F%2Flocalhost%2Flogin&response_type=code">
+      <a v-if="!isLoading" :href="intraUrl">
         <button class="btn-login">Sign in with <img src="@/assets/img/svg/42.svg" alt=""></button>
       </a>
-      <div class="loading" v-else>
-        <p v-if="!isLogged">Trying to fetch data from Intra42...</p>
-        <p v-else>Hello, {{ $auth.user.login }}!</p>
+      <a v-if="!isLoading" class="login-container__google" :href="googleUrl">
+        or with google
+      </a>
+      <div v-else class="loading">
+        <p v-if="!isLogged">
+          Fetching data from API...
+        </p>
+        <p v-else>
+          Hello, {{ $auth.user.login }}!
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Auth } from "@nuxtjs/auth-next";
-import { BvToast } from "bootstrap-vue";
+import Vue from 'vue'
+import { Auth } from '@nuxtjs/auth-next'
+import { BvToast } from 'bootstrap-vue'
 
 export default Vue.extend({
   data: () => ({
     code: '' as string | (string | null)[],
+    type: null as string | null | (string | null)[],
     isLoading: false as boolean,
-    isLogged: false as boolean,
+    isLogged: false as boolean
   }),
-  async created(): Promise<void> {
+  computed: {
+    intraUrl () {
+      return `https://api.intra.42.fr/oauth/authorize?client_id=${this.$config.CLIENT_ID}&redirect_uri=${this.$config.REDIRECT_URI}&response_type=code`
+    },
+    googleUrl () {
+      return `https://accounts.google.com/o/oauth2/v2/auth?client_id=${this.$config.GOOGLE_CLIENT_ID}&redirect_uri=${this.$config.GOOGLE_REDIRECT_URI}&response_type=code&scope=email`
+    }
+  },
+  async created (): Promise<void> {
     if (this.$route.query.code) {
       this.code = this.$route.query.code
+      this.type = this.$route.query.type ? this.$route.query.type : 'intra'
       await this.$router.replace({ query: {} })
       this.isLoading = true
+      // eslint-disable-next-line promise/param-names
       await new Promise(r => setTimeout(r, 1500))
       try {
-        await this.$auth.loginWith('local', { data: { code: this.code } })
+        await this.$auth.loginWith('local', { data: { code: this.code, type: this.type } })
         this.isLogged = true
       } catch (e) {
-        this.$bvToast.toast(`Please check your internet connection`, {
+        this.$bvToast.toast('Please check your internet connection', {
           title: 'Attempt to login',
-          autoHideDelay: 5000,
+          autoHideDelay: 5000
         })
         this.isLoading = false
       }
@@ -154,5 +172,10 @@ export default Vue.extend({
 @-o-keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+.login-container__google {
+  font-size: 14px;
+  color: #fff;
 }
 </style>

@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
   Request,
   BadRequestException,
-  Body,
+  Body, UseInterceptors, ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { CreateFriendDto } from './dto/create-friend.dto';
@@ -31,6 +31,7 @@ export class FriendsController {
     return this.friendsService.create(+id, createFriendDto);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   findAll(@Request() req, @Param('id') id: string) {
     if (req.user.id !== +id) {
