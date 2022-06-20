@@ -46,4 +46,11 @@ export class BlacklistService {
     }
     return this.blacklistRepository.remove(blacklist);
   }
+
+  async isBlacklisted(id: number, blockId: number) {
+    const blacklist = await this.blacklistRepository.count({
+      where: [{ blocker: { id }, blocked: { id: blockId } }],
+    });
+    return blacklist > 0;
+  }
 }

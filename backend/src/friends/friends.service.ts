@@ -9,17 +9,24 @@ import { FriendRequest } from './entity/friend-request.entity';
 import { UserService } from '../user/user.service';
 import { Status } from './enums/status.enum';
 import { CreateFriendDto } from './dto/create-friend.dto';
+import {BlacklistService} from "../blacklist/blacklist.service";
 
 @Injectable()
 export class FriendsService {
   constructor(
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
-    private userService: UserService,
+    private readonly userService: UserService,
+    private readonly blacklistService: BlacklistService,
   ) {}
 
   async create(id: number, createFriendDto: CreateFriendDto) {
     await this.userService.findOne(createFriendDto.id);
+    if (await this.blacklistService.isBlacklisted(+id, +createFriendDto.id)) {
+      throw new BadRequestException(
+        'You cannot add a user that you have blocked.',
+      );
+    }
     const friendId = createFriendDto.id;
     const sentRequest = await this.findBySenderAndReceiver(id, friendId);
     const pendingRequest = await this.findBySenderAndReceiver(friendId, id);

@@ -17,7 +17,7 @@ export class FriendsController {
   constructor(private readonly friendsService: FriendsService) {}
 
   @Post()
-  create(
+  async create(
     @Request() req,
     @Param('id') id: string,
     @Body() createFriendDto: CreateFriendDto,
@@ -50,55 +50,4 @@ export class FriendsController {
     }
     return this.friendsService.remove(+id, +friendId);
   }
-
-  // @Get(':id')
-  // findAll(@Request() req, @Param('id') id: string) {
-  //   return this.friendsService.findAll(+id);
-  // }
-  //
-  // @Post(':id/add/:friendId')
-  // sendRequest(
-  //   @Request() req,
-  //   @Param('id') id: number,
-  //   @Param('friendId') friendId: number,
-  // ) {
-  //   if (req.user.id !== +id) {
-  //     throw new UnauthorizedException('Unauthorized action.');
-  //   }
-  //   if (req.user.id === +friendId) {
-  //     throw new BadRequestException(
-  //       `You can't send a friend request to yourself.`,
-  //     );
-  //   }
-  //   return this.friendsService.sendRequest(+id, +friendId);
-  // }
-  //
-  // @Patch(':id/accept/:friendId')
-  // acceptRequest(
-  //   @Request() req,
-  //   @Param('id') id: number,
-  //   @Param('friendId') friendId: number,
-  // ) {
-  //   if (req.user.id !== +id) {
-  //     throw new UnauthorizedException('Unauthorized action.');
-  //   }
-  //   if (req.user.id === +friendId) {
-  //     throw new BadRequestException(
-  //       `You can't send a friend request to yourself.`,
-  //     );
-  //   }
-  //   return this.friendsService.acceptRequest(+id, +friendId);
-  // }
-  //
-  // @Delete(':id/remove/:friendId')
-  // remove(
-  //   @Request() req,
-  //   @Param('id') id: number,
-  //   @Param('friendId') friendId: number,
-  // ) {
-  //   if (req.user.id !== +id) {
-  //     throw new UnauthorizedException('You can only update your own profile.');
-  //   }
-  //   return this.friendsService.remove(+id);
-  // }
 }
