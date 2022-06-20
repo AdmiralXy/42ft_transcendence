@@ -9,6 +9,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { UploadsModule } from '../uploads/uploads.module';
 import { FriendsModule } from '../friends/friends.module';
 import { BlacklistModule } from '../blacklist/blacklist.module';
+import { RelationsModule } from '../relations/relations.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { BlacklistModule } from '../blacklist/blacklist.module';
     UploadsModule,
     FriendsModule,
     BlacklistModule,
+    RelationsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

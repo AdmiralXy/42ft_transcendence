@@ -4,18 +4,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { Blacklist } from './entities/blacklist.entity';
+import {RelationsService} from "../relations/relations.service";
 
 @Injectable()
 export class BlacklistService {
   constructor(
     @InjectRepository(Blacklist)
     private readonly blacklistRepository: Repository<Blacklist>,
-    private userService: UserService,
+    private readonly userService: UserService,
+    private readonly relationsService: RelationsService,
   ) {}
 
   async create(id: number, createBlacklistDto: CreateBlacklistDto) {
     await this.userService.findOne(createBlacklistDto.id);
     const blockId = createBlacklistDto.id;
+    const isFriends = await this.relationsService.isFriends(id, blockId);
+    if (isFriends) {
+      throw new BadRequestException('You cannot block a friend.');
+    }
     const blacklisted = await this.blacklistRepository.findOne({
       where: [{ blocker: { id }, blocked: { id: blockId } }],
     });
@@ -45,12 +51,5 @@ export class BlacklistService {
       throw new BadRequestException('You have not blocked this user.');
     }
     return this.blacklistRepository.remove(blacklist);
-  }
-
-  async isBlacklisted(id: number, blockId: number) {
-    const blacklist = await this.blacklistRepository.count({
-      where: [{ blocker: { id }, blocked: { id: blockId } }],
-    });
-    return blacklist > 0;
   }
 }

@@ -9,7 +9,7 @@ import { FriendRequest } from './entity/friend-request.entity';
 import { UserService } from '../user/user.service';
 import { Status } from './enums/status.enum';
 import { CreateFriendDto } from './dto/create-friend.dto';
-import {BlacklistService} from "../blacklist/blacklist.service";
+import { RelationsService } from '../relations/relations.service';
 
 @Injectable()
 export class FriendsService {
@@ -17,12 +17,12 @@ export class FriendsService {
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
     private readonly userService: UserService,
-    private readonly blacklistService: BlacklistService,
+    private readonly relationsService: RelationsService,
   ) {}
 
   async create(id: number, createFriendDto: CreateFriendDto) {
     await this.userService.findOne(createFriendDto.id);
-    if (await this.blacklistService.isBlacklisted(+id, +createFriendDto.id)) {
+    if (await this.relationsService.isBlacklisted(+id, +createFriendDto.id)) {
       throw new BadRequestException(
         'You cannot add a user that you have blocked.',
       );
