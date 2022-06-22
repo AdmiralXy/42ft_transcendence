@@ -103,8 +103,6 @@ export default Vue.extend({
       this.socket = io('http://localhost')
 
       this.socket.on('connect', () => {
-        console.log('Connected')
-
         this.socket.on('exception', (error: any) => {
           this.socket.disconnect()
           this.$bvToast.toast(error.message, {
@@ -115,10 +113,6 @@ export default Vue.extend({
 
         this.socket.on('messageDirect', (response: any) => {
           this.messages.push(response)
-        })
-
-        this.socket.on('disconnect', () => {
-          console.log('disconnected')
         })
 
         if (this.$auth.user) {
