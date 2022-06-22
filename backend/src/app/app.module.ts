@@ -10,6 +10,7 @@ import { UploadsModule } from '../uploads/uploads.module';
 import { FriendsModule } from '../friends/friends.module';
 import { BlacklistModule } from '../blacklist/blacklist.module';
 import { RelationsModule } from '../relations/relations.module';
+import { DirectModule } from '../direct/direct.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RelationsModule } from '../relations/relations.module';
     FriendsModule,
     BlacklistModule,
     RelationsModule,
+    DirectModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

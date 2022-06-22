@@ -2,11 +2,11 @@
   <div class="direct-wrapper">
     <div class="friends-list">
       <div class="friends-list__search">
-        <input type="text" class="friends-list__search-input" v-model="search" placeholder="Search">
+        <input v-model="search" type="text" class="friends-list__search-input" placeholder="Search">
       </div>
-      <div class="friend-list__item" v-for="friend in filteredFriends">
+      <div v-for="friend in filteredFriends" :key="friend.id" class="friend-list__item" @click="selectUser(friend.id)">
         <div class="friend-list__item-avatar">
-          <img :src="friend.avatar" alt="">
+          <img :src="'api/uploads/' + friend.image" alt="">
         </div>
         <div class="friend-list__item-name">
           <span>{{ friend.username }}</span>
@@ -21,191 +21,112 @@
     <div class="direct-container">
       <div class="messages-list">
         <div class="messages-list-scrollable">
-          <div class="message-item" :class="message.username === 'John Doe' ? 'message-item-to' : 'message-item-from'" v-for="message in messages">
+          <div v-for="item in messages" :key="item.id" class="message-item" :class="item.sender.id === $auth.user.id ? 'message-item-to' : 'message-item-from'">
             <div class="message-item__content">
               <div class="message-item__user">
                 <div class="message-item__content-avatar">
-                  <img :src="message.avatar" alt="">
+                  <img :src="'/api/uploads/' + item.sender.id + '.png'" alt="">
                 </div>
                 <div class="message-item__content-username">
-                  <span>{{ message.username }}</span>
+                  <span>{{ item.sender.username }}</span>
                 </div>
               </div>
               <div class="message-item__content-message">
-                <span>{{ message.message }}</span>
+                <p>{{ item.text }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="messages-input">
-        <textarea class="messages-input__textarea" placeholder="Type your message here"></textarea>
+        <textarea
+          v-if="selectedId"
+          v-model="message"
+          class="messages-input__textarea"
+          placeholder="Type your message here"
+          @keydown.enter.exact.prevent
+          @keyup.enter.exact="sendDirectMessage"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue'
+import { io } from 'socket.io-client'
+import { mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
-  layout: "app",
+  layout: 'app',
   data: () => ({
-    search: "",
-    messages: [
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "Hello, how are you?",
-        created_at: "2020-01-01 00:00:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "Hi, I'm John Doe",
-        created_at: "2020-01-01 00:01:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "And I'm fine",
-        created_at: "2020-01-01 00:02:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "And you? How are you? Are you ok? I saw you online, so I decided to chat with you. Maybe you can help me with something?",
-        created_at: "2020-01-01 00:03:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "Oh, easy!",
-        created_at: "2020-01-01 00:04:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "Okay I need to play a game, and win some money",
-        created_at: "2020-01-01 00:05:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "That's game not for money",
-        created_at: "2020-01-01 00:06:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "I see u didn't know that",
-        created_at: "2020-01-01 00:07:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "But ofc I can play with you",
-        created_at: "2020-01-01 00:08:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "Okay let's play",
-        created_at: "2020-01-01 00:09:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "I will start matchmaking soon",
-        created_at: "2020-01-01 00:10:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "Alice Jackson",
-        message: "Wait a minute",
-        created_at: "2020-01-01 00:11:00"
-      },
-      {
-        avatar: "https://i.pravatar.cc/25",
-        username: "John Doe",
-        message: "Okay, I'm here, let's start",
-        created_at: "2020-01-01 00:12:00"
-      }
-    ],
-    friends: [
-      {
-        id: 1,
-        username: "John Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 0
-      },
-      {
-        id: 2,
-        username: "Jane Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 1
-      },
-      {
-        id: 3,
-        username: "Jack Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 0
-      },
-      {
-        id: 4,
-        username: "Jill Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 1
-      },
-      {
-        id: 5,
-        username: "Joe Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 2
-      },
-      {
-        id: 6,
-        username: "Jenny Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 1
-      },
-      {
-        id: 7,
-        username: "John Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 0
-      },
-      {
-        id: 8,
-        username: "Jane Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 1
-      },
-      {
-        id: 9,
-        username: "Jack Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 2
-      },
-      {
-        id: 10,
-        username: "Jill Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 0
-      },
-      {
-        id: 11,
-        username: "Joe Doe",
-        avatar: "https://i.pravatar.cc/25",
-        status: 1
-      }
-    ]
+    search: '',
+    messages: [] as any,
+    message: '' as string,
+    selectedId: 0 as number,
+    socket: null as any
   }),
   computed: {
-    filteredFriends() {
-      return this.friends.filter(friend => {
-        return friend.username.toLowerCase().includes(this.search.toLowerCase());
-      });
+    ...mapGetters({
+      friends: 'friends/friends'
+    }),
+    filteredFriends (): any {
+      return this.friends.filter((user: { username: string; }) => {
+        return user.username.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
+  mounted (): void {
+    if (this.$auth.user) { this.fetchFriends(this.$auth.user.id) }
+  },
+  beforeDestroy () {
+    this.closeSocketConnection()
+  },
+  methods: {
+    ...mapActions({
+      fetchFriends: 'friends/fetchFriends'
+    }),
+    closeSocketConnection () {
+      if (this.socket && this.socket.connected) {
+        this.socket.disconnect()
+      }
+    },
+    sendDirectMessage () {
+      if (this.message.length > 0 && this.$auth.user) {
+        this.socket.emit('createDirect', { senderId: this.$auth.user.id, receiverId: this.selectedId, text: this.message })
+        this.message = ''
+      }
+    },
+    selectUser (id: number) {
+      this.selectedId = id
+      this.closeSocketConnection()
+      this.socket = io('http://localhost')
+
+      this.socket.on('connect', () => {
+        console.log('Connected')
+
+        this.socket.on('exception', (error: any) => {
+          this.socket.disconnect()
+          this.$bvToast.toast(error.message, {
+            title: 'Direct message',
+            variant: 'warning'
+          })
+        })
+
+        this.socket.on('messageDirect', (response: any) => {
+          this.messages.push(response)
+        })
+
+        this.socket.on('disconnect', () => {
+          console.log('disconnected')
+        })
+
+        if (this.$auth.user) {
+          this.socket.emit('joinDirect', { id: this.$auth.user.id, friendId: this.selectedId }, (response: any) => {
+            this.messages = response
+          })
+        }
+      })
     }
   }
 })

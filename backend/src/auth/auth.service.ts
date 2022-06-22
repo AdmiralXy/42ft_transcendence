@@ -46,7 +46,6 @@ export class AuthService {
       userFromDb = await this.userService.create(newUser);
     }
     const payload = { id: userFromDb.id, login: userFromDb.login };
-    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
       token_type: 'bearer',
