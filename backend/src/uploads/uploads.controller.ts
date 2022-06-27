@@ -12,7 +12,7 @@ import {
 import { SkipAuth } from '../app/decorators/skip-auth.decorator';
 import { UploadsService } from './uploads.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from '../app/config/multer.config';
+import { multerOptions } from '../app/configs/multer.config';
 import * as fs from 'fs';
 
 @Controller('uploads')

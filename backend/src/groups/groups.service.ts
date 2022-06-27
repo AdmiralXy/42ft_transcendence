@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { Group } from './entities/group.entity';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '../user/entity/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class GroupsService {

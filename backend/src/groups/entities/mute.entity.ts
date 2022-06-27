@@ -1,4 +1,4 @@
-import { User } from '../../user/entity/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import { Group } from './group.entity';

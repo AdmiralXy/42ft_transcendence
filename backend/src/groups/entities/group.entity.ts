@@ -12,7 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
-import { User } from '../../user/entity/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { Mode } from '../enums/mode.enum';
 import { Ban } from './ban.entity';
 import { Mute } from './mute.entity';

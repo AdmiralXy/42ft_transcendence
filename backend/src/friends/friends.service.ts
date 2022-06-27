@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FriendRequest } from './entity/friend-request.entity';
+import { FriendRequest } from './entities/friend-request.entity';
 import { UserService } from '../user/user.service';
 import { Status } from './enums/status.enum';
 import { CreateFriendDto } from './dto/create-friend.dto';

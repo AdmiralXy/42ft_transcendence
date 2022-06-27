@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { GroupsService } from './groups.service';
-import { OwnerGuard } from './guard/owner.guard';
+import { OwnerGuard } from './guards/owner.guard';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Controller('groups')
@@ -49,7 +49,7 @@ export class GroupsController {
     return this.groupsService.remove(+id);
   }
 
-  // Admins (owner guard)
+  // Admins (owner guards)
 
   @Post(':id/admin-list/:userId')
   @UseGuards(OwnerGuard)
@@ -62,7 +62,7 @@ export class GroupsController {
     // TODO: implement
   }
 
-  // Invite-list (admin guard)
+  // Invite-list (admin guards)
 
   @Post(':id/invite-list/:userId')
   addToInviteList(@Param('id') id: string, @Param('userId') userId: string) {
@@ -77,7 +77,7 @@ export class GroupsController {
     // TODO: implement
   }
 
-  // Ban-list (admin guard)
+  // Ban-list (admin guards)
 
   @Post(':id/ban-list/:userId')
   addToBanList(@Param('id') id: string, @Param('userId') userId: string) {
@@ -89,7 +89,7 @@ export class GroupsController {
     // TODO: implement
   }
 
-  // Mute-list (admin guard)
+  // Mute-list (admin guards)
 
   @Post(':id/mute-list/:userId')
   addToMuteList(@Param('id') id: string, @Param('userId') userId: string) {

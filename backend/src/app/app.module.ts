@@ -4,7 +4,7 @@ import { UserModule } from '../user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { MulterModule } from '@nestjs/platform-express';
 import { UploadsModule } from '../uploads/uploads.module';
 import { FriendsModule } from '../friends/friends.module';
