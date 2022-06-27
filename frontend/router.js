@@ -22,6 +22,16 @@ const routes = [
     component: page('updates.vue')
   },
   {
+    path: '/pong',
+    name: 'pong',
+    component: page('pong.vue')
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: page('leaderboard.vue')
+  },
+  {
     path: '/profile/:id',
     name: 'profile',
     component: page('profile.vue')
@@ -40,16 +50,6 @@ const routes = [
     path: '/groups',
     name: 'groups',
     component: page('groups.vue')
-  },
-  // {
-  //   path: '/group/{groupId}',
-  //   name: 'group',
-  //   component: page('group.vue')
-  // },
-  {
-    path: '/leaderboard',
-    name: 'leaderboard',
-    component: page('leaderboard.vue')
   }
 ]
 

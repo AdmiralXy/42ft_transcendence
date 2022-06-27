@@ -36,8 +36,9 @@ export class GroupsService {
     return this.groupRepository.find();
   }
 
-  async findOne(id: number, userId: number, password: string) {
-    const group = await this.groupRepository.findOne({
+  async findOne(userId: number, id: number, password: string) {
+    await this.join(userId, id, password);
+    return await this.groupRepository.findOne({
       where: {
         id,
       },
@@ -49,22 +50,6 @@ export class GroupsService {
         'mute_list',
       ],
     });
-    if (!group) throw new NotFoundException('Group not found.');
-    if (!group.users.find((user) => user.id === userId)) {
-      if (
-        group.mode === 'private' &&
-        !(await group.comparePassword(password))
-      ) {
-        throw new BadRequestException('Password is incorrect.');
-      } else {
-        // add user to group
-        const user = new User();
-        user.id = userId;
-        group.users.push(user);
-        await this.groupRepository.save(group);
-      }
-    }
-    return group;
   }
 
   async update(id: number, updateGroupDto: UpdateGroupDto) {
@@ -84,5 +69,69 @@ export class GroupsService {
   async remove(id: number) {
     const group = await this.groupRepository.findOneBy({ id });
     return this.groupRepository.remove(group);
+  }
+
+  async addAdmin(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['admin_list'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (!group.admin_list.some((admin) => admin.id === userId)) {
+      const user = new User();
+      user.id = userId;
+      group.admin_list.push(user);
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  async removeAdmin(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['admin_list'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (group.admin_list.some((admin) => admin.id === userId)) {
+      console.log('old admin list: ', group.admin_list);
+      group.admin_list = group.admin_list.filter(
+        (admin) => admin.id !== userId,
+      );
+      console.log('new admin list: ', group.admin_list);
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  private async join(userId: number, id: number, password: string) {
+    const group = await this.groupRepository.findOne({
+      where: {
+        id,
+      },
+      relations: [
+        'users',
+        'admin_list',
+        'invite_list',
+        'ban_list',
+        'mute_list',
+      ],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (!group.users.find((user) => user.id === userId)) {
+      if (
+        group.mode === 'private' &&
+        !(await group.comparePassword(password))
+      ) {
+        throw new BadRequestException('Password is incorrect.');
+      } else if (
+        group.mode === 'protected' &&
+        !group.invite_list.find((admin) => admin.id === userId)
+      ) {
+        throw new BadRequestException('You are not invited to this group.');
+      } else {
+        const user = new User();
+        user.id = userId;
+        group.users.push(user);
+        await this.groupRepository.save(group);
+      }
+    }
   }
 }

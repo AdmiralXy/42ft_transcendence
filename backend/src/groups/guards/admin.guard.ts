@@ -6,7 +6,7 @@ import { Group } from '../entities/group.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class OwnerGuard extends JwtAuthGuard {
+export class AdminGuard extends JwtAuthGuard {
   constructor(
     protected readonly reflector: Reflector,
     @InjectRepository(Group)
@@ -23,13 +23,14 @@ export class OwnerGuard extends JwtAuthGuard {
       where: {
         id: params.id,
       },
-      relations: ['owner'],
+      relations: ['admin_list'],
     });
 
     return (
       (await super.canActivate(context)) &&
       group &&
-      group.owner.id === request.user.id
+      (group.owner.id === request.user.id ||
+        group.admin_list.some((user) => user.id === request.user.id))
     );
   }
 }

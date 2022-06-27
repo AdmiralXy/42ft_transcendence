@@ -63,8 +63,23 @@ export const actions: ActionTree<RootState, RootState> = {
   async deleteGroup ({ commit }, id: number): Promise<any> {
     try {
       commit('preloader/SET_IS_LOADING', true, { root: true })
-      const response = await this.$axios.delete(`groups/${id}`)
-      commit('SET_GROUP', response.data)
+      await this.$axios.delete(`groups/${id}`)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async addAdmin ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.post(`groups/${id}/admin-list`, data)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async removeAdmin ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.delete(`groups/${id}/admin-list`, { data })
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })
     }

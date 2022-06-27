@@ -125,10 +125,10 @@
             </div>
             <div v-for="user in group.users" :key="group.id" class="friend-list__item">
               <div class="friend-list__item-avatar">
-                <img src="api/uploads/logo42.png" alt="">
+                <img :src="'/api/uploads/' + user.id + '.png'" alt="">
               </div>
               <div class="friend-list__item-name">
-                <span>{{ group.name }}</span>
+                <span><span v-if="group.admin_list.some(e => e.id === user.id)">Admin:</span> {{ user.username }}</span>
               </div>
               <div class="friend-list__item-status">
                 <b-dropdown id="dropdown-1" size="sm" text="Dropdown Button" class="m-md-2">
@@ -138,8 +138,8 @@
                   </b-dropdown-item-button>
                   <b-dropdown-divider />
                   <b-dropdown-group header="Channel owner">
-                    <b-dropdown-item-button>Give administrator privileges</b-dropdown-item-button>
-                    <b-dropdown-item-button>Remove administrator privileges</b-dropdown-item-button>
+                    <b-dropdown-item-button @click="addAdmin({ id: selectedId, data: { userId: user.id } })">Give administrator privileges</b-dropdown-item-button>
+                    <b-dropdown-item-button @click="removeAdmin({ id: selectedId, data: { userId: user.id } })">Remove administrator privileges</b-dropdown-item-button>
                   </b-dropdown-group>
                   <b-dropdown-group header="Administrator">
                     <b-dropdown-item-button>Unban</b-dropdown-item-button>
@@ -227,7 +227,9 @@ export default Vue.extend({
       createGroup: 'groups/createGroup',
       updateGroup: 'groups/updateGroup',
       fetchUsers: 'users/fetchUsers',
-      deleteGroup: 'groups/deleteGroup'
+      deleteGroup: 'groups/deleteGroup',
+      addAdmin: 'groups/addAdmin',
+      removeAdmin: 'groups/removeAdmin'
     }),
     connectToGroup (id: number): void {
       this.newGroupDialog = false
