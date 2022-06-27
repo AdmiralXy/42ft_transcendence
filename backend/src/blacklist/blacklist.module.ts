@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Blacklist } from './entities/blacklist.entity';
 import { UserModule } from '../user/user.module';
 import { RelationsModule } from '../relations/relations.module';
+import { User } from '../user/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Blacklist]), UserModule, RelationsModule],
+  imports: [
+    TypeOrmModule.forFeature([Blacklist, User]),
+    UserModule,
+    RelationsModule,
+  ],
   providers: [BlacklistService],
   exports: [BlacklistService],
   controllers: [BlacklistController],

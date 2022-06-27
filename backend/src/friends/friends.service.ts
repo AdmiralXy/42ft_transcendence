@@ -78,7 +78,7 @@ export class FriendsService {
       ],
       relations: ['receiver', 'sender'],
     });
-    if (!request) throw new NotFoundException('Friend request not found.');
+    if (!request) throw new BadRequestException('Friend request not found.');
     return await this.friendRequestRepository.remove(request);
   }
 

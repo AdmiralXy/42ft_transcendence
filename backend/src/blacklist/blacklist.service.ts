@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { Blacklist } from './entities/blacklist.entity';
-import {RelationsService} from "../relations/relations.service";
+import { RelationsService } from '../relations/relations.service';
 
 @Injectable()
 export class BlacklistService {

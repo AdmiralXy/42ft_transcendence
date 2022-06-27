@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FriendRequest } from './entities/friend-request.entity';
 import { UserModule } from '../user/user.module';
 import { RelationsModule } from '../relations/relations.module';
+import { User } from '../user/entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([FriendRequest]),
+    TypeOrmModule.forFeature([FriendRequest, User]),
     UserModule,
     RelationsModule,
   ],
