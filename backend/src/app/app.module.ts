@@ -11,6 +11,7 @@ import { FriendsModule } from '../friends/friends.module';
 import { BlacklistModule } from '../blacklist/blacklist.module';
 import { RelationsModule } from '../relations/relations.module';
 import { DirectModule } from '../direct/direct.module';
+import { GroupsModule } from '../groups/groups.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DirectModule } from '../direct/direct.module';
     BlacklistModule,
     RelationsModule,
     DirectModule,
+    GroupsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

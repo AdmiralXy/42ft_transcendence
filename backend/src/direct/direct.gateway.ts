@@ -18,9 +18,6 @@ export class DirectGateway {
 
   @SubscribeMessage('createDirect')
   async create(@MessageBody() createDirectMessageDto: CreateDirectMessageDto) {
-    // if (req.user.id != createDirectMessageDto.senderId) {
-    //   throw new WsException('Unauthorized action.');
-    // }
     const id = createDirectMessageDto.senderId;
     const friendId = createDirectMessageDto.receiverId;
     const message = await this.directService.create(createDirectMessageDto);
