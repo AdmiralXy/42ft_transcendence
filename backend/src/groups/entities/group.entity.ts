@@ -69,9 +69,4 @@ export class Group {
   async hashPassword(): Promise<void> {
     this.password = await bcrypt.hash(this.password, 10);
   }
-
-  async comparePassword(attempt: string): Promise<boolean> {
-    console.log(attempt, this.password);
-    return await bcrypt.compare(attempt, this.password);
-  }
 }

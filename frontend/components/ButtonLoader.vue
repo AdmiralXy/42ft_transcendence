@@ -1,7 +1,11 @@
 <template>
-  <button :type="nativeType" :disabled="loading" :class="{
-    'btn-loading': loading
-  }" class="btn"
+  <button
+    :type="nativeType"
+    :disabled="loading"
+    :class="{
+      'btn-loading': loading
+    }"
+    class="btn"
   >
     <slot />
   </button>

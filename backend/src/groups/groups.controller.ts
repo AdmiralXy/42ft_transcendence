@@ -30,12 +30,17 @@ export class GroupsController {
   }
 
   @Get(':id')
-  findOne(
+  findOne(@Request() req, @Param('id') id: string) {
+    return this.groupsService.findOne(+req.user.id, +id);
+  }
+
+  @Post(':id')
+  join(
     @Request() req,
     @Param('id') id: string,
     @Body('password') password: string,
   ) {
-    return this.groupsService.findOne(+req.user.id, +id, password);
+    return this.groupsService.join(+req.user.id, +id, password);
   }
 
   // emit channelStateChanged event
@@ -56,14 +61,12 @@ export class GroupsController {
   @UseGuards(OwnerGuard)
   @Post(':id/admin-list')
   async addAdmin(@Param('id') id: string, @Body('userId') userId: string) {
-    console.log(userId);
     await this.groupsService.addAdmin(+id, +userId);
   }
 
   @UseGuards(OwnerGuard)
   @Delete(':id/admin-list')
   async removeAdmin(@Param('id') id: string, @Body('userId') userId: string) {
-    console.log(userId);
     await this.groupsService.removeAdmin(+id, +userId);
   }
 

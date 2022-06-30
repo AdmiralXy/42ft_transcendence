@@ -33,10 +33,19 @@ export const actions: ActionTree<RootState, RootState> = {
       commit('preloader/SET_IS_LOADING', false, { root: true })
     }
   },
-  async fetchGroup ({ commit }, { id, data }: any): Promise<any> {
+  async fetchGroup ({ commit }, { id }: any): Promise<any> {
     try {
       commit('preloader/SET_IS_LOADING', true, { root: true })
-      const response = await this.$axios.get(`groups/${id}`, { data })
+      const response = await this.$axios.get(`groups/${id}`)
+      commit('SET_GROUP', response.data)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async joinGroup ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      const response = await this.$axios.post(`groups/${id}`, data)
       commit('SET_GROUP', response.data)
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })
@@ -45,8 +54,7 @@ export const actions: ActionTree<RootState, RootState> = {
   async createGroup ({ commit }, payload: any): Promise<any> {
     try {
       commit('preloader/SET_IS_LOADING', true, { root: true })
-      const response = await this.$axios.post('groups', { ...payload })
-      commit('SET_GROUP', response.data)
+      await this.$axios.post('groups', { ...payload })
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })
     }
