@@ -91,5 +91,53 @@ export const actions: ActionTree<RootState, RootState> = {
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })
     }
+  },
+  async addToInviteList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.post(`groups/${id}/invite-list`, data)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async removeFromInviteList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.delete(`groups/${id}/invite-list`, { data })
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async addToBanList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.post(`groups/${id}/ban-list`, data)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async removeFromBanList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.delete(`groups/${id}/ban-list`, { data })
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async addToMuteList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.post(`groups/${id}/mute-list`, data)
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
+  },
+  async removeFromMuteList ({ commit }, { id, data }: any): Promise<any> {
+    try {
+      commit('preloader/SET_IS_LOADING', true, { root: true })
+      await this.$axios.delete(`groups/${id}/mute-list`, { data })
+    } finally {
+      commit('preloader/SET_IS_LOADING', false, { root: true })
+    }
   }
 }

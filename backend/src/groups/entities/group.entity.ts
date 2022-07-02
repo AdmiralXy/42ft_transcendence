@@ -53,10 +53,10 @@ export class Group {
   @JoinTable()
   invite_list: User[];
 
-  @OneToMany(() => Ban, (ban) => ban.group)
+  @OneToMany(() => Ban, (ban) => ban.group, { cascade: true })
   ban_list: Ban[];
 
-  @OneToMany(() => Mute, (mute) => mute.group)
+  @OneToMany(() => Mute, (mute) => mute.group, { cascade: true })
   mute_list: Mute[];
 
   @CreateDateColumn()

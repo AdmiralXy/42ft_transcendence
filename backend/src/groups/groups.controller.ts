@@ -73,45 +73,62 @@ export class GroupsController {
   // Invite-list (admin guards)
 
   @UseGuards(AdminGuard)
-  @Post(':id/invite-list/:userId')
-  addToInviteList(@Param('id') id: string, @Param('userId') userId: string) {
-    // TODO: implement
+  @Post(':id/invite-list')
+  async addToInviteList(
+    @Param('id') id: string,
+    @Body('userId') userId: string,
+  ) {
+    await this.groupsService.addToInviteList(+id, +userId);
   }
 
   @UseGuards(AdminGuard)
-  @Delete(':id/invite-list/:userId')
-  removeFromInviteList(
+  @Delete(':id/invite-list')
+  async removeFromInviteList(
     @Param('id') id: string,
-    @Param('userId') userId: string,
+    @Body('userId') userId: string,
   ) {
-    // TODO: implement
+    await this.groupsService.removeFromInviteList(+id, +userId);
   }
 
   // Ban-list (admin guards)
 
   @UseGuards(AdminGuard)
-  @Post(':id/ban-list/:userId')
-  addToBanList(@Param('id') id: string, @Param('userId') userId: string) {
-    // TODO: implement
+  @Post(':id/ban-list')
+  async addToBanList(
+    @Param('id') id: string,
+    @Body('userId') userId: string,
+    @Body('seconds') seconds: string,
+  ) {
+    await this.groupsService.addToBanList(+id, +userId, +seconds);
   }
 
   @UseGuards(AdminGuard)
-  @Delete(':id/ban-list/:userId')
-  removeFromBanList(@Param('id') id: string, @Param('userId') userId: string) {
-    // TODO: implement
+  @Delete(':id/ban-list')
+  async removeFromBanList(
+    @Param('id') id: string,
+    @Body('userId') userId: string,
+  ) {
+    await this.groupsService.removeFromBanList(+id, +userId);
   }
 
   // Mute-list (admin guards)
 
   @UseGuards(AdminGuard)
-  @Post(':id/mute-list/:userId')
-  addToMuteList(@Param('id') id: string, @Param('userId') userId: string) {
-    // TODO: implement
+  @Post(':id/mute-list')
+  async addToMuteList(
+    @Param('id') id: string,
+    @Body('userId') userId: string,
+    @Body('seconds') seconds: string,
+  ) {
+    await this.groupsService.addToMuteList(+id, +userId, +seconds);
   }
 
   @UseGuards(AdminGuard)
-  @Delete(':id/mutelist/:userId')
-  removeFromMuteList(@Param('id') id: string, @Param('userId') userId: string) {
-    // TODO: implement
+  @Delete(':id/mute-list')
+  async removeFromMuteList(
+    @Param('id') id: string,
+    @Body('userId') userId: string,
+  ) {
+    await this.groupsService.removeFromMuteList(+id, +userId);
   }
 }

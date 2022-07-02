@@ -10,12 +10,18 @@ import { Group } from './entities/group.entity';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../user/entities/user.entity';
+import { Ban } from './entities/ban.entity';
+import { Mute } from './entities/mute.entity';
 
 @Injectable()
 export class GroupsService {
   constructor(
     @InjectRepository(Group)
     private readonly groupRepository: Repository<Group>,
+    @InjectRepository(Mute)
+    private readonly muteRepository: Repository<Mute>,
+    @InjectRepository(Ban)
+    private readonly banRepository: Repository<Ban>,
   ) {}
 
   async create(createGroupDto: CreateGroupDto) {
@@ -135,6 +141,90 @@ export class GroupsService {
         (admin) => admin.id !== userId,
       );
       return await this.groupRepository.save(group);
+    }
+  }
+
+  async addToInviteList(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['invite_list'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (!group.invite_list.some((invited) => invited.id === userId)) {
+      const user = new User();
+      user.id = userId;
+      group.invite_list.push(user);
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  async removeFromInviteList(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['invite_list'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (group.invite_list.some((invited) => invited.id === userId)) {
+      group.invite_list = group.invite_list.filter(
+        (invite) => invite.id !== userId,
+      );
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  async addToBanList(id: number, userId: number, seconds: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['ban_list', 'ban_list.user'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (!group.ban_list.some((ban) => ban.user.id === userId)) {
+      const user = new User();
+      user.id = userId;
+      group.ban_list.push(new Ban(user, seconds));
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  async removeFromBanList(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['ban_list', 'ban_list.user'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (group.ban_list.some((ban) => ban.user.id === userId)) {
+      const banToRemove = group.ban_list.find(
+        (mute) => mute.user.id === userId,
+      );
+      return await this.banRepository.remove(banToRemove);
+    }
+  }
+
+  async addToMuteList(id: number, userId: number, seconds: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['mute_list', 'mute_list.user'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (!group.mute_list.some((mute) => mute.user.id === userId)) {
+      const user = new User();
+      user.id = userId;
+      group.mute_list.push(new Mute(user, seconds));
+      return await this.groupRepository.save(group);
+    }
+  }
+
+  async removeFromMuteList(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['mute_list', 'mute_list.user'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    if (group.mute_list.some((mute) => mute.user.id === userId)) {
+      const muteToRemove = group.mute_list.find(
+        (mute) => mute.user.id === userId,
+      );
+      return await this.muteRepository.remove(muteToRemove);
     }
   }
 }

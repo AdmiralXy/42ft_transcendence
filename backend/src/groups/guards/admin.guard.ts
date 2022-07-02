@@ -23,7 +23,7 @@ export class AdminGuard extends JwtAuthGuard {
       where: {
         id: params.id,
       },
-      relations: ['admin_list'],
+      relations: ['owner', 'admin_list'],
     });
 
     return (

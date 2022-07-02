@@ -18,4 +18,9 @@ export class Ban {
   @IsNotEmpty()
   @Column('timestamp')
   expire_at: Date;
+
+  constructor(user: User, seconds: number) {
+    this.user = user;
+    this.expire_at = new Date(new Date().getTime() + seconds * 1000);
+  }
 }
