@@ -100,7 +100,7 @@ export default Vue.extend({
     selectUser (id: number) {
       this.selectedId = id
       this.closeSocketConnection()
-      this.socket = io('http://localhost')
+      this.socket = io(this.$config.BASE_URL)
 
       this.socket.on('connect', () => {
         this.socket.on('exception', (error: any) => {

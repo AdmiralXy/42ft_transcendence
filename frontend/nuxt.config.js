@@ -10,6 +10,7 @@ export default {
 
   // Environment
   publicRuntimeConfig: {
+    BASE_URL: process.env.BASE_URL,
     CLIENT_ID: process.env.CLIENT_ID,
     REDIRECT_URI: process.env.REDIRECT_URI,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

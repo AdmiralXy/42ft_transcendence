@@ -1,6 +1,11 @@
 <template>
-  <div class="pong">
-    <canvas ref="canvas" :width="width" :height="height" />
+  <div>
+    <div class="pong">
+      <canvas ref="canvas" :width="width" :height="height" />
+    </div>
+    <button type="button" class="pong__theme-button" @click="toggleTheme">
+      Theme
+    </button>
   </div>
 </template>
 
@@ -12,6 +17,7 @@ export default Vue.extend({
   data: () => ({
     width: 960,
     height: 540,
+    theme: 'classic',
     clientState: {} as any,
     state: {
       player1: {
@@ -65,8 +71,15 @@ export default Vue.extend({
     this.loopServerState()
   },
   methods: {
+    toggleTheme () {
+      this.theme = this.theme === 'classic' ? 'neon' : 'classic'
+    },
     draw () {
-      this.drawNeon()
+      if (this.theme === 'classic') {
+        this.drawClassic()
+      } else if (this.theme === 'neon') {
+        this.drawNeon()
+      }
     },
     drawNeon (): void {
       if (this.ctx && this.canvas) {
@@ -84,14 +97,13 @@ export default Vue.extend({
         this.ctx.fillRect(this.state.player2.x, this.state.player2.y, this.state.player2.width, this.state.player2.height)
         this.ctx.strokeStyle = '#0c1ad0'
         this.ctx.strokeRect(this.state.player2.x, this.state.player2.y, this.state.player2.width, this.state.player2.height)
-        // draw ball as circle with border
-        this.ctx.fillStyle = '#00ffff'
+        // draw ball as circle with border and offset for center
+        this.ctx.fillStyle = '#0c1ad0'
         this.ctx.beginPath()
-        this.ctx.arc(this.state.ball.x, this.state.ball.y, this.state.ball.width / 2, 0, 2 * Math.PI)
-        this.ctx.strokeStyle = '#0c1ad0'
-        this.ctx.lineWidth = 5
-        this.ctx.stroke()
+        this.ctx.arc(this.state.ball.x + this.state.ball.width / 2, this.state.ball.y + this.state.ball.height / 2, this.state.ball.width / 2, 0, 2 * Math.PI)
         this.ctx.fill()
+        this.ctx.strokeStyle = '#0c1ad0'
+        this.ctx.stroke()
         this.drawMetaInfo()
         this.drawLine()
       }
@@ -145,17 +157,14 @@ export default Vue.extend({
       // check if ball hits the top or bottom
       if (this.canvas && (this.state.ball.y < 0 || this.state.ball.y + this.state.ball.width > this.canvas.height)) {
         this.state.ball.yStep = -this.state.ball.yStep
-      }
-      // check if ball hits player1
-      else if (this.state.ball.x < this.state.player1.x + this.state.player1.width && this.state.ball.y > this.state.player1.y && this.state.ball.y < this.state.player1.y + this.state.player1.height) {
+      } else if (this.state.ball.x < this.state.player1.x + this.state.player1.width && this.state.ball.y > this.state.player1.y && this.state.ball.y < this.state.player1.y + this.state.player1.height) {
+        // check if ball hits player1
         this.state.ball.xStep = -this.state.ball.xStep
-      }
-      // check if ball hits player2
-      else if (this.state.ball.x + this.state.ball.width > this.state.player2.x && this.state.ball.y > this.state.player2.y && this.state.ball.y < this.state.player2.y + this.state.player2.height) {
+      } else if (this.state.ball.x + this.state.ball.width > this.state.player2.x && this.state.ball.y > this.state.player2.y && this.state.ball.y < this.state.player2.y + this.state.player2.height) {
+        // check if ball hits player2
         this.state.ball.xStep = -this.state.ball.xStep
-      }
-      // check if ball hits the left or right side
-      else if (this.canvas && (this.state.ball.x < 0 || this.state.ball.x + this.state.ball.width > this.canvas.width)) {
+      } else if (this.canvas && (this.state.ball.x < 0 || this.state.ball.x + this.state.ball.width > this.canvas.width)) {
+        // check if ball hits the left or right side
         if (this.state.ball.x < this.width / 2) {
           this.state.player2.score++
         } else {
@@ -167,12 +176,13 @@ export default Vue.extend({
       }
     },
     computerMove (): void {
+      // randomize computer move
+      if (Math.random() > 0.5) {
+        this.state.player2.y += this.state.ball.yStep
+      } else {
+        this.state.player2.y -= this.state.ball.yStep
+      }
       if (this.state.ball.xStep > 0) {
-        if (Math.random() > 0.5) {
-          this.state.player2.y -= this.state.player2.speed
-        } else {
-          this.state.player2.y += this.state.player2.speed
-        }
         if (this.state.ball.y > this.state.player2.y + this.state.player2.height / 2) {
           this.state.player2.y += this.state.player2.speed
         } else if (this.state.ball.y < this.state.player2.y + this.state.player2.height / 2) {
@@ -201,5 +211,16 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.pong__theme-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
 }
 </style>
