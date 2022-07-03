@@ -6,9 +6,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
 import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { User } from '../user/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Group, Ban, Mute])],
+  imports: [
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '6000s' },
+    }),
+    TypeOrmModule.forFeature([Group, Ban, Mute, User]),
+  ],
   providers: [GroupsGateway, GroupsService],
   controllers: [GroupsController],
 })

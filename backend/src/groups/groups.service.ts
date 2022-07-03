@@ -18,6 +18,8 @@ export class GroupsService {
   constructor(
     @InjectRepository(Group)
     private readonly groupRepository: Repository<Group>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     @InjectRepository(Mute)
     private readonly muteRepository: Repository<Mute>,
     @InjectRepository(Ban)
@@ -226,5 +228,20 @@ export class GroupsService {
       );
       return await this.muteRepository.remove(muteToRemove);
     }
+  }
+
+  async isUserInGroup(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['users'],
+    });
+    if (!group) throw new NotFoundException('Group not found.');
+    return group.users.some((user) => user.id === userId);
+  }
+
+  async getUserById(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found.');
+    return user;
   }
 }
