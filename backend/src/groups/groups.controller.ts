@@ -14,10 +14,14 @@ import { GroupsService } from './groups.service';
 import { OwnerGuard } from './guards/owner.guard';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AdminGuard } from './guards/admin.guard';
+import { GroupsGateway } from './groups.gateway';
 
 @Controller('groups')
 export class GroupsController {
-  constructor(private readonly groupsService: GroupsService) {}
+  constructor(
+    private readonly groupsService: GroupsService,
+    private readonly groupsGateway: GroupsGateway,
+  ) {}
 
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {
@@ -62,12 +66,14 @@ export class GroupsController {
   @Post(':id/admin-list')
   async addAdmin(@Param('id') id: string, @Body('userId') userId: string) {
     await this.groupsService.addAdmin(+id, +userId);
+    this.groupsGateway.server.emit('groupStateChanged');
   }
 
   @UseGuards(OwnerGuard)
   @Delete(':id/admin-list')
   async removeAdmin(@Param('id') id: string, @Body('userId') userId: string) {
     await this.groupsService.removeAdmin(+id, +userId);
+    this.groupsGateway.server.emit('groupStateChanged');
   }
 
   // Invite-list (admin guards)

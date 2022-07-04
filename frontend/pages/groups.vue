@@ -77,6 +77,7 @@ export default Vue.extend({
       this.state = State.CREATING
     },
     joinGroup (group: any): void {
+      this.state = State.DISCONNECTED
       this.selectedId = group.id
       this.fetchGroup({ id: group.id }).then(() => {
         this.state = State.CONNECTED

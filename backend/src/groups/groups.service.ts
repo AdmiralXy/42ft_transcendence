@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../user/entities/user.entity';
 import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
+import {WsException} from "@nestjs/websockets";
 
 @Injectable()
 export class GroupsService {
@@ -235,13 +236,10 @@ export class GroupsService {
       where: { id },
       relations: ['users'],
     });
-    if (!group) throw new NotFoundException('Group not found.');
-    return group.users.some((user) => user.id === userId);
+    return group && group.users.some((user) => user.id === userId);
   }
 
   async getUserById(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
-    if (!user) throw new NotFoundException('User not found.');
-    return user;
+    return await this.userRepository.findOneBy({ id });
   }
 }

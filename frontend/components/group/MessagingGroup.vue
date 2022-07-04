@@ -38,8 +38,6 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import { mapActions } from 'vuex'
-import { io } from 'socket.io-client'
 import { State } from '~/types/group-state'
 
 export default Vue.extend({
@@ -52,13 +50,15 @@ export default Vue.extend({
     state: {
       type: Number as unknown as PropType<State>,
       required: true
+    },
+    messages: {
+      type: Array,
+      required: true
     }
   },
   data () {
     return {
-      socket: null as any,
-      message: '' as string,
-      messages: [] as any[]
+      message: '' as string
     }
   },
   computed: {
@@ -66,63 +66,10 @@ export default Vue.extend({
       return this.state === State.CONNECTED
     }
   },
-  watch: {
-    state (): void {
-      if (this.state === State.CONNECTED) {
-        console.log('state connected')
-        this.openSocketConnection()
-      } else {
-        console.log('state disconnected')
-        this.closeSocketConnection()
-      }
-    }
-  },
   methods: {
-    ...mapActions(['createGroup']),
-    closeSocketConnection (): void {
-      if (this.socket && this.socket.connected) {
-        this.socket.disconnect()
-      }
-    },
-    openSocketConnection (): void {
-      // eslint-disable-next-line no-console
-      const socketOptions = {
-        transportOptions: {
-          polling: {
-            extraHeaders: {
-              // @ts-ignore
-              Authorization: this.$auth.strategy.token.get()
-            }
-          }
-        }
-      }
-
-      this.closeSocketConnection()
-      this.socket = io(this.$config.BASE_URL, socketOptions)
-      this.socket.on('connect', () => {
-        this.socket.on('exception', (error: any) => {
-          this.socket.disconnect()
-          this.$bvToast.toast(error.message, {
-            title: 'Group',
-            variant: 'warning'
-          })
-        })
-
-        this.socket.on('groupMessage', (response: any) => {
-          this.messages.push(response)
-        })
-
-        if (this.$auth.user) {
-          this.socket.emit('joinGroup', { id: this.$auth.user.id })
-        }
-      })
-    },
     createGroupMessage (): void {
-      if (this.$auth.user && this.message.length > 0) {
-        this.socket.emit('createGroupMessage', {
-          id: this.$auth.user.id,
-          text: this.message
-        })
+      if (this.message.length > 0) {
+        this.$parent.$emit('createGroupMessage', { message: this.message })
         this.message = ''
       }
     }

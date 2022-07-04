@@ -35,7 +35,6 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
   }
 
   handleDisconnect(client: Socket) {
-    console.log(`client disconnected ${client.id}`);
     this.groups.removeUser(client);
   }
 
@@ -60,7 +59,7 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
     @MessageBody('id') id: string,
     @MessageBody('text') text: string,
   ) {
-    if (!(await this.groupsService.isUserInGroup(user.id, +id))) {
+    if (!(await this.groupsService.isUserInGroup(+id, user.id))) {
       return;
     }
     const sender = await this.groupsService.getUserById(user.id);
@@ -70,10 +69,11 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
     });
   }
 
-  @SubscribeMessage('groupStateChanged')
-  groupStateChanged() {
-    // TODO implement
-  }
+  // @SubscribeMessage('groupStateChanged')
+  // groupStateChanged() {
+  //   console.log('received changed event!');
+  //   // TODO implement
+  // }
 
   @SubscribeMessage('userBanned')
   userBanned() {

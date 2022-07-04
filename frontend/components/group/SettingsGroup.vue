@@ -7,6 +7,7 @@
       <div class="group-settings">
         <b-form-select v-model="updateForm.mode" :options="options" />
         <input v-model="updateForm.password" type="text" class="new-group__input mt-3" placeholder="Group password">
+        <span v-for="error in updateForm.errors" :key="error" class="small text-warning pt-2">{{ error }}</span>
         <button type="button" class="app-button mt-3" @click="updateCurrentGroup">
           Update
         </button>
@@ -36,7 +37,7 @@
         <img :src="'/api/uploads/' + user.id + '.png'" alt="">
       </div>
       <div class="friend-list__item-name">
-        <span><span v-if="group.admin_list.some(e => e.id === user.id)">Admin:</span> {{ user.username }}</span>
+        <span>{{ user.username }}</span>
       </div>
       <div class="friend-list__item-status">
         <b-dropdown
@@ -102,7 +103,7 @@
       <div class="friend-list__item-name">
         <span>{{ user.username }}</span>
       </div>
-      <div v-if="isAdmin" class="friend-list__item-status">
+      <div v-if="isAdmin" class="friend-list__item-status" @click="addToInviteList({ id, data: { userId: user.id } })">
         <span>Invite</span>
       </div>
     </div>
@@ -180,7 +181,10 @@ export default Vue.extend({
     },
     updateCurrentGroup (): void {
       this.updateGroup({ id: this.id, data: { ...this.updateForm } }).then(() => {
+        this.updateForm.errors = []
         this.$parent.$parent.$emit('groupUpdated')
+      }).catch((error) => {
+        this.updateForm.errors = error.response.data.message
       })
     }
   }

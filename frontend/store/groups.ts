@@ -62,8 +62,7 @@ export const actions: ActionTree<RootState, RootState> = {
   async updateGroup ({ commit }, { id, data }: any): Promise<any> {
     try {
       commit('preloader/SET_IS_LOADING', true, { root: true })
-      const response = await this.$axios.patch(`groups/${id}`, data)
-      commit('SET_GROUP', response.data)
+      await this.$axios.patch(`groups/${id}`, data)
     } finally {
       commit('preloader/SET_IS_LOADING', false, { root: true })
     }

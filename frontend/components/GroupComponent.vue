@@ -1,9 +1,8 @@
 <template>
-  <div class="direct-container">
-    <div v-if="isConnected()" class="d-flex flex-row justify-content-end mb-3">
+  <div v-if="isConnected()" class="direct-container">
+    <div class="d-flex flex-row justify-content-end mb-3">
       <button type="button" class="settings__button" @click="showSettings">
         <svg
-          v-if="group.owner.id === $auth.user.id || group.admin_list.some((e) => e.id === $auth.user.id)"
           width="24"
           height="24"
           fill="#fff"
@@ -33,13 +32,14 @@
       </button>
     </div>
     <SettingsGroup :id="id" :state="state" />
-    <MessagingGroup :id="id" :state="state" />
+    <MessagingGroup :id="id" :state="state" :messages="messages" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
+import { io } from 'socket.io-client'
 import { State } from '~/types/group-state'
 import SettingsGroup from '~/components/group/SettingsGroup.vue'
 import MessagingGroup from '~/components/group/MessagingGroup.vue'
@@ -60,14 +60,38 @@ export default Vue.extend({
       required: true
     }
   },
+  data () {
+    return {
+      socket: null as any,
+      messages: [] as any[]
+    }
+  },
   computed: {
     ...mapGetters({
       group: 'groups/group'
     })
   },
+  watch: {
+    state (): void {
+      if (this.state === State.CONNECTED || this.state === State.SETTINGS) {
+        this.openSocketConnection()
+      } else {
+        this.closeSocketConnection()
+      }
+    }
+  },
+  mounted () {
+    this.$on('createGroupMessage', (data: { message: any }) => {
+      this.socket.emit('createGroupMessage', {
+        id: this.id,
+        text: data.message
+      })
+    })
+  },
   methods: {
     ...mapActions({
-      _deleteGroup: 'groups/deleteGroup'
+      _deleteGroup: 'groups/deleteGroup',
+      fetchGroup: 'groups/fetchGroup'
     }),
     isConnected (): boolean {
       return this.state === State.CONNECTED || this.state === State.SETTINGS
@@ -77,6 +101,49 @@ export default Vue.extend({
     },
     deleteGroup (): void {
       this._deleteGroup(this.id)
+    },
+    closeSocketConnection (): void {
+      this.messages = []
+      if (this.socket && this.socket.connected) {
+        this.socket.disconnect()
+      }
+    },
+    openSocketConnection (): void {
+      const socketOptions = {
+        transportOptions: {
+          polling: {
+            extraHeaders: {
+              // @ts-ignore
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        }
+      }
+
+      this.closeSocketConnection()
+      this.socket = io(this.$config.BASE_URL, socketOptions)
+      this.socket.on('connect', () => {
+        this.socket.on('exception', (error: any) => {
+          this.socket.disconnect()
+          this.$bvToast.toast(error.message, {
+            title: 'Group',
+            variant: 'warning'
+          })
+        })
+
+        this.socket.on('groupMessage', (response: any) => {
+          this.messages.push(response)
+        })
+
+        this.socket.on('groupStateChanged', () => {
+          this.$parent.$emit('groupUpdated')
+          this.fetchGroup({ id: this.id })
+        })
+
+        if (this.$auth.user) {
+          this.socket.emit('joinGroup', { id: this.id })
+        }
+      })
     }
   }
 })
