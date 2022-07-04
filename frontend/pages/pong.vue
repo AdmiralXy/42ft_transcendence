@@ -160,9 +160,13 @@ export default Vue.extend({
       } else if (this.state.ball.x < this.state.player1.x + this.state.player1.width && this.state.ball.y > this.state.player1.y && this.state.ball.y < this.state.player1.y + this.state.player1.height) {
         // check if ball hits player1
         this.state.ball.xStep = -this.state.ball.xStep
+        // new y step randomization
+        this.state.ball.yStep = Math.random() * (this.state.ball.yStep + 3) - this.state.ball.yStep
       } else if (this.state.ball.x + this.state.ball.width > this.state.player2.x && this.state.ball.y > this.state.player2.y && this.state.ball.y < this.state.player2.y + this.state.player2.height) {
         // check if ball hits player2
         this.state.ball.xStep = -this.state.ball.xStep
+        // new y step randomization
+        this.state.ball.yStep = Math.random() * (this.state.ball.yStep + 3) - this.state.ball.yStep
       } else if (this.canvas && (this.state.ball.x < 0 || this.state.ball.x + this.state.ball.width > this.canvas.width)) {
         // check if ball hits the left or right side
         if (this.state.ball.x < this.width / 2) {

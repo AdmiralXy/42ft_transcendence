@@ -106,6 +106,7 @@ export class GroupsController {
     @Body('seconds') seconds: string,
   ) {
     await this.groupsService.addToBanList(+id, +userId, +seconds);
+    await this.groupsGateway.groups.removeUserById(+userId);
   }
 
   @UseGuards(AdminGuard)

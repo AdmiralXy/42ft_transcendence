@@ -124,9 +124,8 @@ export default Vue.extend({
       this.socket = io(this.$config.BASE_URL, socketOptions)
       this.socket.on('connect', () => {
         this.socket.on('exception', (error: any) => {
-          this.socket.disconnect()
           this.$bvToast.toast(error.message, {
-            title: 'Group',
+            title: 'Group ' + this.group.name,
             variant: 'warning'
           })
         })

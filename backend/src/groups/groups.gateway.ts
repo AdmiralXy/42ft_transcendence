@@ -6,6 +6,7 @@ import {
   OnGatewayDisconnect,
   ConnectedSocket,
   OnGatewayInit,
+  WsException,
 } from '@nestjs/websockets';
 import { UseGuards } from '@nestjs/common';
 import { GroupsService } from './groups.service';
@@ -40,13 +41,16 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
 
   @UseGuards(JwtWsAuthGuard)
   @SubscribeMessage('joinGroup')
-  joinGroup(
+  async joinGroup(
     @CurrentUser() user,
     @MessageBody('id') id: string,
     @ConnectedSocket() client: Socket,
   ) {
-    if (!this.groupsService.isUserInGroup(user.id, +id)) {
-      return;
+    if (!(await this.groupsService.isUserInGroup(+id, user.id))) {
+      throw new WsException('You are not in this group.');
+    }
+    if (await this.groupsService.isUserBanned(+id, user.id)) {
+      throw new WsException('You are banned from this group.');
     }
     this.groups.addUser(user.id, +id, client);
     client.join(id);
@@ -60,7 +64,13 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
     @MessageBody('text') text: string,
   ) {
     if (!(await this.groupsService.isUserInGroup(+id, user.id))) {
-      return;
+      throw new WsException('You are not in this group.');
+    }
+    if (await this.groupsService.isUserBanned(+id, user.id)) {
+      throw new WsException('You are banned from this group.');
+    }
+    if (await this.groupsService.isUserMuted(+id, user.id)) {
+      throw new WsException('You are muted.');
     }
     const sender = await this.groupsService.getUserById(user.id);
     this.server.to(id).emit('groupMessage', {

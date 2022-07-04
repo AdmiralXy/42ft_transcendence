@@ -63,30 +63,30 @@
           </b-dropdown-item-button>
           <b-dropdown-divider v-if="isOwner || isAdmin" />
           <b-dropdown-group v-if="isOwner" header="Channel owner">
-            <b-dropdown-item-button @click="addAdmin({ id, data: { userId: user.id } })">
+            <b-dropdown-item-button @click="addAdmin({ id, data: { userId: user.id } }).catch((e) => { showError(e) })">
               Make admin
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="removeAdmin({ id, data: { userId: user.id } })">
+            <b-dropdown-item-button @click="removeAdmin({ id, data: { userId: user.id } }).catch((e) => { showError(e) })">
               Remove admin
             </b-dropdown-item-button>
           </b-dropdown-group>
           <b-dropdown-group v-if="isAdmin" header="Administrator">
-            <b-dropdown-item-button @click="removeFromBanList({ id, data: { userId: user.id } })">
+            <b-dropdown-item-button @click="removeFromBanList({ id, data: { userId: user.id } }).catch((e) => { showError(e) })">
               Unban
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="addToBanList({ id, data: { userId: user.id, seconds: 3155760000 } })">
+            <b-dropdown-item-button @click="addToBanList({ id, data: { userId: user.id, seconds: 3155760000 } }).catch((e) => { showError(e) })">
               Ban
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="addToBanList({ id, data: { userId: user.id, seconds: 900 } })">
+            <b-dropdown-item-button @click="addToBanList({ id, data: { userId: user.id, seconds: 900 } }).catch((e) => { showError(e) })">
               Ban for 15m
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="removeFromMuteList({ id, data: { userId: user.id } })">
+            <b-dropdown-item-button @click="removeFromMuteList({ id, data: { userId: user.id } }).catch((e) => { showError(e) })">
               Unmute
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="addToMuteList({ id, data: { userId: user.id, seconds: 3155760000 } })">
+            <b-dropdown-item-button @click="addToMuteList({ id, data: { userId: user.id, seconds: 3155760000 } }).catch((e) => { showError(e) })">
               Mute
             </b-dropdown-item-button>
-            <b-dropdown-item-button @click="addToMuteList({ id, data: { userId: user.id, seconds: 900 } })">
+            <b-dropdown-item-button @click="addToMuteList({ id, data: { userId: user.id, seconds: 900 } }).catch((e) => { showError(e) })">
               Mute for 15m
             </b-dropdown-item-button>
           </b-dropdown-group>
@@ -185,6 +185,14 @@ export default Vue.extend({
         this.$parent.$parent.$emit('groupUpdated')
       }).catch((error) => {
         this.updateForm.errors = error.response.data.message
+      })
+    },
+    showError (e: any): void {
+      this.$bvToast.toast(e.response.data.message, {
+        title: 'Group ' + this.group.name,
+        variant: 'warning',
+        solid: true,
+        autoHideDelay: 5000
       })
     }
   }

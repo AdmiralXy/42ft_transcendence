@@ -12,7 +12,6 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../user/entities/user.entity';
 import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
-import {WsException} from "@nestjs/websockets";
 
 @Injectable()
 export class GroupsService {
@@ -56,10 +55,17 @@ export class GroupsService {
         'admin_list',
         'invite_list',
         'ban_list',
+        'ban_list.user',
         'mute_list',
       ],
     });
     if (!group) throw new NotFoundException('Group not found.');
+    const ban = group.ban_list.find((ban) => ban.user.id === userId);
+    if (ban && ban.expire_at > new Date()) {
+      throw new BadRequestException(
+        `You are banned from this group. Expire at: ${ban.expire_at}`,
+      );
+    }
     if (!group.users.find((user) => user.id === userId)) {
       throw new BadRequestException('You are not joined to this group.');
     }
@@ -76,10 +82,17 @@ export class GroupsService {
         'admin_list',
         'invite_list',
         'ban_list',
+        'ban_list.user',
         'mute_list',
       ],
     });
     if (!group) throw new NotFoundException('Group not found.');
+    const ban = group.ban_list.find((ban) => ban.user.id === userId);
+    if (ban && ban.expire_at > new Date()) {
+      throw new BadRequestException(
+        `You are banned from this group. Expire at: ${ban.expire_at}`,
+      );
+    }
     if (!group.users.find((user) => user.id === userId)) {
       if (
         group.mode === 'private' &&
@@ -120,6 +133,8 @@ export class GroupsService {
   }
 
   async addAdmin(id: number, userId: number) {
+    await this.removeFromMuteList(id, userId);
+    await this.removeFromBanList(id, userId);
     const group = await this.groupRepository.findOne({
       where: { id },
       relations: ['admin_list'],
@@ -176,11 +191,18 @@ export class GroupsService {
   }
 
   async addToBanList(id: number, userId: number, seconds: number) {
+    await this.removeFromBanList(id, userId);
     const group = await this.groupRepository.findOne({
       where: { id },
-      relations: ['ban_list', 'ban_list.user'],
+      relations: ['admin_list', 'ban_list', 'ban_list.user', 'owner'],
     });
     if (!group) throw new NotFoundException('Group not found.');
+    if (
+      group.owner.id === userId ||
+      group.admin_list.some((admin) => admin.id === userId)
+    ) {
+      throw new BadRequestException('You cannot ban an admin.');
+    }
     if (!group.ban_list.some((ban) => ban.user.id === userId)) {
       const user = new User();
       user.id = userId;
@@ -204,11 +226,18 @@ export class GroupsService {
   }
 
   async addToMuteList(id: number, userId: number, seconds: number) {
+    await this.removeFromMuteList(id, userId);
     const group = await this.groupRepository.findOne({
       where: { id },
-      relations: ['mute_list', 'mute_list.user'],
+      relations: ['admin_list', 'mute_list', 'mute_list.user', 'owner'],
     });
     if (!group) throw new NotFoundException('Group not found.');
+    if (
+      group.owner.id === userId ||
+      group.admin_list.some((admin) => admin.id === userId)
+    ) {
+      throw new BadRequestException('You cannot mute an admin.');
+    }
     if (!group.mute_list.some((mute) => mute.user.id === userId)) {
       const user = new User();
       user.id = userId;
@@ -241,5 +270,23 @@ export class GroupsService {
 
   async getUserById(id: number) {
     return await this.userRepository.findOneBy({ id });
+  }
+
+  async isUserBanned(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['ban_list', 'ban_list.user'],
+    });
+    const ban = group.ban_list.find((ban) => ban.user.id === userId);
+    return ban && ban.expire_at > new Date();
+  }
+
+  async isUserMuted(id: number, userId: number) {
+    const group = await this.groupRepository.findOne({
+      where: { id },
+      relations: ['mute_list', 'mute_list.user'],
+    });
+    const mute = group.mute_list.find((mute) => mute.user.id === userId);
+    return mute && mute.expire_at > new Date();
   }
 }
