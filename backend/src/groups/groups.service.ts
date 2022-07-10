@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../user/entities/user.entity';
 import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
+import { JoinGroupDto } from './dto/join-group.dto';
 
 @Injectable()
 export class GroupsService {
@@ -72,7 +73,7 @@ export class GroupsService {
     return group;
   }
 
-  async join(userId: number, id: number, password: string) {
+  async join(userId: number, id: number, joinGroupDto: JoinGroupDto) {
     const group = await this.groupRepository.findOne({
       where: {
         id,
@@ -101,7 +102,8 @@ export class GroupsService {
         throw new BadRequestException('You are not invited to this group.');
       } else if (
         group.mode === 'protected' &&
-        !(await bcrypt.compare(password, group.password))
+        joinGroupDto.password !== undefined &&
+        !(await bcrypt.compare(joinGroupDto.password, group.password))
       ) {
         throw new BadRequestException('Password is incorrect.');
       } else {
@@ -115,11 +117,8 @@ export class GroupsService {
 
   async update(id: number, updateGroupDto: UpdateGroupDto) {
     const group = await this.groupRepository.findOneBy({ id });
-    if (group.mode === 'private') {
-      group.password =
-        updateGroupDto.password.length > 0
-          ? await bcrypt.hash(updateGroupDto.password, 10)
-          : group.password;
+    if (updateGroupDto.mode === 'protected') {
+      group.password = await bcrypt.hash(updateGroupDto.password, 10);
     } else {
       group.password = null;
     }

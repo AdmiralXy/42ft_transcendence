@@ -42,8 +42,7 @@ export default Vue.extend({
         width: 20,
         height: 20,
         angle: Math.PI / 4,
-        xStep: 3,
-        yStep: 3
+        speed: 4.5
       }
     },
     canvas: null as HTMLCanvasElement | null,
@@ -152,52 +151,46 @@ export default Vue.extend({
       this.computerMove()
     },
     ballMove (): void {
-      this.state.ball.x += this.state.ball.xStep
-      this.state.ball.y += this.state.ball.yStep
-      // check if ball hits the top or bottom
-      if (this.canvas && (this.state.ball.y < 0 || this.state.ball.y + this.state.ball.width > this.canvas.height)) {
-        this.state.ball.yStep = -this.state.ball.yStep
-      } else if (this.state.ball.x < this.state.player1.x + this.state.player1.width && this.state.ball.y > this.state.player1.y && this.state.ball.y < this.state.player1.y + this.state.player1.height) {
-        // check if ball hits player1
-        this.state.ball.xStep = -this.state.ball.xStep
-        // new y step randomization
-        this.state.ball.yStep = Math.random() * (this.state.ball.yStep + 3) - this.state.ball.yStep
-      } else if (this.state.ball.x + this.state.ball.width > this.state.player2.x && this.state.ball.y > this.state.player2.y && this.state.ball.y < this.state.player2.y + this.state.player2.height) {
-        // check if ball hits player2
-        this.state.ball.xStep = -this.state.ball.xStep
-        // new y step randomization
-        this.state.ball.yStep = Math.random() * (this.state.ball.yStep + 3) - this.state.ball.yStep
-      } else if (this.canvas && (this.state.ball.x < 0 || this.state.ball.x + this.state.ball.width > this.canvas.width)) {
-        // check if ball hits the left or right side
-        if (this.state.ball.x < this.width / 2) {
-          this.state.player2.score++
-        } else {
-          this.state.player1.score++
-        }
-        // reset ball position to center
-        this.state.ball.x = this.width / 2
-        this.state.ball.y = this.height / 2
+      // move ball according to angle
+      this.state.ball.x += this.state.ball.speed * Math.cos(this.state.ball.angle)
+      this.state.ball.y += this.state.ball.speed * Math.sin(this.state.ball.angle)
+      if (!this.checkHitPlayer()) {
+        this.checkOutOfBounds()
       }
     },
+    checkOutOfBounds (): void {
+      if (this.state.ball.x < 0) {
+        this.state.ball.x = 0
+        this.state.ball.angle = Math.PI - this.state.ball.angle
+      } else if (this.state.ball.x > this.width - this.state.ball.width) {
+        this.state.ball.x = this.width - this.state.ball.width
+        this.state.ball.angle = Math.PI - this.state.ball.angle
+      }
+      if (this.state.ball.y < 0) {
+        this.state.ball.y = 0
+        this.state.ball.angle = -this.state.ball.angle
+      } else if (this.state.ball.y > this.height - this.state.ball.height) {
+        this.state.ball.y = this.height - this.state.ball.height
+        this.state.ball.angle = -this.state.ball.angle
+      }
+    },
+    checkHitPlayer (): boolean {
+      // check if ball hit player 1
+      if (this.state.ball.x + this.state.ball.width > this.state.player1.x && this.state.ball.x < this.state.player1.x + this.state.player1.width && this.state.ball.y + this.state.ball.height > this.state.player1.y && this.state.ball.y < this.state.player1.y + this.state.player1.height) {
+        this.state.ball.angle = Math.PI - this.state.ball.angle
+        this.state.ball.x = this.state.player1.x + this.state.player1.width
+        return true
+      }
+      // check if ball hit player 2
+      if (this.state.ball.x + this.state.ball.width > this.state.player2.x && this.state.ball.x < this.state.player2.x + this.state.player2.width && this.state.ball.y + this.state.ball.height > this.state.player2.y && this.state.ball.y < this.state.player2.y + this.state.player2.height) {
+        this.state.ball.angle = Math.PI - this.state.ball.angle
+        this.state.ball.x = this.state.player2.x - this.state.ball.width
+        return true
+      }
+      return false
+    },
     computerMove (): void {
-      // randomize computer move
-      if (Math.random() > 0.5) {
-        this.state.player2.y += this.state.ball.yStep
-      } else {
-        this.state.player2.y -= this.state.ball.yStep
-      }
-      if (this.state.ball.xStep > 0) {
-        if (this.state.ball.y > this.state.player2.y + this.state.player2.height / 2) {
-          this.state.player2.y += this.state.player2.speed
-        } else if (this.state.ball.y < this.state.player2.y + this.state.player2.height / 2) {
-          this.state.player2.y -= this.state.player2.speed
-        }
-        if (this.state.player2.y < 0) {
-          this.state.player2.y = 0
-        } else if (this.state.player2.y > this.height - this.state.player2.height) {
-          this.state.player2.y = this.height - this.state.player2.height
-        }
-      }
+      // move computer player 2
     }
   }
 })

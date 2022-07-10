@@ -4,6 +4,9 @@ PROJECT_DIRECTORY = docker
 all:
 	docker-compose -p $(PROJECT_NAME) up -d
 
+build:
+	docker-compose -p $(PROJECT_NAME) build
+
 stop:
 	docker-compose -p $(PROJECT_NAME) stop
 
@@ -29,4 +32,4 @@ clean:
 fclean: clean
 	docker system prune -a
 
-re: clean all
+re: clean build all

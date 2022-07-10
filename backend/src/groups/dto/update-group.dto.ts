@@ -8,6 +8,6 @@ export class UpdateGroupDto {
 
   @ValidateIf((o) => o.mode === Mode.PROTECTED)
   @IsNotEmpty()
-  @MaxLength(200000)
+  @MaxLength(200)
   password: string;
 }

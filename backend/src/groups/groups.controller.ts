@@ -15,6 +15,7 @@ import { OwnerGuard } from './guards/owner.guard';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AdminGuard } from './guards/admin.guard';
 import { GroupsGateway } from './groups.gateway';
+import { JoinGroupDto } from './dto/join-group.dto';
 
 @Controller('groups')
 export class GroupsController {
@@ -42,9 +43,9 @@ export class GroupsController {
   join(
     @Request() req,
     @Param('id') id: string,
-    @Body('password') password: string,
+    @Body() joinGroupDto: JoinGroupDto,
   ) {
-    return this.groupsService.join(+req.user.id, +id, password);
+    return this.groupsService.join(+req.user.id, +id, joinGroupDto);
   }
 
   // emit channelStateChanged event
