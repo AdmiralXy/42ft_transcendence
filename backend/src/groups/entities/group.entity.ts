@@ -10,7 +10,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  BeforeUpdate,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import { User } from '../../user/entities/user.entity';
@@ -18,7 +17,6 @@ import { Mode } from '../enums/mode.enum';
 import { Ban } from './ban.entity';
 import { Mute } from './mute.entity';
 import * as bcrypt from 'bcrypt';
-import { BadRequestException } from '@nestjs/common';
 
 @Entity()
 export class Group {

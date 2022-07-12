@@ -24,7 +24,7 @@ export class AuthService {
     } else if (type === 'google') {
       return this.loginApi(code, this.googleAPI);
     } else {
-      throw new BadRequestException('Invalid type!');
+      throw new BadRequestException('Invalid type.enum.ts!');
     }
   }
 

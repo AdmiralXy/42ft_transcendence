@@ -12,6 +12,7 @@ import { BlacklistModule } from '../blacklist/blacklist.module';
 import { RelationsModule } from '../relations/relations.module';
 import { DirectModule } from '../direct/direct.module';
 import { GroupsModule } from '../groups/groups.module';
+import { MatchesModule } from '../matches/matches.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { GroupsModule } from '../groups/groups.module';
     RelationsModule,
     DirectModule,
     GroupsModule,
+    MatchesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

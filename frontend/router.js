@@ -27,6 +27,11 @@ const routes = [
     component: page('pong.vue')
   },
   {
+    path: '/pong/train',
+    name: 'pong-train',
+    component: page('train.vue')
+  },
+  {
     path: '/leaderboard',
     name: 'leaderboard',
     component: page('leaderboard.vue')
