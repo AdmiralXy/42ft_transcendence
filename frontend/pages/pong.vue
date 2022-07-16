@@ -1,6 +1,6 @@
 <template>
   <div class="pong-game">
-    <button type="button" class="pong-game__button">
+    <button type="button" class="pong-game__button"  @click="$router.push({ name: 'pong-matchmaking' })">
       Start matchmaking
     </button>
     <button type="button" class="pong-game__button pong-game__button-train" @click="$router.push({ name: 'pong-train' })">

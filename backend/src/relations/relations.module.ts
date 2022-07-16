@@ -5,10 +5,7 @@ import { FriendRequest } from '../friends/entities/friend-request.entity';
 import { Blacklist } from '../blacklist/entities/blacklist.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([FriendRequest]),
-    TypeOrmModule.forFeature([Blacklist]),
-  ],
+  imports: [TypeOrmModule.forFeature([FriendRequest, Blacklist])],
   providers: [RelationsService],
   exports: [RelationsService],
 })

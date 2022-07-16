@@ -27,6 +27,16 @@ const routes = [
     component: page('pong.vue')
   },
   {
+    path: '/pong/matchmaking',
+    name: 'pong-matchmaking',
+    component: page('matchmaking.vue')
+  },
+  {
+    path: '/pong/match/:id',
+    name: 'pong-match',
+    component: page('match.vue')
+  },
+  {
     path: '/pong/train',
     name: 'pong-train',
     component: page('train.vue')

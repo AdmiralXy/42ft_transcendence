@@ -13,6 +13,7 @@ import { RelationsModule } from '../relations/relations.module';
 import { DirectModule } from '../direct/direct.module';
 import { GroupsModule } from '../groups/groups.module';
 import { MatchesModule } from '../matches/matches.module';
+import { MatchmakingModule } from '../matchmaking/matchmaking.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MatchesModule } from '../matches/matches.module';
     DirectModule,
     GroupsModule,
     MatchesModule,
+    MatchmakingModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

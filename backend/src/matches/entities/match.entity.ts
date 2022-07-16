@@ -21,19 +21,15 @@ export class Match {
   @ManyToOne(() => User)
   player2: User;
 
+  @ManyToOne(() => User, { nullable: true })
+  winner: User;
+
   @Column({
     type: 'enum',
     enum: Type,
     default: Type.PRIVATE,
   })
   type: Type;
-
-  @Column({
-    type: 'enum',
-    enum: Status,
-    default: Status.CREATED,
-  })
-  status: Status;
 
   @CreateDateColumn()
   created_at: Date;

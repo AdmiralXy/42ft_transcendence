@@ -88,6 +88,9 @@ export default Vue.extend({
       })
     })
   },
+  beforeDestroy () {
+    this.closeSocketConnection()
+  },
   methods: {
     ...mapActions({
       _deleteGroup: 'groups/deleteGroup',
@@ -146,5 +149,4 @@ export default Vue.extend({
     }
   }
 })
-
 </script>

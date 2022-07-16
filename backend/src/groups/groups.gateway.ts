@@ -24,13 +24,6 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
 
   constructor(private readonly groupsService: GroupsService) {}
 
-  // handleDisconnect -> remove user from channels array
-  // createGroupMessage -> user send message, translate to all users in this channel
-  // joinGroup -> user try to join channel, if success, join to channel room by id and add user in channels array
-  // also add in users database array and emit cSC
-  // groupStateChanged -> send to all users that channelStateChanged
-  // userBanned -> send to user that he is banned and disconnect him
-
   afterInit(): any {
     this.groups = new GroupsCollection();
   }
@@ -78,12 +71,6 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
       text,
     });
   }
-
-  // @SubscribeMessage('groupStateChanged')
-  // groupStateChanged() {
-  //   console.log('received changed event!');
-  //   // TODO implement
-  // }
 
   @SubscribeMessage('userBanned')
   userBanned() {
