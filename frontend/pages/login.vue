@@ -22,6 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { BvToast } from 'bootstrap-vue'
 
 export default Vue.extend({
   data: () => ({

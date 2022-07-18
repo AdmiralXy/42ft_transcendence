@@ -10,6 +10,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { io } from 'socket.io-client'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { BvToast } from 'bootstrap-vue'
 
 export default Vue.extend({
   layout: 'app',
