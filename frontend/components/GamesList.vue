@@ -1,5 +1,5 @@
 <template>
-  <div class="content-section" v-if="finishedMatches && finishedMatches.length > 0">
+  <div v-if="finishedMatches && finishedMatches.length > 0" class="content-section">
     <div class="content-section-title">
       Latest games:
     </div>

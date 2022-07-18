@@ -1,6 +1,6 @@
 <template>
   <div class="pong-game">
-    <button type="button" class="pong-game__button"  @click="$router.push({ name: 'pong-matchmaking' })">
+    <button type="button" class="pong-game__button" @click="$router.push({ name: 'pong-matchmaking' })">
       Start matchmaking
     </button>
     <button type="button" class="pong-game__button pong-game__button-train" @click="$router.push({ name: 'pong-train' })">
@@ -11,8 +11,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { io } from 'socket.io-client'
-import { mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
   layout: 'app',

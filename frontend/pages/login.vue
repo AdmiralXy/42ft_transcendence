@@ -22,8 +22,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Auth } from '@nuxtjs/auth-next'
-import { BvToast } from 'bootstrap-vue'
 
 export default Vue.extend({
   data: () => ({

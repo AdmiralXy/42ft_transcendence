@@ -14,7 +14,9 @@
           {{ error }}
         </p>
         <div class="user-info">
-          <p v-if="isProfileOwner">Owner</p>
+          <p v-if="isProfileOwner">
+            Owner
+          </p>
           <p>{{ finishedMatches.length }} matches</p>
           <p>W/L {{ winRate }}</p>
         </div>

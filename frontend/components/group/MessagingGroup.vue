@@ -1,5 +1,5 @@
 <template>
-  <div class="direct-container" v-if="isActive">
+  <div v-if="isActive" class="direct-container">
     <div class="messages-list">
       <div class="messages-list-scrollable">
         <div
