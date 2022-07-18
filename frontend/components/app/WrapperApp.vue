@@ -6,7 +6,7 @@
           Apps
         </div>
         <div class="side-menu">
-          <nuxt-link :to="{ name: 'home'}">
+          <nuxt-link :to="{ name: 'profile', params: { id: $auth.user.id } }">
             <svg viewBox="0 0 512 512">
               <g xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                 <path d="M0 0h128v128H0zm0 0M192 0h128v128H192zm0 0M384 0h128v128H384zm0 0M0 192h128v128H0zm0 0" data-original="#bfc9d1" />
