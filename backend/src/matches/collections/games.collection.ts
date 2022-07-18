@@ -6,7 +6,7 @@ const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
 const BALL_SPEED = 7;
 const PADDLE_SPEED = 6;
-const SCORE_MAX = 20;
+const SCORE_MAX = 7;
 
 interface User {
   id: number;

@@ -141,6 +141,11 @@ export default Vue.extend({
         this.ctx.fill()
         this.ctx.strokeStyle = '#0c1ad0'
         this.ctx.stroke()
+        // draw shadow for ball
+        this.ctx.shadowColor = '#0c1ad0'
+        this.ctx.shadowBlur = 5
+        this.ctx.shadowOffsetX = 0
+        this.ctx.shadowOffsetY = 0
         this.drawMetaInfo()
         this.drawLine()
       }

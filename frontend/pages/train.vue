@@ -12,12 +12,17 @@
 <script lang="ts">
 import Vue from 'vue'
 
+enum Direction {
+  UP = 'UP',
+  DOWN = 'DOWN',
+}
+
 export default Vue.extend({
   layout: 'app',
   data: () => ({
-    width: 960,
-    height: 540,
-    theme: 'classic',
+    width: 960 as number,
+    height: 540 as number,
+    theme: 'classic' as string,
     clientState: {} as any,
     state: {
       gameLoopId: null as any,
@@ -26,7 +31,7 @@ export default Vue.extend({
         y: 540 / 2,
         width: 10,
         height: 115,
-        speed: 10,
+        speed: 6,
         score: 0
       },
       player2: {
@@ -34,7 +39,7 @@ export default Vue.extend({
         y: 540 / 2,
         width: 10,
         height: 115,
-        speed: 10,
+        speed: 6,
         score: 0
       },
       ball: {
@@ -43,11 +48,13 @@ export default Vue.extend({
         width: 20,
         height: 20,
         angle: Math.PI / 4,
-        speed: 4.5
+        speed: 7
       }
     },
     canvas: null as HTMLCanvasElement | null,
-    ctx: null as CanvasRenderingContext2D | null
+    ctx: null as CanvasRenderingContext2D | null,
+    isKeyDown: false as boolean,
+    isKeyUp: false as boolean
   }),
   mounted () {
     this.canvas = this.$refs.canvas as HTMLCanvasElement
@@ -55,19 +62,27 @@ export default Vue.extend({
     // register event on arrow up/down keys
     window.addEventListener('keydown', (e) => {
       if (e.keyCode === 38) {
-        this.state.player1.y -= this.state.player1.speed
-        // prevent player from going out of bounds
-        if (this.state.player1.y < 0) {
-          this.state.player1.y = 0
-        }
+        this.isKeyUp = true
       } else if (e.keyCode === 40) {
-        this.state.player1.y += this.state.player1.speed
-        // prevent player from going out of bounds
-        if (this.state.player1.y > this.height - this.state.player1.height) {
-          this.state.player1.y = this.height - this.state.player1.height
-        }
+        this.isKeyDown = true
       }
     })
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 38) {
+        this.isKeyUp = false
+      } else if (e.keyCode === 40) {
+        this.isKeyDown = false
+      }
+    })
+    // timer for up/down movement
+    setInterval(() => {
+      if (this.isKeyUp) {
+        this.playerMove(Direction.UP)
+      }
+      if (this.isKeyDown) {
+        this.playerMove(Direction.DOWN)
+      }
+    }, 24)
     this.loopServerState()
   },
   methods: {
@@ -85,7 +100,7 @@ export default Vue.extend({
       if (this.ctx && this.canvas) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         // fill background with abstract neon color
-        this.ctx.fillStyle = '#00ffff'
+        this.ctx.fillStyle = 'rgb(108,203,203)'
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         // draw player 1 with neon border
         this.ctx.fillStyle = '#00ffff'
@@ -104,6 +119,11 @@ export default Vue.extend({
         this.ctx.fill()
         this.ctx.strokeStyle = '#0c1ad0'
         this.ctx.stroke()
+        // draw shadow for ball
+        this.ctx.shadowColor = '#0c1ad0'
+        this.ctx.shadowBlur = 5
+        this.ctx.shadowOffsetX = 0
+        this.ctx.shadowOffsetY = 0
         this.drawMetaInfo()
         this.drawLine()
       }
@@ -145,7 +165,7 @@ export default Vue.extend({
         this.game()
         this.clientState = this.state
         this.draw()
-      }, 10)
+      }, 1000 / 60)
     },
     game (): void {
       this.ballMove()
@@ -159,6 +179,18 @@ export default Vue.extend({
         this.checkOutOfBounds()
       }
     },
+    playerMove (direction: Direction): void {
+      if (direction === Direction.UP) {
+        this.state.player1.y -= this.state.player1.speed
+      } else if (direction === Direction.DOWN) {
+        this.state.player1.y += this.state.player1.speed
+      }
+      if (this.state.player1.y < 0) {
+        this.state.player1.y = 0
+      } else if (this.state.player1.y > this.height - this.state.player1.height) {
+        this.state.player1.y = this.height - this.state.player1.height
+      }
+    },
     checkOutOfBounds (): void {
       if (this.state.ball.x < 0) {
         this.state.ball.x = 0
@@ -169,7 +201,7 @@ export default Vue.extend({
         this.state.ball.y = this.height / 2 - this.state.ball.height / 2
         // reset ball angle
         this.state.ball.angle = Math.PI
-        if (this.state.player2.score === 5) {
+        if (this.state.player2.score === 999) {
           clearInterval(this.state.gameLoopId)
         }
       } else if (this.state.ball.x > this.width - this.state.ball.width) {
@@ -181,7 +213,7 @@ export default Vue.extend({
         this.state.ball.y = this.height / 2 - this.state.ball.height / 2
         // reset ball angle
         this.state.ball.angle = 2 * Math.PI
-        if (this.state.player1.score === 5) {
+        if (this.state.player1.score === 999) {
           clearInterval(this.state.gameLoopId)
         }
       }
@@ -212,20 +244,19 @@ export default Vue.extend({
       return Math.random() * (max - min) + min
     },
     computerMove (): void {
-      // move computer player 2 y
-      // if (this.state.ball.x > this.width / 2) {
-      //   if (this.state.ball.y > this.state.player2.y + this.state.player2.height / 2) {
-      //     this.state.player2.y += this.state.player2.speed
-      //   } else if (this.state.ball.y < this.state.player2.y + this.state.player2.height / 2) {
-      //     this.state.player2.y -= this.state.player2.speed
-      //   }
-      // }
-      // // check out of bounds
-      // if (this.state.player2.y < 0) {
-      //   this.state.player2.y = 0
-      // } else if (this.state.player2.y > this.height - this.state.player2.height) {
-      //   this.state.player2.y = this.height - this.state.player2.height
-      // }
+      if (this.state.ball.x > this.width / 2) {
+        if (this.state.ball.y > this.state.player2.y + this.state.player2.height / 2) {
+          this.state.player2.y += this.state.player2.speed
+        } else if (this.state.ball.y < this.state.player2.y + this.state.player2.height / 2) {
+          this.state.player2.y -= this.state.player2.speed
+        }
+      }
+      // check out of bounds
+      if (this.state.player2.y < 0) {
+        this.state.player2.y = 0
+      } else if (this.state.player2.y > this.height - this.state.player2.height) {
+        this.state.player2.y = this.height - this.state.player2.height
+      }
     }
   }
 })
