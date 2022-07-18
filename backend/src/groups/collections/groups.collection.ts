@@ -46,11 +46,15 @@ export class GroupsCollection {
     groups.forEach((g) => {
       const user = g.users.find((u) => u.id === userId);
       if (user) {
-        // get socket instance from userId
         g.users = g.users.filter((u) => u.id !== userId);
       }
     });
     this.groups = this.groups.filter((g) => g.users.length > 0);
+  }
+
+  getUser(userId: number) {
+    const group = this.groups.find((g) => g.users.find((u) => u.id === userId));
+    return group ? group.users.find((u) => u.id === userId) : null;
   }
 
   printGroups() {

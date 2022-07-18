@@ -107,7 +107,14 @@ export class GroupsController {
     @Body('seconds') seconds: string,
   ) {
     await this.groupsService.addToBanList(+id, +userId, +seconds);
-    await this.groupsGateway.groups.removeUserById(+userId);
+    const user = await this.groupsGateway.groups.getUser(+userId);
+    if (user) {
+      this.groupsGateway.server.to(user.socketId).emit('exception', {
+        message: 'You have been banned',
+        code: 'DISCONNECTED',
+      });
+      await this.groupsGateway.groups.removeUserById(+userId);
+    }
   }
 
   @UseGuards(AdminGuard)
