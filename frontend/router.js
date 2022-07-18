@@ -47,9 +47,9 @@ const routes = [
     component: page('train.vue')
   },
   {
-    path: '/leaderboard',
+    path: '/leaderboards',
     name: 'leaderboard',
-    component: page('leaderboard.vue')
+    component: page('leaderboards.vue')
   },
   {
     path: '/profile/:id',

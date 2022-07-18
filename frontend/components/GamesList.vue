@@ -1,7 +1,7 @@
 <template>
-  <div class="content-section">
+  <div class="content-section" v-if="finishedMatches && finishedMatches.length > 0">
     <div class="content-section-title">
-      Your latest games:
+      Latest games:
     </div>
     <ul>
       <li v-for="match in finishedMatches" :key="match.id" class="game-item game-item__active" @click="$router.push({ name: 'pong-match-results', params: { id: match.id } })">

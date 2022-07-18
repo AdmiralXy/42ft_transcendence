@@ -17,7 +17,6 @@ export class MatchesController {
 
   @Get('users/:id/rating')
   getRating(@Param('id') id: string) {
-    console.log(id);
     return this.matchesService.getRating(+id);
   }
 }

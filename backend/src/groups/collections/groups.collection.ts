@@ -57,16 +57,6 @@ export class GroupsCollection {
     return group ? group.users.find((u) => u.id === userId) : null;
   }
 
-  printGroups() {
-    this.groups.forEach((g) => {
-      console.log(`Group [${g.id}]`);
-      g.users.forEach((u) => {
-        console.log(`     user[${u.id}]`);
-      });
-      console.log('End of group info');
-    });
-  }
-
   private findGroupById(groupId: number) {
     return this.groups.find((g) => g.id === groupId);
   }

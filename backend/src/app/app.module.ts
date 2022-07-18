@@ -14,6 +14,7 @@ import { DirectModule } from '../direct/direct.module';
 import { GroupsModule } from '../groups/groups.module';
 import { MatchesModule } from '../matches/matches.module';
 import { MatchmakingModule } from '../matchmaking/matchmaking.module';
+import { LeaderboardsModule } from '../leaderboards/leaderboards.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MatchmakingModule } from '../matchmaking/matchmaking.module';
     GroupsModule,
     MatchesModule,
     MatchmakingModule,
+    LeaderboardsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
