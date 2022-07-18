@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Type } from '../enums/type.enum';
-import { Status } from '../enums/status.enum';
 
 @Entity()
 export class Match {
