@@ -101,6 +101,7 @@ export default Vue.extend({
         this.socket.on('matchFinished', (response: any) => {
           this.state = {}
           this.winner = response.winner
+          this.$router.push({ name: 'pong-match-results', params: { id: this.$route.params.id } })
         })
 
         if (this.$auth.user) {

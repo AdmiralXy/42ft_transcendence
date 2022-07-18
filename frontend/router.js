@@ -37,6 +37,11 @@ const routes = [
     component: page('match.vue')
   },
   {
+    path: '/pong/match-results/:id',
+    name: 'pong-match-results',
+    component: page('match-results.vue')
+  },
+  {
     path: '/pong/train',
     name: 'pong-train',
     component: page('train.vue')

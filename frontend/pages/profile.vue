@@ -14,13 +14,14 @@
           {{ error }}
         </p>
         <div class="user-info">
-          <p>5000 games</p>
-          <p>W/L 0.56</p>
+          <p v-if="isProfileOwner">Owner</p>
+          <p>{{ finishedMatches.length }} matches</p>
+          <p>W/L {{ winRate }}</p>
         </div>
       </div>
     </div>
-    <ProgressMMR :user-id="1" />
-    <GamesList :user-id="1" />
+    <ProgressMMR :user-id="+$route.params.id" />
+    <GamesList :user-id="+$route.params.id" />
   </div>
 </template>
 
@@ -46,8 +47,15 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters({
-      user: 'users/user'
+      user: 'users/user',
+      finishedMatches: 'matches/finishedMatches'
     }),
+    winRate (): string {
+      if (!this.finishedMatches || this.finishedMatches.length === 0) {
+        return 'n/a'
+      }
+      return (this.finishedMatches.filter((match: any) => match.winner.id === this.user.id).length / this.finishedMatches.length).toFixed(2)
+    },
     isProfileOwner (): boolean {
       if (!this.$auth.user) {
         return false
@@ -58,12 +66,14 @@ export default Vue.extend({
   },
   async mounted (): Promise<void> {
     await this.fetchUser(this.$route.params.id)
+    await this.fetchMatches(this.$route.params.id)
     this.form.username = this.user.username
   },
   methods: {
     ...mapActions({
       fetchUser: 'users/fetchUser',
-      updateUser: 'users/updateUser'
+      updateUser: 'users/updateUser',
+      fetchMatches: 'matches/fetchMatches'
     }),
     updateUsername (): void {
       if (this.$auth.user && this.form.username.length > 0) {

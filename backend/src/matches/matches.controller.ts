@@ -1,22 +1,23 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { MatchesService } from './matches.service';
 
-@Controller('users/:id/matches')
+@Controller()
 export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
 
-  @Get()
+  @Get('users/:id/matches')
   findAll(@Param('id') id: string) {
     return this.matchesService.findAll(+id);
   }
 
-  @Get('rating')
-  getRating(@Param('id') id: string) {
-    return this.matchesService.getRating(+id);
+  @Get('matches/:matchId')
+  findOne(@Param('matchId') matchId: string) {
+    return this.matchesService.findOneById(+matchId);
   }
 
-  @Get(':matchId')
-  findOne(@Param('id') id: string, @Param('matchId') matchId: string) {
-    return this.matchesService.findOne(+id, +matchId);
+  @Get('users/:id/rating')
+  getRating(@Param('id') id: string) {
+    console.log(id);
+    return this.matchesService.getRating(+id);
   }
 }

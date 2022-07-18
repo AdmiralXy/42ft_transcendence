@@ -3,7 +3,7 @@
     <div class="progress double">
       <div class="progress-bar" role="progressbar" :style="'width:' + progressPercentage + '%'" />
       <div class="on-progress">
-        {{ progress }} MMR
+        {{ rating }} MMR
       </div>
     </div>
   </div>
@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
   layout: 'app',
@@ -20,15 +21,21 @@ export default Vue.extend({
       default: 0
     }
   },
-  data () {
-    return {
-      progress: 3000
+  computed: {
+    ...mapGetters({
+      rating: 'matches/rating'
+    }),
+    progressPercentage (): number {
+      return this.rating / 10000 * 100
     }
   },
-  computed: {
-    progressPercentage (): number {
-      return this.progress / 10000 * 100
-    }
+  mounted (): void {
+    this.fetchRating(this.userId)
+  },
+  methods: {
+    ...mapActions({
+      fetchRating: 'matches/fetchRating'
+    })
   }
 })
 </script>
