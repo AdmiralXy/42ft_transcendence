@@ -147,6 +147,7 @@ export default Vue.extend({
 
         if (this.$auth.user) {
           this.socket.emit('joinGroup', { id: this.id })
+          this.socket.emit('updateUserStatus', { status: 'in-chat' })
         }
       })
     }

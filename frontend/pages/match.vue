@@ -108,6 +108,7 @@ export default Vue.extend({
 
         if (this.$auth.user) {
           this.socket.emit('matchJoin', { matchId: this.$route.params.id })
+          this.socket.emit('updateUserStatus', { status: 'in-game' })
         }
       })
     },

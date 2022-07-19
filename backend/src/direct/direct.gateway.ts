@@ -8,6 +8,9 @@ import {
 import { DirectService } from './direct.service';
 import { CreateDirectMessageDto } from './dto/create-direct-message.dto';
 import { Server, Socket } from 'socket.io';
+import { UseGuards } from '@nestjs/common';
+import { JwtWsAuthGuard } from '../auth/guards/jwt-ws-auth.guard';
+import { CurrentUser } from '../app/decorators/current-user.decorator';
 
 @WebSocketGateway()
 export class DirectGateway {
@@ -27,17 +30,19 @@ export class DirectGateway {
     return message;
   }
 
+  @UseGuards(JwtWsAuthGuard)
   @SubscribeMessage('findAllDirect')
   findAll() {
     return this.directService.findAll();
   }
 
+  @UseGuards(JwtWsAuthGuard)
   @SubscribeMessage('joinDirect')
   join(
-    @MessageBody('id') id: string,
+    @CurrentUser() user,
     @MessageBody('friendId') friendId: string,
     @ConnectedSocket() client: Socket,
   ) {
-    return this.directService.join(+id, +friendId, client);
+    return this.directService.join(user.id, +friendId, client);
   }
 }

@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
+import { Status } from '../enums/status.enum';
 
 @Entity()
 export class User {
@@ -23,6 +24,16 @@ export class User {
 
   @Column({ default: false })
   public is_tfa_enabled: boolean;
+
+  @Column('timestamp', { nullable: true })
+  logged_at: Date;
+
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.OFFLINE,
+  })
+  status: Status;
 
   @CreateDateColumn()
   created_at: Date;

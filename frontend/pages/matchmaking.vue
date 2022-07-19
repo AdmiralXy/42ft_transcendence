@@ -65,6 +65,7 @@ export default Vue.extend({
 
         if (this.$auth.user) {
           this.socket.emit('matchmakingJoin', { id: this.$auth.user.id })
+          this.socket.emit('updateUserStatus', { status: 'in-matchmaking-queue' })
         }
       })
     }

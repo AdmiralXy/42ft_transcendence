@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { io } from 'socket.io-client'
 import Header from '~/components/app/HeaderApp.vue'
 import Wrapper from '~/components/app/WrapperApp.vue'
 import BackgroundWaves from '~/components/app/BackgroundWaves.vue'
@@ -26,6 +27,41 @@ export default Vue.extend({
     BackgroundWaves,
     Header,
     Wrapper
+  },
+  data () {
+    return {
+      socket: null as any
+    }
+  },
+  mounted (): void {
+    this.openSocketConnection()
+  },
+  methods: {
+    closeSocketConnection (): void {
+      if (this.socket && this.socket.connected) {
+        this.socket.disconnect()
+      }
+    },
+    openSocketConnection (): void {
+      const socketOptions = {
+        transportOptions: {
+          polling: {
+            extraHeaders: {
+              // @ts-ignore
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        }
+      }
+
+      this.closeSocketConnection()
+      this.socket = io(this.$config.BASE_URL, socketOptions)
+      this.socket.on('connect', () => {
+        if (this.$auth.user) {
+          this.socket.emit('updateUserStatus', { status: 'online' })
+        }
+      })
+    }
   }
 })
 </script>

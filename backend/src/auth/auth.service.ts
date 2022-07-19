@@ -57,6 +57,7 @@ export class AuthService {
         400,
       );
     }
+    await this.userService.updateLoggedIn(userFromDb.id);
     return {
       access_token: this.jwtService.sign(payload),
       token_type: 'bearer',
@@ -74,6 +75,7 @@ export class AuthService {
     }
     const userFromDb = await this.userService.findOne(id);
     const payload = { id: userFromDb.id, login: userFromDb.login };
+    await this.userService.updateLoggedIn(userFromDb.id);
     return {
       access_token: this.jwtService.sign(payload),
       token_type: 'bearer',

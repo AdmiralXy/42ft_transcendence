@@ -12,9 +12,8 @@
           <span>{{ friend.username }}</span>
         </div>
         <div class="friend-list__item-status">
-          <span v-if="friend.status === 0" class="offline">Offline</span>
-          <span v-else-if="friend.status === 1" class="online">Online</span>
-          <span v-else class="ingame">In game</span>
+          <span v-if="friend.status === 'offline'" class="offline">{{ friend.status }}</span>
+          <span v-else class="online">{{ friend.status }}</span>
         </div>
       </div>
     </div>
@@ -99,8 +98,19 @@ export default Vue.extend({
     },
     selectUser (id: number) {
       this.selectedId = id
+      const socketOptions = {
+        transportOptions: {
+          polling: {
+            extraHeaders: {
+              // @ts-ignore
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        }
+      }
+
       this.closeSocketConnection()
-      this.socket = io(this.$config.BASE_URL)
+      this.socket = io(this.$config.BASE_URL, socketOptions)
 
       this.socket.on('connect', () => {
         this.socket.on('exception', (error: any) => {
@@ -116,9 +126,10 @@ export default Vue.extend({
         })
 
         if (this.$auth.user) {
-          this.socket.emit('joinDirect', { id: this.$auth.user.id, friendId: this.selectedId }, (response: any) => {
+          this.socket.emit('joinDirect', { friendId: this.selectedId }, (response: any) => {
             this.messages = response
           })
+          this.socket.emit('updateUserStatus', { status: 'in-chat' })
         }
       })
     }

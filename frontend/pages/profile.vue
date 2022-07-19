@@ -6,8 +6,9 @@
         <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
         <div class="user-profile">
           <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image" alt="" @click="imageUpload">
-          <p v-if="!isProfileOwner">
+          <p v-if="!isProfileOwner" class="mt-2">
             {{ user.username }}
+            <span class="small d-block font-weight-bolder " :class="user.status === 'offline' ? 'text-danger' : 'text-warning'">{{ user.status }}</span>
           </p>
           <input v-else v-model="form.username" type="text" class="user-profile__input" @keyup.enter="updateUsername">
         </div>

@@ -70,4 +70,10 @@ export class UserService {
       is_tfa_enabled: false,
     });
   }
+
+  async updateLoggedIn(userId: number) {
+    return this.usersRepository.update(userId, {
+      logged_at: new Date(),
+    });
+  }
 }
