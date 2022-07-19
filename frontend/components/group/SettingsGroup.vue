@@ -37,7 +37,7 @@
         <img :src="'/api/uploads/' + user.id + '.png'" alt="">
       </div>
       <div class="friend-list__item-name">
-        <span>{{ user.username }}</span>
+        <span @click="$router.push({ name: 'profile', params: { id: user.id } })">{{ user.username }}</span>
       </div>
       <div class="friend-list__item-status">
         <b-dropdown
