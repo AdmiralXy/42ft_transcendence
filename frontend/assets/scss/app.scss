@@ -6,6 +6,15 @@
   font-family: 'Noto Sans', sans-serif;
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  min-width: 1330px;
+  -webkit-font-smoothing: antialiased;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   border-radius: 10px;
