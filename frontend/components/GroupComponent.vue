@@ -68,7 +68,8 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters({
-      group: 'groups/group'
+      group: 'groups/group',
+      blacklist: 'blacklist/blacklist'
     })
   },
   watch: {
@@ -90,6 +91,9 @@ export default Vue.extend({
     this.$on('inviteToPrivateMatch', (data: { id: number }) => {
       this.inviteToPrivateMatch(data.id)
     })
+    if (this.$auth.user) {
+      this.fetchBlacklist(this.$auth.user.id)
+    }
   },
   beforeDestroy (): void {
     this.closeSocketConnection()
@@ -97,7 +101,8 @@ export default Vue.extend({
   methods: {
     ...mapActions({
       _deleteGroup: 'groups/deleteGroup',
-      fetchGroup: 'groups/fetchGroup'
+      fetchGroup: 'groups/fetchGroup',
+      fetchBlacklist: 'blacklist/fetchBlacklist'
     }),
     isConnected (): boolean {
       return this.state === State.CONNECTED || this.state === State.SETTINGS
@@ -145,7 +150,12 @@ export default Vue.extend({
         })
 
         this.socket.on('groupMessage', (response: any) => {
-          this.messages.push(response)
+          const blacklisted = this.blacklist.find(
+            (blacklistedUser: any) => blacklistedUser.id === response.sender.id
+          )
+          if (!blacklisted) {
+            this.messages.push(response)
+          }
         })
 
         this.socket.on('groupStateChanged', () => {
