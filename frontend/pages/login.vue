@@ -175,12 +175,6 @@ export default Vue.extend({
   text-decoration: none;
 }
 
-@media (max-width: 1265px) {
-  .login-page__img {
-    display: none;
-  }
-}
-
 .loading p {
   z-index: 10;
   font-size: 28px;
