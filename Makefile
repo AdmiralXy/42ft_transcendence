@@ -10,8 +10,6 @@ build:
 stop:
 	docker-compose -p $(PROJECT_NAME) stop
 
-restart: stop all
-
 list:
 	@echo "\033[0;34mList of available containers:\033[0m"
 	@docker ps

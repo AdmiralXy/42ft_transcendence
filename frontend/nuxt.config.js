@@ -42,7 +42,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/axios'
+    '~/plugins/axios',
+    '~/plugins/v-mask.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -65,6 +66,22 @@ export default {
         },
         endpoints: {
           login: { url: '/auth/login', method: 'post' },
+          user: { url: '/auth/user', method: 'get' },
+          logout: false
+        }
+      },
+      localTfa: {
+        scheme: 'local',
+        token: {
+          property: 'access_token',
+          maxAge: '5960'
+        },
+        user: {
+          property: false,
+          autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/auth/login-2fa', method: 'post' },
           user: { url: '/auth/user', method: 'get' },
           logout: false
         }

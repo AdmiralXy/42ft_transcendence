@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TwoFAModal ref="twoFaComponent" />
     <div class="content-wrapper-header">
       <div class="content-wrapper-context">
         <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
@@ -14,11 +15,13 @@
           {{ error }}
         </p>
         <div class="user-info">
-          <p v-if="isProfileOwner">
-            Owner
-          </p>
           <p>{{ finishedMatches.length }} matches</p>
           <p>W/L {{ winRate }}</p>
+          <div v-if="isProfileOwner" class="pt-4">
+            <button type="button" class="profile-button" @click="showModal">
+              Two Factor Authentication
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -32,10 +35,11 @@ import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 import ProgressMMR from '~/components/ProgressMMR.vue'
 import GamesList from '~/components/GamesList.vue'
+import TwoFAModal from '~/components/TwoFAModal.vue'
 
 export default Vue.extend({
   components: {
-    ProgressMMR, GamesList
+    ProgressMMR, GamesList, TwoFAModal
   },
   layout: 'app',
   data () {
@@ -77,6 +81,12 @@ export default Vue.extend({
       updateUser: 'users/updateUser',
       fetchMatches: 'matches/fetchMatches'
     }),
+    showModal (): void {
+      if (this.$refs.twoFaComponent) {
+        const component = this.$refs.twoFaComponent as any
+        component.showModal()
+      }
+    },
     updateUsername (): void {
       if (this.$auth.user && this.form.username.length > 0) {
         this.updateUser({
@@ -182,5 +192,23 @@ export default Vue.extend({
 
 .img-loadable:hover {
   cursor: pointer;
+}
+
+.profile-button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+  font-size: 16px;
+  font-weight: 300;
+  transition: 0.5s ease;
+  cursor: pointer;
+  border: unset;
+}
+
+.profile-button:hover {
+  background-color: #b2b2b2;
+  text-decoration: none;
 }
 </style>

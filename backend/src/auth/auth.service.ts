@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { HttpService } from '@nestjs/axios';
@@ -7,15 +7,17 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { randomUUID } from 'crypto';
 import { GoogleAPI } from './api/google.api';
 import { InterfaceAPI } from './api/interface.api';
+import { TwoFactorAuthenticationService } from '../two-factor-authentication/two-factor-authentication.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-    private httpService: HttpService,
-    private intraAPI: IntraAPI,
-    private googleAPI: GoogleAPI,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly httpService: HttpService,
+    private readonly intraAPI: IntraAPI,
+    private readonly googleAPI: GoogleAPI,
+    private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
   ) {}
 
   async login(code: string, type: string) {
@@ -24,7 +26,7 @@ export class AuthService {
     } else if (type === 'google') {
       return this.loginApi(code, this.googleAPI);
     } else {
-      throw new BadRequestException('Invalid type.enum.ts!');
+      throw new BadRequestException('Invalid API type!');
     }
   }
 
@@ -45,6 +47,32 @@ export class AuthService {
     } catch (error) {
       userFromDb = await this.userService.create(newUser);
     }
+    const payload = { id: userFromDb.id, login: userFromDb.login };
+    if (userFromDb.is_tfa_enabled) {
+      throw new HttpException(
+        {
+          user: payload,
+          message: 'Two-factor authentication is enabled',
+        },
+        400,
+      );
+    }
+    return {
+      access_token: this.jwtService.sign(payload),
+      token_type: 'bearer',
+      expires_in: 5960,
+    };
+  }
+
+  async loginTwoFactorAuthentication(id: number, tfa_token: string) {
+    const isValid = await this.twoFactorAuthenticationService.validateToken(
+      tfa_token,
+      id,
+    );
+    if (!isValid) {
+      throw new BadRequestException('Invalid two-factor authentication token');
+    }
+    const userFromDb = await this.userService.findOne(id);
     const payload = { id: userFromDb.id, login: userFromDb.login };
     return {
       access_token: this.jwtService.sign(payload),

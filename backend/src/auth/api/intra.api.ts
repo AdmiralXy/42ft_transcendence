@@ -21,6 +21,19 @@ export class IntraAPI implements InterfaceAPI {
     );
   }
 
+  async exchangeRefreshTokenToToken(refresh_token: string): Promise<any> {
+    return await lastValueFrom(
+      this.httpService
+        .post('https://api.intra.42.fr/oauth/token', {
+          grant_type: 'refresh_token',
+          client_id: process.env.CLIENT_ID,
+          client_secret: process.env.CLIENT_SECRET,
+          refresh_token,
+        })
+        .pipe(map((resp) => resp.data)),
+    );
+  }
+
   async getUserInformation(access_token: string): Promise<any> {
     return await lastValueFrom(
       this.httpService

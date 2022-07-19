@@ -18,6 +18,12 @@ export class User {
   @Column('varchar', { unique: true, length: 15 })
   username: string;
 
+  @Column({ nullable: true })
+  public tfa_secret?: string;
+
+  @Column({ default: false })
+  public is_tfa_enabled: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

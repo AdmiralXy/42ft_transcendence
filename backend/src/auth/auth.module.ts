@@ -8,11 +8,13 @@ import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { IntraAPI } from './api/intra.api';
 import { GoogleAPI } from './api/google.api';
+import { TwoFactorAuthenticationModule } from '../two-factor-authentication/two-factor-authentication.module';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
+    TwoFactorAuthenticationModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '6000s' },

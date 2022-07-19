@@ -15,6 +15,7 @@ import { GroupsModule } from '../groups/groups.module';
 import { MatchesModule } from '../matches/matches.module';
 import { MatchmakingModule } from '../matchmaking/matchmaking.module';
 import { LeaderboardsModule } from '../leaderboards/leaderboards.module';
+import { TwoFactorAuthenticationModule } from '../two-factor-authentication/two-factor-authentication.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LeaderboardsModule } from '../leaderboards/leaderboards.module';
     MatchesModule,
     MatchmakingModule,
     LeaderboardsModule,
+    TwoFactorAuthenticationModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
