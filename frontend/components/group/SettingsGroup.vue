@@ -58,7 +58,7 @@
               clip-rule="evenodd"
             ><path d="M14 19h-14v-1h14v1zm9.247-8.609l-3.247 4.049-3.263-4.062-.737.622 4 5 4-5-.753-.609zm-9.247 2.609h-14v-1h14v1zm0-6h-14v-1h14v1z" /></svg>
           </template>
-          <b-dropdown-item-button>
+          <b-dropdown-item-button @click="inviteToPrivateMatch(user.id)">
             Invite to play
           </b-dropdown-item-button>
           <b-dropdown-divider v-if="isOwner || isAdmin" />
@@ -176,8 +176,8 @@ export default Vue.extend({
       addToMuteList: 'groups/addToMuteList',
       removeFromMuteList: 'groups/removeFromMuteList'
     }),
-    isAdminUser (user: any): boolean {
-      return this.group.owner.id === user.id || this.group.admin_list.some((e: any) => e.id === user.id)
+    inviteToPrivateMatch (id: number): void {
+      this.$parent.$emit('inviteToPrivateMatch', { id })
     },
     updateCurrentGroup (): void {
       this.updateGroup({ id: this.id, data: { ...this.updateForm } }).then(() => {

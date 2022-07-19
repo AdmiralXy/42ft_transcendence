@@ -8,6 +8,7 @@ import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
+import { MatchesModule } from '../matches/matches.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { User } from '../user/entities/user.entity';
       signOptions: { expiresIn: '6000s' },
     }),
     TypeOrmModule.forFeature([Group, Ban, Mute, User]),
+    MatchesModule,
   ],
   providers: [GroupsGateway, GroupsService],
   controllers: [GroupsController],

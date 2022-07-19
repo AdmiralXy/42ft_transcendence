@@ -13,6 +13,8 @@ import { User } from '../user/entities/user.entity';
 import { Ban } from './entities/ban.entity';
 import { Mute } from './entities/mute.entity';
 import { JoinGroupDto } from './dto/join-group.dto';
+import { MatchesService } from '../matches/matches.service';
+import { Type } from '../matches/enums/type.enum';
 
 @Injectable()
 export class GroupsService {
@@ -25,6 +27,7 @@ export class GroupsService {
     private readonly muteRepository: Repository<Mute>,
     @InjectRepository(Ban)
     private readonly banRepository: Repository<Ban>,
+    private readonly matchesService: MatchesService,
   ) {}
 
   async create(createGroupDto: CreateGroupDto) {
@@ -129,6 +132,10 @@ export class GroupsService {
   async remove(id: number) {
     const group = await this.groupRepository.findOneBy({ id });
     return this.groupRepository.remove(group);
+  }
+
+  async inviteToPrivateMatch(player1Id: number, player2Id: number) {
+    return await this.matchesService.create(player1Id, player2Id, Type.PRIVATE);
   }
 
   async addAdmin(id: number, userId: number) {

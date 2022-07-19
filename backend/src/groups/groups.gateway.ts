@@ -72,8 +72,31 @@ export class GroupsGateway implements OnGatewayDisconnect, OnGatewayInit {
     });
   }
 
-  @SubscribeMessage('userBanned')
-  userBanned() {
-    // TODO implement
+  @SubscribeMessage('inviteToPrivateMatch')
+  async inviteToPrivateMatch(
+    @CurrentUser() user,
+    @MessageBody('id') id: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    if (user.id === +id) {
+      throw new WsException('You cannot invite yourself.');
+    }
+    const userFromDb = await this.groupsService.getUserById(user.id);
+    if (!userFromDb) {
+      throw new WsException('User not found.');
+    }
+    const invitedUser = this.groups.getUser(+id);
+    if (!invitedUser) {
+      throw new WsException('User is not available.');
+    }
+    const match = await this.groupsService.inviteToPrivateMatch(user.id, +id);
+    this.server.to(invitedUser.socketId).emit('privateMatchInvitation', {
+      matchId: match.id,
+      username: userFromDb.username,
+    });
+    this.server.to(client.id).emit('privateMatchInvitation', {
+      matchId: match.id,
+      username: userFromDb.username,
+    });
   }
 }

@@ -80,15 +80,18 @@ export default Vue.extend({
       }
     }
   },
-  mounted () {
+  mounted (): void {
     this.$on('createGroupMessage', (data: { message: any }) => {
       this.socket.emit('createGroupMessage', {
         id: this.id,
         text: data.message
       })
     })
+    this.$on('inviteToPrivateMatch', (data: { id: number }) => {
+      this.inviteToPrivateMatch(data.id)
+    })
   },
-  beforeDestroy () {
+  beforeDestroy (): void {
     this.closeSocketConnection()
   },
   methods: {
@@ -109,6 +112,11 @@ export default Vue.extend({
       this.messages = []
       if (this.socket && this.socket.connected) {
         this.socket.disconnect()
+      }
+    },
+    inviteToPrivateMatch (id: number): void {
+      if (this.isConnected()) {
+        this.socket.emit('inviteToPrivateMatch', { id })
       }
     },
     openSocketConnection (): void {
@@ -143,6 +151,15 @@ export default Vue.extend({
         this.socket.on('groupStateChanged', () => {
           this.$parent.$emit('groupUpdated')
           this.fetchGroup({ id: this.id })
+        })
+
+        this.socket.on('privateMatchInvitation', (response: any) => {
+          this.$bvToast.toast(`${response.username} invited you to a private match.`, {
+            href: '/pong/match/' + response.matchId,
+            title: 'Match invitation',
+            variant: 'warning',
+            autoHideDelay: 60000
+          })
         })
 
         if (this.$auth.user) {
