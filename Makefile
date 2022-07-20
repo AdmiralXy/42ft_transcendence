@@ -1,11 +1,11 @@
 PROJECT_NAME = ft_transcendence
 PROJECT_DIRECTORY = docker
 
-all:
+dev:
 	docker-compose -p $(PROJECT_NAME) up -d
 
-build:
-	docker-compose -p $(PROJECT_NAME) build
+prod:
+	docker-compose -p $(PROJECT_NAME) -f docker-compose.prod.yml -f docker-compose.yml up -d
 
 stop:
 	docker-compose -p $(PROJECT_NAME) stop
@@ -29,5 +29,3 @@ clean:
 
 fclean: clean
 	docker system prune -a
-
-re: clean build all

@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  backend:
+    command: ["sh", "-c", "npm install && npm run start:prod"]
+  frontend:
+    command: ["sh", "-c", "npm install && npm run generate && npm run start"]

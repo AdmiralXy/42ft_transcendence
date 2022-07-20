@@ -9,5 +9,4 @@ WORKDIR /var/www/frontend
 
 USER node
 
-#CMD tail -f /dev/null
 CMD ["sh", "-c", "npm install && npm run dev"]
