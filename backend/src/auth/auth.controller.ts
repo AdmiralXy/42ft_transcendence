@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SkipAuth } from '../app/decorators/skip-auth.decorator';
 import { LoginDto } from './dto/login.dto';
@@ -25,6 +33,10 @@ export class AuthController {
 
   @Get('user')
   async user(@Request() req) {
+    const userFromDb = await this.authService.findUserById(req.user.id);
+    if (!userFromDb) {
+      throw new UnauthorizedException('User not found!');
+    }
     return req.user;
   }
 }

@@ -30,6 +30,10 @@ export class AuthService {
     }
   }
 
+  async findUserById(id: number) {
+    return await this.userService.findOne(id);
+  }
+
   async loginApi(code: string, interfaceAPI: InterfaceAPI) {
     let userFromApi, userFromDb;
     try {
