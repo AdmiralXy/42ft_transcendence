@@ -5,7 +5,7 @@
       <div class="content-wrapper-context">
         <input id="imageUpload" type="file" hidden @change="imageUploadHandler">
         <div class="user-profile">
-          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image" alt="" @click="imageUpload">
+          <img :class="isProfileOwner ? 'img-loadable' : ''" :src="'/api/uploads/' + user.image + '?v=' + profileImageVersion" alt="" @click="imageUpload">
           <p v-if="!isProfileOwner" class="mt-2">
             {{ user.username }}
             <span class="small d-block font-weight-bolder " :class="user.status === 'offline' ? 'text-danger' : 'text-warning'">{{ user.status }}</span>
@@ -49,7 +49,8 @@ export default Vue.extend({
         username: '' as string,
         errors: [] as string[]
       },
-      imageError: false as boolean
+      imageError: false as boolean,
+      profileImageVersion: 0 as number,
     }
   },
   computed: {
@@ -126,6 +127,7 @@ export default Vue.extend({
         this.form.errors = []
         this.$axios.post('/uploads/upload/' + this.user.id, form).then(() => {
           this.fetchUser(this.user.id)
+          this.profileImageVersion++
         }).catch((error) => {
           this.form.errors.push(error.response.data.message)
         })
