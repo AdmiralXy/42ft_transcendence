@@ -12,7 +12,7 @@
 
 <br/>
 
-## :ledger:  Technology stack
+## :package:  Technology stack
 
 * **Docker containers**
   * Development with hot-reloads and production modes
