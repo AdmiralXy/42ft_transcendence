@@ -28,6 +28,7 @@ export default Vue.extend({
     Header,
     Wrapper
   },
+  middleware: ['auth'],
   data () {
     return {
       socket: null as any
