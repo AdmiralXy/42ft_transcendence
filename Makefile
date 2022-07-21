@@ -20,8 +20,7 @@ list:
 	@echo "\033[0;34mVolumes:\033[0m"
 	@docker volume ls
 
-clean:
-	@docker stop $$(docker ps -qa) || true
+clean: stop
 	@docker rm $$(docker ps -qa) || true
 	@docker rmi -f $$(docker images -qa) || true
 	@docker volume rm $$(docker volume ls -q) || true
