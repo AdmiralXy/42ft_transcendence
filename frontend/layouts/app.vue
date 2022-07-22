@@ -35,7 +35,9 @@ export default Vue.extend({
     }
   },
   mounted (): void {
-    this.openSocketConnection()
+    if (this.$auth.user) {
+      this.openSocketConnection()
+    }
   },
   methods: {
     closeSocketConnection (): void {
