@@ -4,9 +4,9 @@ import { MatchesService } from '../matches.service';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
-const BALL_SPEED = 7;
-const PADDLE_SPEED = 6;
-const SCORE_MAX = 7;
+const BALL_SPEED = 10;
+const PADDLE_SPEED = 7;
+const SCORE_MAX = 11;
 
 interface User {
   id: number;
@@ -108,7 +108,7 @@ class Game {
       this.server
         .to(this.matchId.toString())
         .emit('matchUpdate', this.getGameData());
-    }, 1000 / 60);
+    }, 1000 / 40);
   }
 
   game(): void {

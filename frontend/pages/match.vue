@@ -45,12 +45,20 @@ export default Vue.extend({
         this.isKeyUp = true
       } else if (e.keyCode === 40) {
         this.isKeyDown = true
+      } else if (e.keyCode === 39) {
+        this.isKeyUp = true
+      } else if (e.keyCode === 37) {
+        this.isKeyDown = true
       }
     })
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 38) {
         this.isKeyUp = false
       } else if (e.keyCode === 40) {
+        this.isKeyDown = false
+      } else if (e.keyCode === 39) {
+        this.isKeyUp = false
+      } else if (e.keyCode === 37) {
         this.isKeyDown = false
       }
     })
