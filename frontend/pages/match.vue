@@ -45,9 +45,9 @@ export default Vue.extend({
         this.isKeyUp = true
       } else if (e.keyCode === 40) {
         this.isKeyDown = true
-      } else if (e.keyCode === 39) {
-        this.isKeyUp = true
       } else if (e.keyCode === 37) {
+        this.isKeyUp = true
+      } else if (e.keyCode === 39) {
         this.isKeyDown = true
       }
     })
@@ -56,9 +56,9 @@ export default Vue.extend({
         this.isKeyUp = false
       } else if (e.keyCode === 40) {
         this.isKeyDown = false
-      } else if (e.keyCode === 39) {
-        this.isKeyUp = false
       } else if (e.keyCode === 37) {
+        this.isKeyUp = false
+      } else if (e.keyCode === 39) {
         this.isKeyDown = false
       }
     })
