@@ -39,7 +39,6 @@ export class AuthService {
     try {
       const access_token = (await interfaceAPI.exchangeCodeToToken(code))
         .access_token;
-      console.log(access_token);
       userFromApi = await interfaceAPI.getUserInformation(access_token);
     } catch (error) {
       throw new BadRequestException('Application code is expired or invalid!');
